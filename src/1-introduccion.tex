@@ -1,0 +1,117 @@
+\chapter{Introducción}
+
+El tratamiento de lenguaje natural (PLN) por parte de computadoras ha sido siempre un punto de gran
+interés de la comunidad. Desde los trabajos de John McCarthy y Marvin Minsky en los años 1950 hasta
+la actualidad, se han publicado miles de trabajos al respecto. Históricamente han habido dos
+paradigmas para el tratamiento del lenguaje: uno basado en reglas y otro en aprendizaje automático.
+
+El primer enfoque busca construir reglas que capturen el conocimiento de expertos en lingüística
+para resolver una problemática particular, construyendo reglas que generalicen lo suficiente pero
+sin dejar de lado los casos particulares. Mientras que ambos enfoques se desarrollaron
+paralelamente, no fue hasta la adopción masiva de Internet, junto con los inmensos volúmenes de
+texto que consecuentemente se generaron, que los métodos de aprendizaje automático comenzaron a ser
+significativemente más exitosos.
+
+Todas las tareas en el área de PLN involucran, en algún nivel, trabajar con palabras. Puesto que los
+algoritmos de aprendizaje automático comúnmente utilizados como soluciones de dichas tareas se
+alimentan de vectores, es usual requerir de un mecanismo para traducir de unas a otros.
+
+La forma más simple de realizar esta traducción es posiblemente asociarle, a cada palabra, un vector
+bajo un esquema \textit{one-hot}: esto es, a cada palabra se le asigna un vector donde todas las
+componentes son cero salvo por un uno en la correspondiente a la palabra. Sin embargo, dado que
+todos los vectores resultan equidistantes, esta representación no tiene la capacidad de generalizar
+bien: las palabras \textit{el} y \textit{lenguaje} están a la misma distancia que \textit{el} y
+\textit{de}, por lo que se pierde información de su función sintáctica y semántica. Por esta razón,
+la búsqueda de métodos que asignen representaciones parecidas a palabras relacionadas es un área de
+investigación de particular interés.
+
+Basándose en la hipótesis distribucional de Harris~\cite{Harris1954}, la cual plantea que palabras
+que ocurren en contextos similares tienen significados similares, se han desarrollado históricamente
+una gran cantidad de métodos para realizar la tarea de traducción, principalmente basados en
+construir una matriz de coocurrencias la cual asocia, a cada par de palabras del vocabulario, una
+medida de similitud obtenida a partir de los contextos en los cuales éstas aparecen juntas. Estos
+métodos, donde entran técnicas como el análisis semántico latente (LSA), logran resultados
+relativamente satisfactorios.
+
+Sin embargo, recientemente han surgido una nueva generación de métodos para representar palabras
+que, mediante el uso de técnicas inspiradas en el modelado de lenguaje mediante redes neuronales,
+han llegado resultados sorprendentes para la comunidad del PLN\@. Estos algoritmos se basan en métodos
+de aprendizaje automático no supervisado que, a partir de grandes volúmenes de texto, consiguen
+representaciones vectoriales con una fuerte capacidad de almacenar información sintáctica y
+semántica. Entre los modelos más conocidos de este grupo se encuentran los propuestos por Mikolov et
+al.~\cite{Mikolov2013, Mikolov2013a, Mikolov2013b}, \textit{Skipgram} y \textit{CBOW}, comúnmente
+referidos bajo el nombre \texttt{word2vec}.
+
+Una de las grandes atracciones de \texttt{word2vec} es la capacidad de los modelos generados de
+expresar relaciones sintácticas y semánticas mediante operaciones algebraicas. Quizás el ejemplo más
+conocido de este fenómeno es la relación que cumplen los vectores de las palabras \textit{reina},
+\textit{rey}, \textit{mujer}, y \textit{hombre}, donde el primer vector puede ser aproximadamente
+recuperado de los siguientes mediante la relación $reina \approx rey - hombre + mujer$. A partir del
+surgimiento de \texttt{word2vec}, se ha reinvigorado la investigación en el área, y se han publicado
+numerosos artículos estudiando los modelos y proponiendo variantes de los mismos.
+
+
+\section{Objetivos del Proyecto}
+
+En este marco es que surge el presente proyecto de grado, el cual plantea, mediante el estudio en
+profundidad de las técnicas existentes para la representación vectorial de palabras, los siguientes
+objetivos:
+
+\begin{itemize}
+
+\item La generación de un corpus de texto para el español del orden de dos mil millones de
+palabras. Dado que los algoritmos anteriormente mencionados requieren de grandes cantidades de
+texto, es necesario como primer paso del proyecto -y de cualquier investigación en el área-, generar
+un corpus de tales características. Para la obtención del mismo se deberá realizar crawling masivo
+en la web, pues no existen corpus semejantes para el español de forma libre.
+
+\item La creación de una herramienta que permita, de una manera simple y con una interfaz accesible,
+explorar el corpus generado de manera interactiva, pudiendo realizar búsquedas sobre el mismo. La
+herramienta también brindará acceso a un servidor de cómputo especializado que permitirá entrenar
+algoritmos de modelado de manera remota, pudiendo almacenar allí todos los datos y descargarlos en
+la medida que sea necesario. Ofrecerá a su vez la posibilidad de evaluar la calidad de los modelos
+masivamente sobre diferentes conjuntos de pruebas, y permitirá la visualización de esta información
+fácilmente.
+
+\item La construcción de un conjunto de datos de evaluación que permitan analizar la calidad de las
+representaciones logradas, mediante la traducción de los principales conjuntos de pruebas utilizados
+en la literatura en inglés, para poder formar así una idea de cómo se diferencia el comportamiento
+de los modelos en el idioma español. También se crearán nuevos datos de prueba especializados en el
+lenguaje de estudio que tengan en cuenta las particularidades del mismo, sobretodo en el ámbito
+sintáctico.
+
+\item La comparación de la calidad de las representaciones obtenidas de los distintos modelos de
+representaciones para el español, estudiando así la existencia de particularidades de un lenguaje
+sobre otro que influencien el comportamiento de los modelos entrenados.
+
+\item Dejar disponible una infraestructura que ayude a futuras investigaciones en el área a no
+partir de cero, dejando como fruto los resultados de los anteriores puntos mencionados. De
+particular interés es brindar acceso a modelos vectoriales previamente entrenados, así como dejar un
+corpus que permita obtener nuevas representaciones que sean competitivas con el estado del arte. Con
+la herramienta creada, se pretende facilitar el entrenamiento de vectores especializados para
+distintas tareas del PLN\@.
+
+\end{itemize}
+
+
+\section{Estructura del Informe}
+
+El presente informe se estructura de la siguiente forma: en el capítulo 2 se realiza un relevamiento
+del estado del arte para la construcción de representaciones vectoriales de palabras, dando una
+clasificación de los métodos existentes junto a una breve descripción de los mismos. Se busca que al
+finalizar este capítulo el lector conozca las técnicas principales y qué resultados éstas obtienen.
+
+El capítulo 3 describe el proceso de construcción del corpus de texto, y se realiza un relevamiento
+de la literatura en construcción de corpus para el español. Se describen las técnicas empleadas, la
+infraestructura utilizada, y los problemas enfrentados. Se detalla la composición del corpus
+generado, junto a un breve análisis de su calidad.
+
+En el capítulo 4 se presenta la herramienta construida, con sus objetivos iniciales y decisiones de
+diseño. Se describen sus funcionalidades y se procede a detallar los principales aspectos de su
+implementación.
+
+El capítulo 5 se exponen los resultados de las evaluaciones realizadas. Se comienza por presentar la
+metodología empleada y los conjuntos de prueba construidos, y finalmente se realiza una comparación
+con el estado del arte en otros idiomas.
+
+Por último, el capítulo 6 plantea las conclusiones y propuestas para trabajo futuro.
