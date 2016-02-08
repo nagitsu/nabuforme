@@ -82,32 +82,32 @@ diversos nombres, dependiendo de la literatura consultada.
 
 Uno de los enfoques más tradicionales recibe el nombre de \textit{modelos semánticos
 distribucionales} (o DSMs por su sigla en inglés) los cuales, inspirados en el campo de la semántica
-estadística y la hipótesis distribucional [Harris 1950], hacen uso de estadísticas globales
+estadística y la hipótesis distribucional~\cite{Harris1954}, hacen uso de estadísticas globales
 derivadas de un corpus de texto para aprender representaciones que capturen la semántica de las
-palabras. En este grupo de técnicas se puede encontrar el modelo LSA [Dumais 1988, Deerwester 1990],
-junto con sus principales variantes, y el modelo HAL [Lund 1995, Lund and Burgess 1996].
+palabras. En este grupo de técnicas se puede encontrar el modelo LSA~\cite{Dumais1988,
+Deerwester1990}, junto con sus principales variantes, y el modelo HAL~\cite{Lund1995,
+LundBurgess1996}.
 
 El otro gran enfoque en la construcción de representaciones vectoriales es el proveniente de la
 comunidad de modelado de lenguaje mediante redes neuronales. Estos son métodos predictivos que
-utilizan información local para construir modelos de lenguaje a partir de redes neuronales [Bengio
-2003] y redes neuronales recurrentes [Mikolov 2010]. Una de las salidas de estos algoritmos son
-vectores para las palabras del lenguaje, las cuales suelen denominarse \textit{vectores o modelos
-neuronales}, o \textit{embeddings} de palabras.
+utilizan información local para construir modelos de lenguaje a partir de redes
+neuronales~\cite{Bengio2003} y redes neuronales recurrentes~\cite{Mikolov2010}. Una de las salidas
+de estos algoritmos son vectores para las palabras del lenguaje, las cuales suelen denominarse
+\textit{vectores o modelos neuronales}, o \textit{embeddings} de palabras.
 
 Otros nombres utilizados incluyen \textit{representaciones vectoriales continuas}, \textit{espacios
 de palabras semánticos}, o simplemente \textit{vectores de palabras}.
 
 Destacamos también la existencia de técnicas basadas en métodos aglomerativos para la construcción
 de representaciones vectoriales más compactas. Un ejemplo son los métodos basados en el algoritmo de
-Brown [Brown 1992] (denominados \textit{Brown Clusters}): bajo este esquema, se realiza un
+Brown~\cite{Brown1992} (denominados \textit{Brown Clusters}): bajo este esquema, se realiza un
 \textit{clustering} jerárquico de palabras utilizando estadísticas de los bigramas del corpus, tales
 como su información mutua, y se construye un código que busca minimizar el largo de las
 representaciones para grupos de palabras semánticamente relacionadas. También existen diferentes
-técnicas que se basan en modelos ocultos de Markov [Li and McCallum 2005] o en K-means [Lin and Wu
-2009]. Sin embargo, dado que estos modelos no han tenido los mejores resultados en la literatura, y
-que tienen la desventaja de no producir representaciones continuas, limitaremos nuestro estudio en
-el presente proyecto a los dos enfoques anteriormente presentados.
-
+técnicas que se basan en modelos ocultos de Markov~\cite{LiMcCallum2005} o en
+K-means~\cite{LinWu2009}. Sin embargo, dado que estos modelos no han tenido los mejores resultados
+en la literatura, y que tienen la desventaja de no producir representaciones continuas, limitaremos
+nuestro estudio en el presente proyecto a los dos enfoques anteriormente presentados.
 
 
 Vectores de palabras obtenidos con distintos mecanismos han sido utilizados exitosamente para una
@@ -118,29 +118,29 @@ resultados.
 
 \begin{itemize}
 
-\item En [Socher 2011, 2013; sent], se utilizan vectores basados en modelos neuronales para realizar
-análisis de sentimiento en críticas de películas a nivel de árboles de parsing, superando levemente
-los resultados obtenidos anteriormente.
+\item En~\cite{Socher2011a, Socher2013a}, se utilizan vectores basados en modelos neuronales para
+realizar análisis de sentimiento en críticas de películas a nivel de árboles de parsing, superando
+levemente los resultados obtenidos anteriormente.
 
-\item En [Collobert and Weston 2008, 2011], los autores plantean un nuevo esquema para resolver
-problemas de PLN utilizando redes neuronales convolucionales cuya única entrada son vectores de
-palabras, logrando resultados muy cercanos al estado del arte en tareas como \textit{POS tagging}
-(etiquetado de categorías gramaticales), etiquetado de roles semánticos, y reconocimiento de
-entidades con nombre.
+\item En~\cite{CollobertWeston2008, CollobertWeston2011}, los autores plantean un nuevo esquema para
+resolver problemas de PLN utilizando redes neuronales convolucionales cuya única entrada son
+vectores de palabras, logrando resultados muy cercanos al estado del arte en tareas como \textit{POS
+tagging} (etiquetado de categorías gramaticales), etiquetado de roles semánticos, y reconocimiento
+de entidades con nombre.
 
-\item En [Turian 2010], se mejoran los resultados obtenidos en reconocimiento de entidades con
+\item En~\cite{Turian2010}, se mejoran los resultados obtenidos en reconocimiento de entidades con
 nombre y en \textit{chunking} al agregar vectores de palabras como \textit{features} en un algoritmo
 de CRF (campos aleatorios condicionales).
 
-\item En [Socher 2011; paraphrase], mediante la utilización de representaciones vectoriales y de
+\item En~\cite{Socher2011b}, mediante la utilización de representaciones vectoriales y de
 \textit{autoencoders}, se mejora el estado del arte en materia de detección de parafraseo en textos
 cortos.
 
-\item En [Mikolov 2007], el autor entrena una red neuronal recursiva utilizando como única entrada
-vectores de palabras para generar un modelo de lenguaje para el checo, que posteriormente es
+\item En~\cite{Mikolov2007}, el autor entrena una red neuronal recursiva utilizando como única
+entrada vectores de palabras para generar un modelo de lenguaje para el checo, que posteriormente es
 utilizado para reconocimiento automático de habla.
 
-\item En [Socher 2013; mt], se generan vectores de palabras bilingües, donde se aprenden
+\item En~\cite{Socher2013b}, se generan vectores de palabras bilingües, donde se aprenden
 representaciones para dos lenguajes de manera simultánea, obteniendo buenos resultados en traducción
 automática de frases cortas.
 
@@ -156,8 +156,8 @@ en el área.
 
 Los modelos estadísticos se originan en el área de la lingüística computacional, basándose en
 estudios teóricos de semántica distribucional de lingüistas como Zellig Harris, con su
-\textit{hipótesis distribucional} [Harris 1950], y John Firth, con su noción de \textit{contexto de
-situación} [Firth 1957], haciendo referencia a la dependencia que tiene el significado de las
+\textit{hipótesis distribucional}~\cite{Harris1954}, y John Firth, con su noción de \textit{contexto de
+situación}~\cite{Firth1957}, haciendo referencia a la dependencia que tiene el significado de las
 palabras del contexto en el que ocurren (o, como lo plantea Firth, \textit{Conocerás una palabra por
 la compañía que mantiene}). El hecho de que surjan hace tantos años dotan al área de una literatura
 muy rica y extensa. A continuación daremos una breve reseña, recorriendo los resultados más
@@ -255,7 +255,7 @@ en las áreas de recuperación de información (IR, por sus siglas en inglés) y
 vectoriales semánticas.
 
 Uno de los primeros trabajos en el área fue el modelo de análisis latente semántico (LSA) propuesto
-en [Dumais 1988], también llamado indizado latente semántico (o LSI, en especial en el área de
+en~\cite{Dumais1988}, también llamado indizado latente semántico (o LSI, en especial en el área de
 IR). Siguiendo un modelo basado en resultados de la psicología, los autores proponen utilizar
 documentos enteros como contextos, y contar la cantidad de veces que dos palabras dadas coocurren
 como métrica de asociación: esto es, la matriz de asociación contará la cantidad de veces que dos
@@ -264,33 +264,33 @@ utilizar una descomposición en valores singulares (SVD, por sus siglas en ingl�
 truncándola a los $d$ valores singulares más grande, donde $d$ varía dependiendo del caso (los
 autores utilizan $100$ en algunos casos, $200$ en otro).
 
-En [Deerwester 1990], los autores continúan con la técnica anterior, pero variando la métrica de
+En~\cite{Deerwester1990}, los autores continúan con la técnica anterior, pero variando la métrica de
 asociación: consiguen un mejor resultado utilizando TF-IDF en lugar de las frecuencias absoultas
 para las coocurrencias. El objetivo principal de LSI es la recuperación de documentos basados en una
 consulta, donde una palabra dada se proyecta al espacio de dimensión reducida y se devuelven los
 documentos más cercanos en dicho espacio.
 
-En [Landauer y Dumais 1997] los autores profundizan y formalizan los anteriores modelos, incluso
+En~\cite{LandauerDumais1997} los autores profundizan y formalizan los anteriores modelos, incluso
 planteando LSA como un modelo de adquisición del lenguaje en humanos. Además proponen la utilización
 la entropía (de teoría de la información) como métrica de asociación alternativa, mejorando los
 resultados obtenidos en tareas de similitud de palabras.
 
-Continuando con estas ideas, [Hoffman 1999] propone una variante al algoritmo anterior, denominado
-LSI probabilístico (o pLSI, pLSA). Plantea formalmente la noción de variables latentes, denominadas
-tópicos, relacionadas a documentos y palabras. Bajo este esquema, en lugar de utilizar SVD para
-reducir la dimensionalidad, los autores plantean fijar a priori la cantidad de tópicos, que
+Continuando con estas ideas,~\cite{Hoffman1999} propone una variante al algoritmo anterior,
+denominado LSI probabilístico (o pLSI, pLSA). Plantea formalmente la noción de variables latentes,
+denominadas tópicos, relacionadas a documentos y palabras. Bajo este esquema, en lugar de utilizar
+SVD para reducir la dimensionalidad, los autores plantean fijar a priori la cantidad de tópicos, que
 corresponde a la dimensión $d$ resultante de los vectores, y luego expresar cada documento como una
 combinación (denominada \textit{mixture}) de dichos tópicos. Cada palabra tiene una cierta
 probabilidad de utilizarse en un tópico dado, y todos los parámetros se ajustan mediante un
 algoritmo de maximización de la esperanza.
 
-Otra variante al último algoritmo fue la propuesta en [Blei 2003], donde los autores plantean un
+Otra variante al último algoritmo fue la propuesta en~\cite{Blei2003}, donde los autores plantean un
 modelo generativo denominado LDA (asignación de Dirichlet latente) que sigue un esquema de pLSI
 donde la distribución de fondo para los tópicos se asume que sigue una distribución de Dirichlet.
 
 
 Los anteriores modelos emplearon contextos basados en documentos. Otra corriente paralela fue
-propuesta en [Lund 1995; Lund y Burgess 1996], denominada análogo en el hiperespacio para el
+propuesta en~\cite{Lund1995, LundBurgess1996}, denominada análogo en el hiperespacio para el
 lenguaje (o HAL). En esta propuesta, los contextos se forman en base a las coocurrencias de las
 palabras del vocabulario en una ventana de largo fijo dado. Esto es, se construye una matriz de
 tamaño $|V| \times |V|$, y en la entrada $(v_i, v_j)$ se acumula el resultado la métrica de
@@ -303,32 +303,31 @@ anterior). La métrica de asociación utilizada es el inverso de la distancia en
 
 Para la reducción de la dimensionalidad, los autores se quedan con las 200 componentes con más
 varianza, bajo la observación que para la mayoría de las palabras la varianza es casi nula. Esto
-corresponde a quedarse con las 200 palabras que presentan mayor varianza en sus entradas. En
-[Väyrynen, Honkela 2004 (+ 2005, 2007)] se obtienen mejores resultados (aunque a un costo
-computacional mayor) realizando un análisis de componentes independientes (ICA) para reducir la
-dimensionalidad.
+corresponde a quedarse con las 200 palabras que presentan mayor varianza en sus entradas.
+En~\cite{VayrynenHonkela2004} se obtienen mejores resultados (aunque a un costo computacional mayor)
+realizando un análisis de componentes independientes (ICA) para reducir la dimensionalidad.
 
 
 Distintas alternativas se han empleado también para la reducción de dimensionalidad, además de SVD,
 ICA o las técnicas probabilísticas de pLSA\@. Una de las que mayor éxito ha tenido fue el indizado
 aleatorio (también conocido como \textit{random indexing}, \textit{random mapping}, o \textit{random
-projection}), propuesto en [Kaski 1998], el cual propone quedarse con $d$ dimensiones elegidas
+projection}), propuesto en~\cite{Kaski1998}, el cual propone quedarse con $d$ dimensiones elegidas
 aleatoriamente de la matriz de coocurrencias. Esta técnica se basa en el lema de
 Johnson-Linderstrauss, que plantea que las distancias entre los vectores de palabras entre el
 espacio original y el reducido se preservarán casi completamente, siempre y cuando el valor de $d$
-sea suficientemente grande. En [Sahlgren 2001], se emplea esta técnica en lugar de SVD siguiendo un
-esquema HAL\@.
+sea suficientemente grande. En~\cite{Sahlgren2001}, se emplea esta técnica en lugar de SVD siguiendo
+un esquema HAL\@.
 
 
 En cuanto a métricas de asociación, mucho trabajo se ha centrado alrededor de la información mutua
-puntual entre dos palabras (PMI). Esta medida fue propuesta inicialmente en [Church and Hanks 1990]
-y busca modelar correctamente nociones de asociatividad entre palabras del lenguaje: el hecho de que
+puntual entre dos palabras (PMI). Esta medida fue propuesta inicialmente en~\cite{ChurchHanks1990} y
+busca modelar correctamente nociones de asociatividad entre palabras del lenguaje: el hecho de que
 frases como \textit{cuesta arriba} son más comunes que \textit{cuesta derecha}. El trabajo inicial
 de los autores no estuvo relacionado a representaciones vectoriales, pero fue tomado más adelante
-por [Turney 2001] con ese fin. En dicho trabajo se presenta un algoritmo que usa PMI como medida de
-asociatividad, y compara los resultados con LSA\@.
+por~\cite{Turney2001} con ese fin. En dicho trabajo se presenta un algoritmo que usa PMI como medida
+de asociatividad, y compara los resultados con LSA\@.
 
-De todos modos, no es hasta [Bullinaria and Levy 2007] que se utiliza dicha métrica para la
+De todos modos, no es hasta~\cite{BullinariaLevy2007} que se utiliza dicha métrica para la
 construcción explícita de modelos vectoriales del lenguaje. En este trabajo los autores hacen una
 evaluación sistemática de distintos parámetros para la construcción de vectores basándose en un
 esquema HAL\@. Una de los principales aportes fue la introducción de la PMI positiva (PPMI), igual a
@@ -347,45 +346,45 @@ especial cuando los tamaños de las ventanas son muy chicos (1 ó 2 a ambos lado
 cuanto al corpus y la dimensionalidad, cuánto mayor mejor, aunque está claro que esto afectará muy
 negativamente a la eficiencia computacional.
 
-Esta línea de investigación se continúa en [Bullinaria and Levy 2012], donde se evalúa también la
+Esta línea de investigación se continúa en~\cite{BullinariaLevy2012}, donde se evalúa también la
 utilización de técnicas de reducción de dimensionalidad. Los autores muestran que los resultados se
 pueden mejorar significativamente aplicando SVD y truncando a los $d$ valores singulares más grandes
 (donde $d$ varía según el problema objetivo, pero suele estar cerca de $d = 1000$).  Además, logran
-mejorar aún más los resultados de mediante una variante de SVD propuesta por [Caron 2001], donde la
-matriz de valores singulares se eleva a un exponente $P$, nivelando dichos valores para quitarles
+mejorar aún más los resultados de mediante una variante de SVD propuesta por~\cite{Caron2001}, donde
+la matriz de valores singulares se eleva a un exponente $P$, nivelando dichos valores para quitarles
 peso a los más grandes.
 
 
 El estado del arte en modelos estadísticos sigue principalmente el esquema recién planteado, pero
-introduciendo algunas variantes adicionales inspiradas en los modelos neuronales: en [Levy and
-Goldberg 2015], los autores utilizan distintas heurísticas para preprocesar el corpus con el que se
-entrena el modelo (como realizar un \textit{subsampling} de palabras muy frecuentes, normalizar los
-vectores resultantes, o eliminar palabras raras del vocabulario), logrando así mejorar
+introduciendo algunas variantes adicionales inspiradas en los modelos neuronales:
+en~\cite{Levy2015}, los autores utilizan distintas heurísticas para preprocesar el corpus con el que
+se entrena el modelo (como realizar un \textit{subsampling} de palabras muy frecuentes, normalizar
+los vectores resultantes, o eliminar palabras raras del vocabulario), logrando así mejorar
 significativamente la calidad de las representaciones obtenidas.
 
 
 \section{Modelos Neuronales}
 
 La representación distribuida de conceptos mediante el uso de redes neuronales fue presentada
-inicialmente en [Hinton 1986]. En este artículo, el autor plantea la idea de usar los pesos de las
-capas internas de redes neuronales básicas como la representación de un concepto particular en un
-espacio continuo. Esta idea fue también propuesta por Rumelhart en [Rumelhart 1986], donde se
+inicialmente en~\cite{Hinton1986}. En este artículo, el autor plantea la idea de usar los pesos de
+las capas internas de redes neuronales básicas como la representación de un concepto particular en
+un espacio continuo. Esta idea fue también propuesta por Rumelhart en~\cite{Rumelhart1986}, donde se
 realiza una exposición más completa del mecanismo.
 
 Aunque Hinton y Rumelhart plantearon inicialmente la idea de aprender conceptos abstractos (como
-relaciones familiares), la técnica no tardó en extenderse al lenguaje natural. En 1990, Elman [Elman
-1990] aplica redes neuronales recursivas básicas (denominadas \textit{Elman networks}, utilizadas
-para realizar modelado a través del tiempo) a la tarea de predicción de oraciones y utiliza los
-pesos internos aprendidos por la red como representación de las palabras. En las pruebas que llega a
-realizar el autor (rudimentarias, debido al poder de cómputo disponible en la época), consigue
-resultados prometedores, donde la representación de palabras como \textit{girl} y \textit{woman}
-quedan más próximas que palabras como \textit{cat} y \textit{mouse}.
+relaciones familiares), la técnica no tardó en extenderse al lenguaje natural. En 1990,
+Elman~\cite{Elman1990} aplica redes neuronales recursivas básicas (denominadas \textit{Elman
+networks}, utilizadas para realizar modelado a través del tiempo) a la tarea de predicción de
+oraciones y utiliza los pesos internos aprendidos por la red como representación de las palabras. En
+las pruebas que llega a realizar el autor (rudimentarias, debido al poder de cómputo disponible en
+la época), consigue resultados prometedores, donde la representación de palabras como \textit{girl}
+y \textit{woman} quedan más próximas que palabras como \textit{cat} y \textit{mouse}.
 
 De todos modos, debido a la dificultad de entrenar dichas redes neuronales, la técnica quedó en
 desuso por varios años más.
 
-No fue hasta 2003 donde Bengio presenta en [Bengio 2003] una alternativa competitiva al modelado de
-lenguaje a través de ngramas\footnote{Los modelos de ngramas, o modelos estadísticos, buscan
+No fue hasta 2003 donde Bengio presenta en~\cite{Bengio2003} una alternativa competitiva al modelado
+de lenguaje a través de ngramas\footnote{Los modelos de ngramas, o modelos estadísticos, buscan
 caracterizar al lenguaje en base a la probabilidad de secuencias cortas de palabras denominadas
 ngramas, y fueron el estado del arte hasta la década pasada.} mediante la utilización de redes
 neuronales. El autor plantea la idea de utilizar el espacio real para modelar el lenguaje, con el
@@ -415,7 +414,7 @@ función de probabilidad son aprendidas en simultáneo, utilizando un corpus tex
 entrada al algoritmo.
 
 La principal innovación de este artículo fue la separación de los vectores de palabras y la función
-de modelado de la probabilidad; de hecho, en [Miikkulainen and Dyer 1991] ya se habían utilizado
+de modelado de la probabilidad; de hecho, en~\cite{MiikkulainenDyer1991} ya se habían utilizado
 redes neuronales para el modelado de lenguaje. El esquema de Bengio logra así mejorar
 significativamente el estado del arte en materia de modelado de lenguaje, en especial a lo que
 respecta a la eficiencia (comparando con otros modelos basados en redes neuronales), desatando una
@@ -423,33 +422,33 @@ nueva ola de investigación en el área, tanto en cuanto al modelado mediante re
 la utilización de los vectores de palabras que deja como resultado adicional el algoritmo.
 
 
-A partir de este artículo, surgen también variantes de la arquitectura anteriormente descrita. En
-[Mikolov 2007, 2009] Mikolov presenta una arquitectura alternativa, donde se aprende primero por
-separado las representaciones vectoriales utilizando un método no supervisado basado en recorrer
-bigramas en un corpus de texto; esto es, utiliza una ventana de largo dos, si se sigue el esquema
-anterior, pero los aprende independientemente del modelo de lenguaje. Luego estos vectores son
-utilizados para entrenar una red neuronal que modela el lenguaje. Bengio en su artículo original
-presentó una variante similar a esta, donde propone incluso la idea de utilizar vectores de LSA
-fijos, en lugar de entrenarlos junto a la red, pero obtuvo resultados inferiores.
+A partir de este artículo, surgen también variantes de la arquitectura anteriormente
+descrita. En~\cite{Mikolov2007, Mikolov2009} Mikolov presenta una arquitectura alternativa, donde se
+aprende primero por separado las representaciones vectoriales utilizando un método no supervisado
+basado en recorrer bigramas en un corpus de texto; esto es, utiliza una ventana de largo dos, si se
+sigue el esquema anterior, pero los aprende independientemente del modelo de lenguaje. Luego estos
+vectores son utilizados para entrenar una red neuronal que modela el lenguaje. Bengio en su artículo
+original presentó una variante similar a esta, donde propone incluso la idea de utilizar vectores de
+LSA fijos, en lugar de entrenarlos junto a la red, pero obtuvo resultados inferiores.
 
-Otra variante propuesta por Mikolov [mikolov 2010, 2011, 2011, 2011] fue, en lugar de utilizar una
-ventana de largo fijo y una red neuronal estándar, utilizar una red neuronal recursiva simple para
-modelar el lenguaje. Esta arquitectura es similar a las \textit{Elman networks}, pero el autor tiene
-mejores resultados por utilizar técnicas de entrenamiento modernas que atenúan los problemas usuales
-de entrenar redes neuronales recursivas (RNNs). Como derivado de este modelo también se generan
-representaciones vectoriales. El autor incluso ofrece una herramienta de código abierto (\textit{RNN
-toolkit}) para la creación de modelos de lenguaje que sigan esta arquitectura, pudiendo obtener
-tanto los vectores como el modelo de lenguaje [Mikolov 2011; toolkit].
+Otra variante propuesta por Mikolov~\cite{Mikolov2010, Mikolov2011a, Mikolov2011b, Mikolov2011c}
+fue, en lugar de utilizar una ventana de largo fijo y una red neuronal estándar, utilizar una red
+neuronal recursiva simple para modelar el lenguaje. Esta arquitectura es similar a las \textit{Elman
+networks}, pero el autor tiene mejores resultados por utilizar técnicas de entrenamiento modernas
+que atenúan los problemas usuales de entrenar redes neuronales recursivas (RNNs). Como derivado de
+este modelo también se generan representaciones vectoriales. El autor incluso ofrece una herramienta
+de código abierto (\textit{RNN toolkit}) para la creación de modelos de lenguaje que sigan esta
+arquitectura, pudiendo obtener tanto los vectores como el modelo de lenguaje~\cite{Mikolov2011c}.
 
 
 Por otro lado, la aparición de estos modelos generó gran interés en el uso de representaciones
-distribucionales para distintas tareas de PLN, más allá del modelado de lenguaje. En [Collobert and
-Weston 2008], los autores presentan una nueva arquitectura genérica para la resolución de problemas
-de PLN utilizando exclusivamente aprendizaje profundo (esto es, sin ingeniería de features),
-inspirados por el esquema propuesto por Bengio. Esta propuesta se basa en la noción de aprendizaje
-por transferencia (conocido como \textit{transfer learning} o \textit{multi-task learning}), donde
-se entrena un modelo para resolver más de una tarea a la vez, con el objetivo de que el conocimiento
-que adquiere en una tarea pueda ser de utilidad en otra.
+distribucionales para distintas tareas de PLN, más allá del modelado de
+lenguaje. En~\cite{CollobertWeston2008}, los autores presentan una nueva arquitectura genérica para
+la resolución de problemas de PLN utilizando exclusivamente aprendizaje profundo (esto es, sin
+ingeniería de features), inspirados por el esquema propuesto por Bengio. Esta propuesta se basa en
+la noción de aprendizaje por transferencia (conocido como \textit{transfer learning} o
+\textit{multi-task learning}), donde se entrena un modelo para resolver más de una tarea a la vez,
+con el objetivo de que el conocimiento que adquiere en una tarea pueda ser de utilidad en otra.
 
 Con este fin, entrenan primero un modelo de lenguaje siguiendo la arquitectura de Bengio y luego,
 con los vectores resultantes, entrenan en simultáneo cuatro redes neuronales para distintas tareas
@@ -463,16 +462,16 @@ problemas y muestra que es una técnica competitiva con las técnicas existentes
 
 Con este nuevo auge de aplicaciones de las representaciones, se comienzan también a buscar mejorar
 la eficiencia en la generación de vectores de palabras independientemente del modelado de
-lenguaje. En [Mnih and Hinton 2007], los autores proponen variantes a la arquitectura de Bengio que
+lenguaje. En~\cite{MnihHinton2007}, los autores proponen variantes a la arquitectura de Bengio que
 buscan ser mejores desde el punto de vista computacional. De las cuatro variantes que proponen, una
 de ellas, un modelo \textit{log-bilinear} (LBL), consigue incluso mejores resultados en la tarea de
 modelado de lenguaje. Esta técnica es luego extendida a una versión jerárquica y más rápida
-denominada HLBL en [Mnih Hinton 2009], haciendo uso de una versión jerárquica de la función
-\textit{softmax}, propuesta por Bengio en [Morin Bengio 2005].
+denominada HLBL en~\cite{MnihHinton2009}, haciendo uso de una versión jerárquica de la función
+\textit{softmax}, propuesta por Bengio en~\cite{MorinBengio2005}.
 
 
-En [Mikolov 2013a], Mikolov muestra que los vectores generados por una RNN (en particular, por una
-RNN entrenada utilizando su \textit{RNN toolkit}) presentan regularidades lingüísticas muy
+En~\cite{Mikolov2013a}, Mikolov muestra que los vectores generados por una RNN (en particular, por
+una RNN entrenada utilizando su \textit{RNN toolkit}) presentan regularidades lingüísticas muy
 interesantes: además de los vectores ser muy buenos en tareas de similitud y relación entre
 palabras\footnote{Por ejemplo, decidir si una palabra es sustituible por otra en un contexto
 dado. En las siguientes secciones se dará una descripción más detallada de estas tareas.}, éstos
@@ -485,13 +484,14 @@ compuesto por analogías sintácticas.
 
 Utilizando dicho conjunto, compara el rendimiento en esta tarea con sus vectores, con vectores
 basados en modelos estadísticos (aunque no hace una comparación exhaustiva, por lo que no obtiene
-buenos resultados), con los vectores generados por Collobert y Weston [CW 2008], y por los generados
-por Mnih y Hinton (HLBL [M-H 2009]), obteniendo los mejores resultados con los propios y los HLBL\@.
+buenos resultados), con los vectores generados por Collobert y Weston~\cite{CollobertWeston2008}, y
+por los generados por Mnih y Hinton (HLBL~\cite{MnihHinton2009}), obteniendo los mejores resultados
+con los propios y los HLBL\@.
 
-Los resultados obtenidos en el anterior artículo motivaron la propuesta, por parte de Mikolov en
-[Mikolov 2013b], de dos arquitecturas novedosas para la construcción de vectores, centrada en la
-tarea de analogías y en mejorar la eficiencia computacional. En estas arquitecturas se deja de lado
-la RNN y el modelado de lenguaje, y se centra exclusivamente en la construcción de vectores.
+Los resultados obtenidos en el anterior artículo motivaron la propuesta, por parte de Mikolov
+en~\cite{Mikolov2013b}, de dos arquitecturas novedosas para la construcción de vectores, centrada en
+la tarea de analogías y en mejorar la eficiencia computacional. En estas arquitecturas se deja de
+lado la RNN y el modelado de lenguaje, y se centra exclusivamente en la construcción de vectores.
 
 Ambos esquemas propuestos se basan en definir una ventana de largo fijo, simétrica alrededor de una
 palabra central, y plantear un problema de optimización basado en predecir la palabra central dado
@@ -500,8 +500,8 @@ CBOW, esquematizado en la [figura 1]), mientras que el segundo recibe el nombre 
 (o SG, esquematizado en la [figura 2]).
 
 La probabilidad se modela en los dos casos utilizando exclusivamente un softmax jerárquico, como el
-propuesto por Morin y Bengio en [2005], con el fin de mejorar la eficiencia. Estos dos nuevos
-modelos logran, por lo tanto, mejorar los resultados en la tarea de analogías a un costo
+propuesto por Morin y Bengio en~\cite{MorinBengio2005}, con el fin de mejorar la eficiencia. Estos
+dos nuevos modelos logran, por lo tanto, mejorar los resultados en la tarea de analogías a un costo
 computacional significativamente menor que el de entrenar una RNN completa.
 
 Cabe notar que, mientras que el autor lo plantea como la utilización de una red neuronal de una
@@ -513,16 +513,16 @@ este punto ubica a la propuesta de Mikolov como un modelo simple que requiere de
 hecho, en las pruebas que realiza el autor se utilizan corpus de texto del orden de los miles de
 millones de palabras y, cuanto más aumenta el tamaño del mismo, mejores resultados obtiene.
 
-En [Mikolov 2013c], Mikolov cierra su trabajo en representaciones vectoriales de palabras
+En~\cite{Mikolov2013c}, Mikolov cierra su trabajo en representaciones vectoriales de palabras
 presentando extensiones sobre el modelo Skipgram. El artículo comienza formalizando el modelo: se
 presenta la función objetivo, que previamente había obviado, y se detalla la utilización del softmax
 jerárquico. Luego se presenta una alternativa a esta última técnica que logra mejorar
 significativamente los resultados, basada en \textit{Noise-contrastive Estimation} (NCE), propuesta
-inicialmente por Gutmann y Hyyvärinen [g-h 2012] y aplicada por Mnih y Teh para modelado de lenguaje
-[m-t 2012]. Esta técnica, que denomina \textit{negative sampling} (NS), se basa en generar ejemplos
-negativos de uso del lenguaje: esto es, además de utilizar el texto proveniente del corpus de
-entrenamiento, se genera texto aleatorio, bajo la premisa de que será inválido gramaticalmente, como
-ejemplo de mal uso del lenguaje.
+inicialmente por Gutmann y Hyyvärinen~\cite{Gutmann2012} y aplicada por Mnih y Teh para modelado de
+lenguaje~\cite{MnihTeh2012}. Esta técnica, que denomina \textit{negative sampling} (NS), se basa en
+generar ejemplos negativos de uso del lenguaje: esto es, además de utilizar el texto proveniente del
+corpus de entrenamiento, se genera texto aleatorio, bajo la premisa de que será inválido
+gramaticalmente, como ejemplo de mal uso del lenguaje.
 
 El autor también presenta una serie de heurísticas para el procesamiento del corpus, como la
 realización de \textit{subsampling} de palabras muy frecuentes (i.e.\ ignora aleatoriamente palabras que
@@ -541,27 +541,27 @@ distintos métodos de manera más correcta desde un punto de vista metodológico
 
 Los dos tipos de representaciones vectoriales descritos tienen mucha literatura detrás, pero al
 haber surgido independientemente, carecían de comparaciones sistemáticas y completas entre ellos. La
-primera de estas evaluaciones se realiza en [Baroni 2014].
+primera de estas evaluaciones se realiza en~\cite{Baroni2014}.
 
 En este artículo, los autores reúnen catorce conjuntos de pruebas utilizados por la comunidad para
 los problemas de similitud entre palabras, analogías, y otros. Someten a estas pruebas a modelos
 estadísticos (modelos basados en contar, como los llama el autor) y a modelos neuronales (modelos
-basados en predecir). Para los primeros utiliza vectores construidos con la herramienta DISSECT
-[Dinu, The Pham, Baroni 2013], basados principalmente en esquemas PMI con reducción de
-dimensionalidad con SVD\@. Para los segunndos utiliza la herramienta provista por Mikolov en
-[Mikolov 2013c], \texttt{word2vec}.
+basados en predecir). Para los primeros utiliza vectores construidos con la herramienta
+\texttt{DISSECT}~\cite{Dinu2013}, basados principalmente en esquemas PMI con reducción de
+dimensionalidad con SVD\@. Para los segunndos utiliza la herramienta provista por Mikolov
+en~\cite{Mikolov2013c}, \texttt{word2vec}.
 
 Los resultados que obtienen los autores presentan a los modelos neuronales como grandes ganadores,
 donde obtienen mejores resultados en todas las pruebas realizadas. Esta conclusión lleva a la
 comunidad a investigar qué es lo que hace mejores a los métodos neuronales por sobre los
 estadísticos.
 
-Siguiendo esta línea de pensamiento, en [Levy 2015; lessons learned] el autor busca identificar qué
-es lo que hace que Skipgram con Negative Sampling (SGNS) funcione tanto mejor que un modelo PPMI que
-utiliza SVD\@. Los resultados a los que lleva, sin embargo, son contradictorios con los de
-Baroni. Plantea que la diferencia entre la performance de ambos métodos se debe a que SGNS tiene una
-ventaja por utilizar, además del modelo básico, una serie de heurísticas en el preprocesamiento del
-corpus y el posprocesammiento de los vectores que mejoran drásticamente los resultados.
+Siguiendo esta línea de pensamiento, en~\cite{Levy2015} el autor busca identificar qué es lo que
+hace que Skipgram con Negative Sampling (SGNS) funcione tanto mejor que un modelo PPMI que utiliza
+SVD\@. Los resultados a los que lleva, sin embargo, son contradictorios con los de Baroni. Plantea
+que la diferencia entre la performance de ambos métodos se debe a que SGNS tiene una ventaja por
+utilizar, además del modelo básico, una serie de heurísticas en el preprocesamiento del corpus y el
+posprocesammiento de los vectores que mejoran drásticamente los resultados.
 
 De esta forma, Levy identifica una serie de nueve heurísticas de uno y otro modelo, que los
 considerará hiperparámetros, y los adapata para ambos esquemas. Además de hacer esto, entrena todos
@@ -573,26 +573,27 @@ una leve ventaja. De todos modos, el autor resalta que SGNS es mucho más eficie
 computacionalmente, lo que le permite utilizar más datos.
 
 
-Más allá de las comparaciones, los dos enfoques anteriores no son necesariamente ortogonales. En
-[Levy 2014; facto] se muestra que SGNS está en realidad siguiendo un esquema muy similar a los
-enfoques estadísticos, donde se realiza una factorización implícita de una matriz SSPMI\@: esto es,
-una matriz PPMI donde la medida de asociación es $f(v_i, v_j) = \max(PMI(v_i, v_j) - \log(k), 0)$,
-con $k$ un hiperparámetro del modelo. Este resultado es muy importante, pues conecta directamente
-dos enfoques históricamente independientes. El autor plantea que la ventaja que SGNS tiene sobre la
-matriz PPMI estándar se da en que su factorización está ponderada de modo de no dar demasiada
-importancia a las palabras más comunes, una de las debilidades principales de la métrica PPMI\@.
+Más allá de las comparaciones, los dos enfoques anteriores no son necesariamente
+ortogonales. En~\cite{Levy2014a} se muestra que SGNS está en realidad siguiendo un esquema muy
+similar a los enfoques estadísticos, donde se realiza una factorización implícita de una matriz
+SSPMI\@: esto es, una matriz PPMI donde la medida de asociación es $f(v_i, v_j) = \max(PMI(v_i, v_j)
+- \log(k), 0)$, con $k$ un hiperparámetro del modelo. Este resultado es muy importante, pues conecta
+directamente dos enfoques históricamente independientes. El autor plantea que la ventaja que SGNS
+tiene sobre la matriz PPMI estándar se da en que su factorización está ponderada de modo de no dar
+demasiada importancia a las palabras más comunes, una de las debilidades principales de la métrica
+PPMI\@.
 
 
 Siguiendo estos resultados, han surgido diversos métodos que plantean un esquema híbrido, donde se
 busca hacer explícita la tarea de aprendizaje que se realiza, basándose en las lecciones aprendidas
-de los enfoques ya presentados. Uno de estos métodos es GloVe, presentado en [Pennington 2014],
+de los enfoques ya presentados. Uno de estos métodos es GloVe, presentado en~\cite{Pennington2014},
 donde los autores construyen una matriz $A$, similar a la matriz de asociación de los modelos
 estadísticos, donde la función de asociación busca explícitamente quitar peso a las palabras más
 frecuentes y no sobrerrepresentar a las muy poco frecuentes. Luego plantea una reducción de
 dimensionalidad basada en factorizar dicha matriz a través de un método iterativo en lugar de usar
 SVD, lo que lo hace computacionalmente más eficiente. Los resultados que obtienen los autores son
 superiores a los obtenidos por SGNS en el conjunto de pruebas provisto por Mikolov\footnote{Cabe
-notar que en [Levy 2015] no se logra reproducir este resultado, aunque aun así es un método muy
+notar que en~\cite{Levy2015} no se logra reproducir este resultado, aunque aun así es un método muy
 competitivo.}.
 
 
@@ -644,28 +645,29 @@ se mide relaciones más fuertes, como la sinonimia y la hiponimia, de la relaci�
 (\textit{relatedness} en la literatura), donde se incluyen relaciónes más amplias, posiblemente
 temáticas.
 
-Existen muchos conjuntos de prueba para esta tarea. Uno de los más utilizados es WordSim353
-[Finkelstein 2002], compuesta de 353 pares de palabras, diferenciados entre relación y
-similitud. También muy populares están MEN [Bruni 2012], compuesto de 1000 pares de palabras,
-SimLex999 [Hill 2014], y Mechanical Turk [Radinsky 2011].
+Existen muchos conjuntos de prueba para esta tarea. Uno de los más utilizados es
+WordSim353~\cite{Finkelstein2002}, compuesta de 353 pares de palabras, diferenciados entre relación
+y similitud. También muy populares están MEN~\cite{Bruni2012}, compuesto de 1000 pares de palabras,
+SimLex999~\cite{Hill2014}, y Mechanical Turk~\cite{Radinsky2011}.
 
 Otra alternativa que ha surgido recientemente para el estudio de regularidades lingüísticas de
-representaciones vectoriales es la tarea de analogías, propuesta inicialmente por Mikolov en
-[Mikolov 2013a]. En este escenario, se cuenta con dos pares de palabras que mantienen una misma
-relación (sintáctica o semántica) y se busca determinar la cuarta palabra a partir de las anteriores
-tres. Por ejemplo, si se cuenta con los pares de palabras \textit{correr} y \textit{corriendo},
-\textit{jugar} y \textit{jugando}, el objetivo es, a partir de los vectores de \textit{correr},
-\textit{corriendo} y \textit{jugar}, lograr recuperar la cuarta palabra, \textit{jugando}.
+representaciones vectoriales es la tarea de analogías, propuesta inicialmente por Mikolov
+en~\cite{Mikolov2013a}. En este escenario, se cuenta con dos pares de palabras que mantienen una
+misma relación (sintáctica o semántica) y se busca determinar la cuarta palabra a partir de las
+anteriores tres. Por ejemplo, si se cuenta con los pares de palabras \textit{correr} y
+\textit{corriendo}, \textit{jugar} y \textit{jugando}, el objetivo es, a partir de los vectores de
+\textit{correr}, \textit{corriendo} y \textit{jugar}, lograr recuperar la cuarta palabra,
+\textit{jugando}.
 
-Para esto Mikolov originalmente propone en [Mikolov 2013a] utilizar la función \textsc{3CosAdd} para
-recuperar la cuarta palabra, definida como:
+Para esto Mikolov originalmente propone en~\cite{Mikolov2013a} utilizar la función \textsc{3CosAdd}
+para recuperar la cuarta palabra, definida como:
 
 \[
   {\arg \max}_{b' \in V} \cos(b', b - a + a')
 \]
 
-Donde los pares de analogías son $(a, a')$ y $(b, b')$. Sin embargo, en [Levy 2014], Levy prueba que
-una mejor función para la recuperación de analogías es \textsc{3CosMul}, definida como:
+Donde los pares de analogías son $(a, a')$ y $(b, b')$. Sin embargo, en~\cite{Levy2014b}, Levy
+prueba que una mejor función para la recuperación de analogías es \textsc{3CosMul}, definida como:
 
 \[
   {\arg \max}_{b' \in V} \frac{\cos(b', b) \cos(b', a')}{\cos(b', a) + \epsilon}
@@ -674,45 +676,46 @@ una mejor función para la recuperación de analogías es \textsc{3CosMul}, defi
 Donde $\epsilon$ es un valor muy pequeño (e.g.\ $\epsilon = 0.001$) utilizado para evitar la
 división entre cero.
 
-Mikolov introdujo inicialmente un conjunto de 8000 analogías exclusivamente sintácticas en [Mikolov
-2013a], con relaciones como plurales y conjugaciones verbales. Luego introduce en [Mikolov 2013b] un
-conjunto de analogías más amplio que cuenta con cerca de 20000 analogías, tanto sintácticas como
-semánticas.
+Mikolov introdujo inicialmente un conjunto de 8000 analogías exclusivamente sintácticas
+en~\cite{Mikolov2013a}, con relaciones como plurales y conjugaciones verbales. Luego introduce
+en~\cite{Mikolov2013b} un conjunto de analogías más amplio que cuenta con cerca de 20000 analogías,
+tanto sintácticas como semánticas.
 
 Existen también otras tareas que se han utilizado, aunque en menor medida, para la evaluación
 explícita de vectores, como la utilización del TOEFL (\textit{Test of English as Foreign Language},
-una prueba utilizada para medir el conocimiento de inglés) de [Landauer and Dumais 1997], la
-categorización de conceptos de [Almuhareb 2006], y la preferencia de selección de [Padó 2007].
+una prueba utilizada para medir el conocimiento de inglés) de~\cite{LandauerDumais1997}, la
+categorización de conceptos de~\cite{Almuhareb2006}, y la preferencia de selección
+de~\cite{Pado2007}.
 
 
 En cuanto a evaluación implícita de las representaciones vectoriales, y cómo se relaciona con los
 resultados de la evaluación explícita, no existe mucho trabajo en la literatura. Un trabajo
-preliminar que toca superficialmente este punto es [Qu 2015], donde los autores utilizan distintos
-modelos vectoriales (SGNS, GloVe, los vectores de Collobert y Weston, y Brown Clusters) como
-features de algoritmos de clasificación secuencial (principalmente CRFs, para resolver los problemas
-de POS tagging y NER). Llegan a que, al usar distintas representaciones bajo este esquema (donde los
-vectores son una feature más), los resultados mejoran de manera muy similar para los distintos
-modelos: esto es, se obtiene la misma ganancia utilizando Brown Clusters (que genera una
+preliminar que toca superficialmente este punto es~\cite{Qu2015}, donde los autores utilizan
+distintos modelos vectoriales (SGNS, GloVe, los vectores de Collobert y Weston, y Brown Clusters)
+como features de algoritmos de clasificación secuencial (principalmente CRFs, para resolver los
+problemas de POS tagging y NER). Llegan a que, al usar distintas representaciones bajo este esquema
+(donde los vectores son una feature más), los resultados mejoran de manera muy similar para los
+distintos modelos: esto es, se obtiene la misma ganancia utilizando Brown Clusters (que genera una
 representación más rudimentaria) que SGNS\@.
 
 Existe también un poco de escepticismo por parte de algunos investigadores en el área respecto a qué
-beneficios proveen los vectores de palabras. Edward Grefenstette escribe [link a reddit] que las
+beneficios proveen los vectores de palabras. Edward Grefenstette escribe~\cite{Reddit2016} que las
 representaciones vectoriales parecen ser principalmente una forma de aprendizaje por transferencia,
 donde se entrena con la tarea de analogías o similitud entre palabras para resolver una tarea más
 compleja. Plantea que esto es beneficioso cuando se trabaja con corpus de entrenamiento demasiado
 chicos, pues ayuda a la generalización, pero que no son necesarios e incluso pueden perjudicar la
 performance cuando se tienen suficientes datos.
 
-Otro caso que fortalece este argumento es el hecho que en [Collobert and Weston 2008] se obtienen
-muy buenos resultados en el etiquetado de roles semánticos, pero los vectores son inferiores en la
-tarea de analogías (como muestra [Mikolov 2013a]). Esto, de todos modos, puede resultar del hecho
-que los autores ajustan los valores de los vectores en la medida que entrenan con las otras tareas.
+Otro caso que fortalece este argumento es el hecho que en~\cite{CollobertWeston2008} se obtienen muy
+buenos resultados en el etiquetado de roles semánticos, pero los vectores son inferiores en la tarea
+de analogías (como muestra~\cite{Mikolov2013a}). Esto, de todos modos, puede resultar del hecho que
+los autores ajustan los valores de los vectores en la medida que entrenan con las otras tareas.
 
 Estos puntos son importantes y requieren de mayor investigación, pues determinan qué tanto es
 necesario buscar nuevos y mejores modelos vectoriales. Es posible, por ejemplo, que pequeñas
 diferencias en los resultados de evaluación explícita sean compensados por el modelo que los usa,
-como pasa con los Brown Clusters en [Qu 2015]. En este caso, se podría incluso utilizar un corpus
-más chico para entrenar las representaciones, o vectores más simples.
+como pasa con los Brown Clusters en~\cite{Qu2015}. En este caso, se podría incluso utilizar un
+corpus más chico para entrenar las representaciones, o vectores más simples.
 
 
 De todos modos, en el presente proyecto se estará realizando una evaluación puramente explícita de

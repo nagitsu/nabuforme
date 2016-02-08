@@ -12,6 +12,10 @@
 \usepackage{courier} % Use Courier New as monospace font.
 \usepackage{listings}
 \usepackage{float}
+\usepackage[backend=biber,url=false,style=numeric]{biblatex}
+
+\addbibresource{mendeley-bib.bib}
+%% \addbibresource{bibliography.bib}
 
 \setlength{\parskip}{\baselineskip} % Skip a line between paragarphs.
 
@@ -31,7 +35,6 @@
 \include{2-repr-vectorial}
 %% \include{3-corpus}
 
-\bibliographystyle{plain}
-\bibliography{mendeley-bib,bibliography}
+\printbibliography
 
 \end{document}
