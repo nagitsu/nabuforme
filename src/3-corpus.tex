@@ -1,0 +1,191 @@
+\chapter{Corpus}
+
+El tamaño del corpus de texto utilizado para entrenar las representaciones vectoriales está
+fuertemente ligado a la performance que éstas consiguen en las principales tareas de evaluación,
+como se detalló en el capítulo anterior. Esto genera la necesidad de construir un corpus de texto en
+idioma español del mayor tamaño posible, buscando que sea comparable con los que se manejan en la
+literatura en inglés.
+
+El capítulo empieza por presentar el relevamiento realizado sobre el tamaño y calidad de los corpus
+en español existentes. Luego se plantean los requerimientos y características que se consideró que
+el corpus debía contener, y se da una visión general del proceso empleado para lograrlo. Finalmente,
+se detalla la implementación de dicho esquema y se resumen las características del coprus
+construido.
+
+\section{Estado del Arte}
+
+- Tenten
+- Gigaword
+- Componentes del Spanish Billion Word
+
+\section{Proceso de Construcción}
+
+En esta sección se presentan las características buscadas del corpus a generar y el proceso seguido
+para lograrlo.
+
+\subsection{Requerimientos}
+
+Previo al inicio de la construcción del corpus, se establecieron una serie de requerimientos que el
+mismo debiera cumplir:
+
+\begin{itemize}
+
+\item Puesto que el tamaño del corpus afecta directamente la calidad de las representaciones
+vectoriales, es claro que el principal requerimiento es que el resultado tenga una gran cantidad de
+palabras. El mínimo que se planteó al inicio del proyecto fue de dos mil millones de palabras (para
+comparar, el corpus en inglés utilizado por Mikolov en~\cite{Mikolov2013c} ronda los seis mil
+millones de palabras).
+
+\item La única restricción que se plantea sobre el contenido es que sea texto en forma libre (sin
+ningún tipo de estructura a priori), y que esté limpio: esto es, que no cuente con \textit{markup}
+de ningún tipo. Dado que los algoritmos para construir los vectores trabajan con una secuencia de
+palabras sin formato alguno, es deseable que el texto se procese incluso antes de ser almacenado,
+para evitar tener que tratarlo más adelante.
+
+\item Se desea que el corpus esté dividido en documentos individuales que sean coherentes en sí
+mismo, manteniendo un determinado estilo de escritura internamente. Así, artículos de noticias serán
+almacenados individualmente, y lo mismo con libros, artículos de Wikipedia, y cualquier otro texto
+que se recopile. El objetivo de este punto es permitir excluir o borrar un documento particular en
+caso de ser necesario.
+
+\item Se espera también que estos documentos puedan tener ciertos metadatos asociados. Algunos de
+estos datos pueden aplicar a todos los documentos, como la fecha en la que fue agregado al corpus,
+mientras que otros sólo tendrán sentido para un subconjunto, como la fecha de publicación de una
+noticia. Esto puede permitir eventualmente construir un corpus con las noticias de un año
+particular, para poder generar representaciones vectoriales más finas.
+
+\item Es de suma importancia tener trazabilidad sobre los distintos documentos del corpus para
+garantizar su calidad: esto es, saber de qué sitio se extrajo el texto de cada documento, en qué
+fecha, y mediante qué proceso. Así, en caso de haber un problema en el proceso de extracción, es
+siempre posible revertir el corpus a un estado anterior, eliminando todos los documentos
+erróneos. Este punto permite además evitar almacenar más de una vez un documento particular, y ayuda
+también a identificar cuáles contenidos están protegidos por \textit{copyright}.
+
+\item Con el fin de generar buenas representaciones vectoriales, es importante que el corpus cuente
+con variedad de texto: texto que tenga distintos estilos de escritura, que utilicen vocabularios
+distintos, y que tengan distintos niveles de correctitud ortográfica. Esto dota a los algoritmos de
+un mayor vocabulario y de información más rica acerca del contexto en el que las palabras pueden
+aparecer.
+
+\item Por último, puesto que el corpus debe contar con gran variedad, es necesario que esté
+ordenado. Se espera que cada documento esté etiquetado en base a sus cualidades, identificando
+cuáles son artículos de noticias, cuáles son de determinado país, etc. Etiquetar el texto brinda la
+posibilidad de construir un corpus a medida, para poder eventualmente hacer pruebas específicas que
+incluyan o exculyan cierto tipo de texto.
+
+\end{itemize}
+
+Los requerimientos recién planteados son exigentes, pero permiten la construcción de un corpus
+altamente versátil. Además de poder entrenar modelos vectoriales particulares a una aplicación (en
+base al texto que se incluya en el corpus), permite que el mismo pueda ser utilizado en otras
+investigaciones que no estén relacionadas a las representaciones vectoriales, pero que necesiten de
+texto en español con ciertas cualidades. Mediante la inclusión de metadatos particulares, de
+etiquetado según el estilo del texto, y de datos de trazabilidad para cada documento, se busca
+reforzar esta idea.
+
+El hecho de exigir tantos requerimientos, sin embargo, hace que sea necesario descartar algunos de
+los corpus existentes anteriormente mencionados. [o no? Cuáles de los corpus existentes nos sirven y
+cuáles no (si están limpios, clasificados, etc.)?]
+
+
+\subsection{Relevamiento de Fuentes de Palabras}
+
+- se comenzó por la tarea de evaluar de dónde obtener texto libre de internet
+[- comentar el tipo de texto que se saca de cada fuente]
+[- comentar cómo se saca el texto limpio para cada fuente comentada]
+
+[una sección por fuente?]
+
+- empezamos investigando portales de noticias
+    - característica
+        - texto bien escrito (por lo general)
+        - a veces se escapa código HTML (tweets embebidos), pero muy poco
+        - mucho nombre de gente, aunque vocabulario más simple
+    - comenzamos con el diario la nación de argentina
+    - vemos que tiene artículos desde el año X, un promedio de Y artículos por día, Z palabras por artículos
+    - notamos que los indexa por ID, por lo que podemos recorrerlos todos secuencialmente
+    - utilizamos un script [Python] para recorrer la lista de IDs y descargar los artículos
+    - construimos una serie de reglas [xpath] para obtener el texto del artículo limpio (título, copete, contenido)
+    - el resultado final tiene N palabras
+    - esto nos muestra el potencial que tienen las fuentes de noticias
+    - recopilamos principales portales de noticias de latinoamérica y españa
+    - vemos cuáles de ellos se indexan por ID y cuáles no
+    - adapatamos el script de lanación para los sitios con mayor potencial (los que tienen más actividad/contenido)
+    - para cada sitio, construimos una serie de reglas xpath y un mecanismo para recorrer por ID
+    - lo adaptamos para que revise continuamente por noticias nuevas, y lo denominamos scraping automático
+    - el detalle de la implementación se verá en la siguiente sección
+    - pero por ahora: se consiguieron X millones de palabras extra por hacer que busque nuevos artículos
+    - cuántos sitios de noticias se scrapean de esta forma, más porcentaje de IDs que tienen una noticia
+      detrás para algunas de las fuentes (los más y los menos)
+
+- algunos portales de noticias muy grandes (el país uruguay, el país madrid, clarín, etc.) no indexan por ID,
+  por lo que se buscó hacer otro tipo de scraping, que se detalla en la siguiente sección
+
+- sitios de escritura amateur en internet
+    - scraping y/o scraping automático
+    - texto potable, aunque ``diálogo'' y faltas de ortografía
+
+- wikimedia (wikipedia, wikivoyage, wikibooks, etc.)
+    - texto bien escrito, vocabulario muy amplio (términos científicos, etc.)
+    - se necesita sacar el wikimarkup, comentar cómo se hace
+
+- foros en español
+    - texto mal escrito en todos los sentidos
+
+- subtítulos
+    - principlamente diálogos, pero bien escritos (por lo general)
+
+- documentos oficiales (parlamento)
+
+- mercadolibre
+    - texto mal escrito
+    - cómo se sacan descripciones
+    - no tiene muchas oraciones coherentes, son publicidades principalmente
+    - mucho duplicado, se guarda a nivel de oración para evitar cosas repetidas
+
+- otros corpus en español
+    - cómo se adapta cada uno
+
+
+\section{Implementación}
+
+- infraestructura
+    - servidor en alemania con X características
+    - ahí corre elasticsearch, el código python, la herramienta web (después se detallará), postgresql
+    - dónde se almacenan los documentos y por qué
+        - elasticsearch; razones para usarlo
+            - permite campos especiales por tipo de documento
+            - permite realizar búsquedas para construir corpus particulares
+            - escala fácilmente, si llegara a ser necesario
+    - postgresql para registro de entries visitadas en scraping automático
+    - backups en amazon S3
+
+- scraping automático
+    - ya se mencionó por arriba sus objetivos/para qué se usa y cómo surgió
+    - describir la arquitectura más detalladamente
+        - comunicación con ES y psql
+        - asyncio para descarga de documentos, eventloop, etc.
+    - cómo se pone en producción: queda un daemon corriendo de fondo y revisa cada 15 min, etc.
+
+- scraping manual [por tipo de método y en qué fuente se usa; centrado más en las técnicas utilizadas]
+[ver que no se solape demasiado con lo que ya se haya dicho]
+    - scrapy con spiders hechas a mano
+        - para el país, foros, (fanfics?)
+    - scripts de limpieza
+        - wikipedia, corpus en español, etc.
+    - etc.
+
+
+\section{Resultado}
+
+- resultado del corpus obtenido en total de palabras (resaltar que el obj eran 2B)
+- analizar por tags (noticias, wikipedia, países, fechas, etc.)
+- análisis de calidad/composición del corpus
+    - palabras más comunes, etc. (algún dato sobre el corpus más general)
+    - duplicados/texto sucio
+
+
+----
+
+[hablar algo sobre temas legales?]
+[en el resto del cap ir contando cómo se satisface cada requerimiento]
