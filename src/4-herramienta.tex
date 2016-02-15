@@ -1,0 +1,68 @@
+\chapter{Herramienta}
+
+\section{Objetivos}
+
+- objetivos/requerimientos
+    - descripción de qué queríamos que hiciera la herramienta
+        - acceso a servidor de cómputo especializado, a elasticsearch, etc.
+        - consultas en el corpus
+        - entrenamiento y evaluación de vectores
+        - descarga, etc.
+    - funcionalidades que debía tener, etc.
+    - por qué hacerla
+    - parecido a sección equivalente del corpus
+
+
+\section{Diseño de la Solución}
+
+- diseño llegado
+    - descripción de funcionalidades de la solución
+    - general primero (o no)
+    - ir pantalla por pantalla describiendo las principales (o todas) funcionalidades
+
+
+\section{Implementación}
+
+\subsection{Arquitectura General}
+
+- arq general de la solución (overview): diagrama ES + PSQL + BACKEND + FRONTEND + JOBQUEUE
+
+
+\subsection{Backend}
+
+- overview: de qué está compuesto (entrenamiento, api, job queue, etc.)
+
+- data model: manejo de resultados, de embeddings (tipo, parámetros, query, archivos en FS, etc.),
+              de archivos, de jobs (``como se detallará en la siguiente sección'')
+
+- manejo de jobs y job queue con celery, redis; progress report; por qué jobs (demoran mucho en entrenar), etc.
+
+- entrenamiento: librerías usadas para cada algoritmo
+    - word2vec-related (SG y CBOW): gensim
+    - glove: implementación de los autores, comunicación con subprocess
+    - ppmi+svd: implementación propia
+
+- evaluación:
+    - cómo se hizo
+    - tipos de tests que existen, cómo se implementa cada uno y qué formato de archivo esperan
+
+- API e interacción con el resto (acceso a modelos, corpus search, entrenamiento, etc.)
+    - objetivo:
+        - brindar interfaz http restful que permita interactuar con el backend
+        - que intente lo más posible esconder las complejidades del backend
+          (la persona que usa la api no tiene que saber de celery, redis, postgres, elasticsearch,
+           las implementaciones de los algoritmos que existen, ni de evaluaciones; sólo se maneja
+           a nivel de los modelos)
+        - a ser consumida por el frontend
+    - ir sección a sección:
+        - corpus search
+        - consulta de modelos básicos
+        - job management
+        - deletion, etc.
+
+---
+
+
+\subsection{Frontend}
+
+- frontend
