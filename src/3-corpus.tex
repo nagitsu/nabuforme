@@ -90,52 +90,114 @@ cuáles no (si están limpios, clasificados, etc.)?]
 
 \subsection{Relevamiento de Fuentes de Palabras}
 
-- se comenzó por la tarea de evaluar de dónde obtener texto libre de internet
+Se comenzó por la tarea de evaluar de dónde obtener texto libre de Internet, con el fin de construir
+un corpus de calidad que cumpla con los requerimientos anteriores. En esta sección enumeraremos los
+distintos tipos de sitios de donde se recopiló el texto, junto a las características del mismo y una
+breve descripción de cómo se realizó la extracción. En la siguiente sección se entrará en la
+implementación de estas técnicas en más detalle.
+
 [- comentar el tipo de texto que se saca de cada fuente]
 [- comentar cómo se saca el texto limpio para cada fuente comentada]
+[el objetivo de esta sección es mostrar que buscamos *muchas* fuentes de datos y nos quedamos con lo
+mejor; que cada una de las fuentes cumplió con los requerimientos y más o menos qué enfoque se
+utilizó para scrapearla]
 
-[una sección por fuente?]
 
-- empezamos investigando portales de noticias
-    - característica
-        - texto bien escrito (por lo general)
-        - a veces se escapa código HTML (tweets embebidos), pero muy poco
-        - mucho nombre de gente, aunque vocabulario más simple
-    - comenzamos con el diario la nación de argentina
-    - vemos que tiene artículos desde el año X, un promedio de Y artículos por día, Z palabras por artículos
-    - notamos que los indexa por ID, por lo que podemos recorrerlos todos secuencialmente
-    - utilizamos un script [Python] para recorrer la lista de IDs y descargar los artículos
-    - construimos una serie de reglas [xpath] para obtener el texto del artículo limpio (título, copete, contenido)
-    - el resultado final tiene N palabras
-    - esto nos muestra el potencial que tienen las fuentes de noticias
-    - recopilamos principales portales de noticias de latinoamérica y españa
-    - vemos cuáles de ellos se indexan por ID y cuáles no
-    - adapatamos el script de lanación para los sitios con mayor potencial (los que tienen más actividad/contenido)
-    - para cada sitio, construimos una serie de reglas xpath y un mecanismo para recorrer por ID
-    - lo adaptamos para que revise continuamente por noticias nuevas, y lo denominamos scraping automático
-    - el detalle de la implementación se verá en la siguiente sección
-    - pero por ahora: se consiguieron X millones de palabras extra por hacer que busque nuevos artículos
-    - cuántos sitios de noticias se scrapean de esta forma, más porcentaje de IDs que tienen una noticia
-      detrás para algunas de las fuentes (los más y los menos)
+\subsubsection{Portales de Noticias}
 
-- algunos portales de noticias muy grandes (el país uruguay, el país madrid, clarín, etc.) no indexan por ID,
-  por lo que se buscó hacer otro tipo de scraping, que se detalla en la siguiente sección
+La primer fuente de palabras investigada fueron los portales de noticias en línea, pues presentan
+varias ventajas:\begin{inparaenum}[(a)]
+\item están compuestos de texto por lo general bien escrito;
+\item están divididos en documentos que tratan cada uno de un tema particular;
+\item cada portal tiene un gran número de artículos y hay una gran cantidad de portales por país;
+\item permiten obtener muestras de texto por país, mejorando la riqueza del corpus final; y
+\item el texto es fácil de limpiar, pues el único markup con el que cuentan suele ser HTML\@.
+\end{inparaenum}
+
+En cuanto al vocabulario utilizado en los artículos de noticias, se puede considerar simple, pero
+con una fuerte presencia de nombres de personas y lugares, que a su vez son dependientes de la fecha
+de publicación del artículo: esto es, distintas personas tendrán más o menos menciones en períodos
+particulares de tiempo. Este punto es importante, y es una de las principales razones para decidir
+guardar esta fecha de como metadato del artículo.
+
+
+La investigación de portales de noticias comenzó por el diario La Nación de Argentina [cita?], por
+ser uno de los primeros diarios grandes en tener presencia digital, desde el año 2000. Realizando
+algunos cálculos preliminares en base a un muestreo de artículos, se vio que el diario contaba con
+al menos un millón de artículos, cada uno con un promedio de 500 palabras, llegando a un a masa total
+de palabras muy importante.
+
+Uno de los primeros puntos que se notó es que la URL de todos los artículos del portal estaban
+identificadas por un número, y que cambiando este número por uno distinto, se podía acceder a otra
+noticia. Además, la generación de estos números es secuencia: esto es, el primer artículo publicado
+tiene el identificador $1$, mientras que el último el $1871018$. Este hallazgo fue de suma
+importancia, pues permitió realizar \textit{scraping} del portal de forma más directa.
+
+Aprovechando esta característica, se construyó un script en Python [cita?] para recorrer la lista de
+identificadores (desde el $1$ hasta el último presente en la portada) y descargar el contenido de
+los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaronn una serie de
+reglas XPath [cita?] para obtener los datos estructurados (título de la noticia, contenido, fecha de
+publicación). Corriendo este script en la totalidad de La Nación, se llegó a la cifra de 600
+millones de palabras exclusivamente con sus artículos.
+
+Los resultados obtenidos demostraron el alto potencial que tienen los portales de noticias como
+fuentes de palabras, por lo que se procedió a recopilar una lista de los principales diarios de
+América Latina y España. Con el objetivo de seguir el esquema anterior, se identificaron cuáles de
+estos sitios identificaban sus artículos con las mismas características, y se adaptó el anterior
+script a los 20 que presentaban un mayor potencial (en base a la actividad y al contenido).
+
+Para cada uno de estos portales, se construyeron una serie de reglas XPath para extraer el contenido
+y un mecanismo para recorrer por el identificador numérico. Además se adaptó el script para que
+revise de forma continua por noticias nuevas, con el fin de que el corpus se mantenga siempre
+actualizado\footnote{Para ilustrar la importancia de este punto, sólo por mantener actualizado el
+corpus se consiguieron 300 millones de palabras adicionales en el tiempo de proyecto
+transcurrido.}. Este método lo denominamos \textit{scraping automático}, y más adelante se detallará
+su implementación (por ejemplo, cómo sabe extraer los datos, cómo se define un nuevo sitio, y cómo se
+hace la recorrida por identificador).
+
+En base a esta técnica se consiguieron más de 3 mil millones de palabras de texto limpio a partir de
+20 portales de noticias.
+
+
+Cabe resaltar que el método anterior depende de que los artículos de noticias tengan asociado un
+identificador secuencial. Lamentablemente, esto no es el caso con muchos sitios de noticias
+importantes y de gran tamaño, como El País de Madrid, El País de Uruguay, o Clarín de Argentina. Por
+esta razón, se decidió también emplear un mecanismo de scraping estándar mediante la herramienta
+Scrapy [cita?] para estos portales, implementación que se detalla más adelante.
+
+
+\subsubsection{Escritura Amateur}
 
 - sitios de escritura amateur en internet
     - scraping y/o scraping automático
     - texto potable, aunque ``diálogo'' y faltas de ortografía
 
+
+\subsubsection{Wikimedia}
+
 - wikimedia (wikipedia, wikivoyage, wikibooks, etc.)
     - texto bien escrito, vocabulario muy amplio (términos científicos, etc.)
     - se necesita sacar el wikimarkup, comentar cómo se hace
 
+
+\subsubsection{Foros}
+
 - foros en español
     - texto mal escrito en todos los sentidos
+
+
+\subsubsection{Subtítulos}
 
 - subtítulos
     - principlamente diálogos, pero bien escritos (por lo general)
 
+
+\subsubsection{Documentos Oficiales}
+
 - documentos oficiales (parlamento)
+
+
+\subsubsection{Mercadolibre}
 
 - mercadolibre
     - texto mal escrito
@@ -143,46 +205,250 @@ cuáles no (si están limpios, clasificados, etc.)?]
     - no tiene muchas oraciones coherentes, son publicidades principalmente
     - mucho duplicado, se guarda a nivel de oración para evitar cosas repetidas
 
+
+\subsubsection{Otros Corpus}
+
 - otros corpus en español
     - cómo se adapta cada uno
 
 
 \section{Implementación}
 
-- infraestructura
-    - servidor en alemania con X características
-    - ahí corre elasticsearch, el código python, la herramienta web (después se detallará), postgresql
-    - dónde se almacenan los documentos y por qué
-        - elasticsearch; razones para usarlo
-            - permite campos especiales por tipo de documento
-            - permite realizar búsquedas para construir corpus particulares
-            - escala fácilmente, si llegara a ser necesario
-    - postgresql para registro de entries visitadas en scraping automático
-    - backups en amazon S3
+A continuación se detalla la implementación del proceso de extracción del texto. Se comienza
+describiendo la arquitectura de la solución, fundamentando las decisiones tomadas, y luego se
+especifican las distintas técnicas empleadas para la obtención del texto.
 
-- scraping automático
-    - ya se mencionó por arriba sus objetivos/para qué se usa y cómo surgió
-    - describir la arquitectura más detalladamente
-        - comunicación con ES y psql
-        - asyncio para descarga de documentos, eventloop, etc.
-    - cómo se pone en producción: queda un daemon corriendo de fondo y revisa cada 15 min, etc.
+[para cada una de las técnicas, a qué fuentes aplica]
 
-- scraping manual [por tipo de método y en qué fuente se usa; centrado más en las técnicas utilizadas]
-[ver que no se solape demasiado con lo que ya se haya dicho]
-    - scrapy con spiders hechas a mano
-        - para el país, foros, (fanfics?)
-    - scripts de limpieza
-        - wikipedia, corpus en español, etc.
-    - etc.
+\subsubsection{Infraestructura}
+
+- se realiza una investigación de cuáles son las alternativas para almacenar grandes volúmenes de
+  texto, evaluando tanto soluciones SQL como NoSQL, optando finalmente por Elasticsearch [cita?]
+
+Elasticsearch [cita?] es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?])
+que provee funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de
+estructura) basado en la biblioteca de este propósito Lucene [cita?]. Provee una interfaz HTTP
+RESTful [cita?] para el acceso, la consulta y el almacenamiento de los documentos con los que
+trabaja.
+
+Se optó utilizar Elasticsearch porque brinda varias ventajas por sobre las alternativas:
+
+\begin{itemize}
+
+\item Permite el almacenamiento grandes volúmenes de datos sin mayores problemas. Es capaz que
+manejar millones de documentos con ajustes mínimos. [algomás]
+
+\item Brinda funcionalidades de búsqueda de texto que, mientras que no son un requerimiento
+\textit{a priori}, son de gran utilidad a la hora de explorar el corpus. [algomás] [qué implica
+full-text search, búsqueda más inteligente (stemming, etc.)]
+
+\item schemaless, por lo que no todos los documentos tienen que tener el mismo formato
+
+\item permite mezclar datos estructurados y texto libre, pudiendo realizar consultas avanzadas, como
+cantidad de palabras por fuente de datos, etc.
+
+\item puede, en caso de ser necesario, adaptarse fácilmente a una infraestructura distribuida, con
+replicación y balanceo de carga para poder manejar incluso mayor cantidad de documentos
+
+\end{itemize}
+
+Es importante mencionar que, comparado con un RDBMS más establecido como PostgreSQL, Elasticsearch
+no carece de problemas. Es sabido que bajo ciertas circunstancias, es posible que ocurra una pérdida
+de documentos [cita aphyr], aunque esto ocurre en esquemas distribuidos y bajo casos muy
+particulares que no nada frecuentes. Además, el hecho de estar almacenando información no crítica
+(esto es, no son registros de usuarios, por ejemplo), esto no plantea mayores riesgos.
+
+---
+
+- servidor en alemania con X características
+- ahí corre elasticsearch, el código python, la herramienta web (después se detallará),
+  postgresql (para el scraping automático y para la API (job management))
+
+- backups en amazon S3 (funcionalidad integrada en elasticsearch)
+
+
+\subsubsection{Scraping Automático}
+
+Como se mencionó en la sección anterior, para el \textit{scraping} de los portales de noticias que
+referencian a sus artículos con un identificador secuencial, se construyó un sistema especializado
+para la tarea de extracción de los mismos.
+
+Este sistema se compone de una base de datos con información de las fuentes de datos y los
+artículos que son necesarios descargar; un módulo de scraping que se encarga de descargar, procesar
+y almacenar en Elasticsearch cada uno de estos artículos; y un conjunto de módulos de extracción que
+especifican, para cada sitio, cómo realizar el procesamiento de sus artículos. La arquitectura se
+puede visualizar en el diagrama [diagrama].
+
+A continuación detallaremos cada uno de estos componentes.
+
+
+\paragraph{Modelo de Datos}
+
+El modelo de datos consiste de fuentes de datos (\texttt{DataSource}) y de entradas
+(\texttt{Entry}), almacenados en una base de datos \textit{PostgreSQL} [cita?]. Los
+\texttt{DataSource} son un modelo simple que describe las fuentes de palabras registradas en el
+sistema y cuenta básicamente del dominio del sitio (e.g. \texttt{lanacion.com.ar}), con el que se
+identifica a la fuente. Además mantiene dos atributos adicionales: si está activo (esto es, si se
+tienen que extraer documentos del mismo), y el nivel de concurrencia con el cuál realizar pedidos
+(para no saturar a la fuente; su funcionamiento se detalla más adelante).
+
+Por otro lado, las \texttt{Entry} son registros que identifican cada documento de cada fuente de
+palabras, junto con el identificador a nivel de dicha fuente, el resultado del proceso de
+extracción, la fecha en la que se agregó, el último intento, la cantidad de intentos, y la fuente a
+la que pertenece. El resultado del proceso puede ser \textit{pendiente}, cuando todavía no se
+intentó descargar el artículo asociado, \textit{éxito}, cuando se extrajo correctamente el
+contenido, o uno de tres indicadores de error (\textit{no encontrado}, \textit{imposible de
+procesar}, o \textit{intento fallido}, que se describen más adelante). Con la cantidad de intentos
+se busca evitar que un artículo no se descargue por un error incidental, buscando reintentar hasta
+cinco veces dicha acción.
+
+Así, es posible mantener un registro detallado y estadísticas de todo el proceso de extracción. Para
+cada fuente de datos, es posible saber cuántas entradas fueron revisadas, qué porcentaje de éstas no
+contienen un documento asociado, y si alguna fuente está teniendo problemas en la extracción. Esto
+último ayuda, por ejemplo, a detectar rápidamente un cambio de diseño en un sitio que provoque que
+las reglas XPath queden obsoletas.
+
+
+\paragraph{Módulos de Extracción}
+
+Los módulos de extracción describen cómo es la interacción con los sitios de noticias en tres
+aspectos: en cómo obtener la lista de identificadores que faltan procesar, en cómo obtener el
+contenido de un artículo dado su código HTML, y en cómo obtener metadatos adicionales del artículo
+(como su fecha de publicación). Para ello se define una interfaz que cada módulo debe implementar,
+consistente de los siguientes elementos:
+
+\begin{itemize}
+
+\item Constantes \texttt{SOURCE\_DOMAIN} y \texttt{DOCUMENT\_URL}, que especifican el nombre de la
+fuente (e.g. \textit{lanacion.com.ar}) y la URL de sus documentos dado un identificador,
+respectivamente.
+
+\item Función \texttt{get\_missing\_ids}, que recibe una lista de identificadores ya existentes en la
+base de datos y devuelve los identificadores faltantes. Para esto la función puede, por ejemplo,
+entrar a la página inicial del portal y obtener el identificador asociado a la noticia más reciente.
+
+\item Función \texttt{get\_content}, que recibe la respuesta del portal ante el pedido de un artículo
+particular. Esta función deberá revisar el código de respuesta para asegurarse que efectivamente se
+haya encontrado un artículo. Aquí se encapsula la lógica de extracción del texto limpio, ya sea
+mediante la utilización de reglas XPath o selectores CSS, mediante la ayuda de la biblioteca
+\texttt{lxml} [cita?]. En caso de tener éxito, devolverá el contenido del artículo y un valor de
+salida \texttt{success}; en caso de haber un error, devolverá \texttt{notfound}, \texttt{failure}, o
+\texttt{unparseable}. El objetivo de esta distinción es saber si es necesario reintentar porque el
+fallo fue por un error circunstancial (caso \texttt{failure}), si no existe un artículo (caso
+\texttt{notfound}), o si hubo un problema al extraer los datos (caso \texttt{unparseable}), en cuyo
+caso será necesario revisar el proceso de extracción.
+
+\item Función \texttt{get\_metadata}, que recibe la respuesta de un artículo para el cual se extrajo
+exitosamente el contenido, y devuelve los metadatos pertinentes al documento (fecha de publicación,
+título, etc.).
+
+\end{itemize}
+
+Así, es posible incorporar una nueva fuente de palabras simplemente agregando un archivo Python que
+siga la anterior interfaz. El módulo de scraping se encargará así de dar de alta la nueva fuente en
+la base de datos y empezar a descargar el contenido. Esto brinda un diseño flexible y fácil de
+extender en un futuro [más énfasis en esto?].
+
+
+\paragraph{Módulo de Scraping}
+
+El sistema corre como un \textit{daemon} que realiza el siguiente ciclo:
+
+\begin{itemize}
+
+\item Revisa cuáles son las fuentes de datos existentes, junto a su configuración, dando de alta en
+la base de datos cualquier fuente que no tenga un registro, en base a los módulos existentes.
+
+\item Para cada fuente de datos, crea las entradas faltantes en la tabla correspondiente, en base a
+lo que le indique el módulo de extracción asociado a la fuente.
+
+\item Para cada entrada cuyo estado es \textit{pendiente}, se descarga el HTML del artículo asociado
+y se extrae tanto el contenido como los metadatos del mismo, de acuerdo a lo especificado en el
+módulo de extracción asociado a la fuente.
+
+\item Se actualiza la entrada con el resultado obtenido, y se almacena el documento extraído en
+Elasticsearch con el formato adecuado.
+
+\item Cuando no quedan más entradas pendientes, duerme por 15 minutos y vuelve a empezar el ciclo.
+
+\end{itemize}
+
+Con el fin de no tener que esperar por las respuestas de los sitios de noticias uno a uno, lo que
+implicaría una espera de décimas de segundos para cada documento que haría imposible la descarga de
+los millones que se requieren, el módulo de scraping se implementa como un bucle de eventos.
+
+Un bucle de eventos (\textit{event loop}, en inglés), es una construcción que permite ejecutar
+concurrentemente funciones que dependen de eventos externos bloqueantes (como acceso a un
+dispositivo de Entrada/Salida) sin que el hilo del programa principal tenga que bloquearse
+esperando, de manera similar a como hace un sistema operativo de tiempo compartido.
+
+Ésta técnica consiste de un bucle principal que se encarga de ejecutar una serie de corrutinas, las
+cuales se suspenderán cuando sean bloqueadas esperando un evento externo y continuarán su ejecución
+cuando el bucle principal se lo indique. Para esto, el bucle debe emplear técnicas de
+\textit{polling} (o la funcionalidad equivalente que provea el sistema operativo) para saber cuándo
+un evento está listo para ser atendido. [figura? cita?]
+
+Se utilizó la implementación de la biblioteca estándar de Python de esta construcción, denominada
+\texttt{asyncio} [cita?]. De esta forma, es posible descargar cientos de artículos concurrentemente,
+sin demorarse por un sitio particularmente lento. Para ello, cuando se recorren las entradas
+pendientes y se realiza un pedido HTTP para obtener el artículo, la función que procesa los
+artículos se suspende hasta que la descarga finalice, continuando con otro artículo mientras tanto.
+
+De todos modos, es necesario limitar la cantidad máxima de concurrencia por dos razones: primero,
+porque se corre el riesgo de iniciar miles o hasta millones de pedidos en simultáneo, lo cuál es
+computacionalmente muy costoso e improductivo; y segundo, porque no se quiere saturar a los sitios
+de noticias con demasiados pedidos activos, ya que se correría el riesgo de que se le prohiba el
+acceso a nuestro sistema. Algunos sitios son particularmente susceptibles a este último punto, por
+lo que se decidió que el nivel de concurrencia sea configurable a nivel de cada fuente de datos.
+
+
+Para concluir esta sección, presentamos algunos números del proceso. Mediante este sistema se
+extrajeron [X] documentos de 20 portales de noticias, obteniendo así un total de [Y] mil millones de
+palabras. Se dieron de alta un total de [W] entradas, de las cuales un $[Z]\%$ llevó a la extracción
+exitosa de un documento, donde algunas fuentes de noticias fueron más rentables que otras, como se
+puede ver en [figura: tabla de porcentajes].
+
+
+\subsubsection{Scraping Manual}
+
+
+--- Con Scrapy
+
+Para las fuentes de palabras que carecen de una estructura que favorece su extracción automática
+mediante el método anterior, se utilizaron también técnicas de scraping convencionales, a través de
+\textit{Scrapy} [cita?].
+
+- qué es scrapy
+- qué diferencias tiene con lo anterior (y similitudes), y para qué casos es útil
+    - ejemplo: en El País Uruguay es necesario primero entrar al archivo, luego a la portada
+      histórica y finalmente al artículo particular
+- en qué fuentes de datos se usa: el país madrid/uruguay, clarín; fanfics? foros?
+- cómo se corre (una vez sola, aunque se puede volver a correr y actualizar los documentos)
+
+
+--- Scripts de limpieza
+
+- para casos como wikipedia, se puede bajar el contenido directamente a través de un dump, pero está
+  sucio (markup)
+- se utiliza un script de limpieza y se indexa directamente en Elasticsearch, con las etiquetas
+  adecuadas (decir cuál script)
+
+- lo mismo para la página del parlamento (si lo terminamos metiendo)
+- lo mismo para los corpus ya existentes (si metemos alguno)
 
 
 \section{Resultado}
+
+En esta sección se pretende presentar un análisis de la composición y la calidad del corpus
+construido, mostrando algunas cifras por vertical de texto.
+
 
 - resultado del corpus obtenido en total de palabras (resaltar que el obj eran 2B)
 - analizar por tags (noticias, wikipedia, países, fechas, etc.)
 - análisis de calidad/composición del corpus
     - palabras más comunes, etc. (algún dato sobre el corpus más general)
-    - duplicados/texto sucio
+    - duplicados/texto sucio (muestreo de documentos aleatorios?)
+    [tweets embebidos en noticias o algo de eso]
 
 
 ----
