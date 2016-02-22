@@ -1,16 +1,92 @@
 \chapter{Herramienta}
 
-\section{Objetivos}
+El entrenamiento de modelos de representaciones vectoriales es un proceso costoso tanto desde el
+punto de vista computacional como cognitivo: requiere recopilar una gran cantidad de texto,
+realizarle un preprocesamiento adecuado (e.g.\ sacarle mayúsculas, símbolos), utilizarlo para
+alimentar a un modelo que tiene un gran consumo de memoria y de poder de cómputo, para luego obtener
+un modelo vectorial también de gran tamaño. Este modelo debe también poder evaluarse para determinar
+su utilidad, corriendo una variada batería de pruebas, explorando así el espacio de hiperparámetros
+para obtener una configuración razonable.
 
-- objetivos/requerimientos
-    - descripción de qué queríamos que hiciera la herramienta
-        - acceso a servidor de cómputo especializado, a elasticsearch, etc.
-        - consultas en el corpus
-        - entrenamiento y evaluación de vectores
-        - descarga, etc.
-    - funcionalidades que debía tener, etc.
-    - por qué hacerla
-    - parecido a sección equivalente del corpus
+Con el fin de simplificar este proceso, y permitir a cualquier investigador realizar expermientos
+con modelos vectoriales, se plantea la elaboración de una herramienta que sea capaz de abstraerse de
+todas las tareas de bajo nivel, permitiendo construir representaciones vectoriales a través de una
+interfaz web. El objetivo es pues brindar herramienta que, en base a un fragmento del corpus y una
+configuración de hiperparámetros, entrene y deje disponible para utilizar vectores de palabras
+generados a medida para una tarea particular.
+
+
+\section{Requerimientos}
+
+Antes de iniciar la construcción de la herramienta, se fijaron una serie de requerimientos que se
+esperaba que la misma lograra satisfacer:
+
+\begin{itemize}
+
+\item Dado que se cuenta con un corpus de gran tamaño, etiquetado y almacenado en un motor de
+búsqueda, es conveniente ofrecer la posibilidad de explorarlo de manera interactiva. Para esto se
+pretende brindar funcionalidades de búsqueda a través de consultas de texto basadas en el contenido
+de los documentos, o filtrando a partir de los campos estructurados (los metadatos, la fuente de
+palabras, las etiquetas, etc.).
+
+Esto permitirá que un usuario pueda encontrar ejemplos de uso del lenguaje particulares fácilmente
+pudiendo, por ejemplo, ver todos los documentos donde aparece la palabra \textit{fútbol} en portales
+de noticias Uruguayos (documentos con las etiquetas \textit{uruguay} y \textit{news}). Lograr
+particionar así el corpus permitirá también entrenar vectores con datos especializados.
+
+\item Los algoritmos que se utilizan para construir representaciones vectoriales requieren de una
+capacidad de cómputo muy elevada, por lo que no se pueden entrenar localmente en una computadora
+común (al menos no en tiempos razonables). Por esta razón, es imprescindible contar con un servidor
+de cómputo especializado que tenga las capacidades necesarias para correr los algoritmos.
+
+Resulta conveniente, por lo tanto, que la interfaz sirva de mediador entre el usuario y dicho
+servidor, pudiendo entrenar o evaluar modelos allí de manera remota, para no tener que realizar esta
+tarea manualmente, que presenta sus dificultades. Así, un usuario será capaz de enviar a entrenar un
+modelo y que éste quede corriendo de fondo en el servidor de cómputo por el tiempo que sea
+necesario, sin requerir de interacción adicional hasta que el algoritmo finalice.
+
+\item Además de brindar acceso a un servidor especializado, se desea que el usuario pueda entrenar
+los algoritmos deseados a medida, a partir del corpus o de secciones del mismo. Para ello, deberá
+ser posible elegir el modelo de representación vectorial a utilizar (Skipgram, CBOW, GloVe, o PPMI),
+junto a los hiperparámetros que cada uno de ellos posee. Además es necesario que se pueda indicar
+qué corpus utilizar para el entrenamiento, pudiendo elegirse la totalidad del mismo o secciones
+particulares en caso que se desee obtener vectores especializados en algún campo. Para esto último,
+se deberá permitir ingresar una consulta de Elasticsearch para usar el resultado de la misma como
+corpus de entrenamiento.
+
+\item También debe ser posible dar de alta conjuntos de pruebas para distintos tipos de tareas (esto
+es, analogías, similitud entre palabras, etc.) y correr las evaluaciones en los modelos ya
+entrenados, pudiendo estudiar así el comportamiento de los mismos en distintos escenarios.
+
+\item Considerando estos dos últimos puntos, también es deseable que el usuario pueda fácilmente
+visualizar y comparar el resultado obtenido en un conjunto de pruebas para los distintos modelos
+entrenados, pudiendo así elegir fácilmente la mejor configuración de hiperparámetros para una tarea
+particular.
+
+\item Puesto que tanto el corpus como los modelos y los conjuntos de pruebas están almacenados en
+servidores remotos, es necesario poder descargarlos. Para el corpus es desable también ofrecer la
+posibilidad de descargar partes del mismo para no tener que procesarlo localmente, lo cual puede ser
+muy costoso debido a su tamaño.
+
+\item Dado que el proceso de construcción del corpus es continuo, como se detalló en la sección de
+scraping automático, puede ser de utilidad ofrecer estadísticas sobre la composición del corpus,
+incluyendo cómo ha variado su tamaño en recientemente, con el fin de poder controlar que el proceso
+de extracción esté funcionando correctamente. Esto ayuda considerablemente a detectar cuándo una
+fuente de palabras ha dejado de contribuir texto, lo cuál puede ocurrir por, por ejemplo, un cambio
+en el diseño de la misma que rompa las reglas XPath empleadas.
+
+\item Por último, es importante tener en cuenta la usabilidad de la heramienta, manteniendo presente
+que debe facilitar la construcción de modelos vectoriales, y no dificultarlas. Para esto, deberá
+prestarse especial cuidado al diseño final de la misma.
+
+\end{itemize}
+
+En definitiva, uno de los objetivos principales de la herramienta es la coordinación entre las
+distintas componentes de la arquitectura de la aplicación. Se cuenta por un lado con un
+Elasticsearch donde se almacena de manera organizada todo el corpus recopilado. También se cuenta
+con un servidor de cómputo que entrena y evalúa remotamente los modelos deseados. La herramienta
+servirá como nexo para estos dos nodos, permitiendo al usuario acceder, interactuar y descargar los
+distintos artefactos (corpus, modelos, pruebas) de la aplicación.
 
 
 \section{Diseño de la Solución}
@@ -23,44 +99,460 @@
 
 \section{Implementación}
 
+En esta sección se presenta la implementación de la herramienta. Se comienza dando una descripción
+de la arquitectura general de la misma, pasando luego a detallar la implementación de cada
+módulo.
+
+
 \subsection{Arquitectura General}
 
-- arq general de la solución (overview): diagrama ES + PSQL + BACKEND + FRONTEND + JOBQUEUE
+Dada la cantidad de requerimientos que se plantearon para la herramienta, fue necesario diagramar de
+antemano una arquitectura que logre escalar y brindar todas las funcionalidades
+satisfactoriamente. Ésta cuenta de cinco componentes, o nodos, cada uno especializado en una función
+distinta:
+
+\begin{itemize}
+
+\item Un nodo corriendo Elasticsearch, donde se almacena la totalidad del corpus de texto, como se
+detalló en el capítulo anterior.
+
+\item Un nodo corriendo PostgreSQL, donde se almacenan tanto las tablas relacionadas al scraping
+automático como el modelo de datos empleado para la herramienta (esto es, información relacionada a
+los modelos vectoriales entrenados y sus evaluaciones).
+
+\item Un conjunto de nodos, denominados trabajadores o \textit{workers}, donde corren los algoritmos
+para generar las representaciones vectoriales. Estos nodos son especiales en cuanto a que deben
+contar con mayores recursos para poder entrenar los modelos en tiempos razonables. Su función es
+consumir pedidos de una cola de tareas que indica qué algoritmo se debe entrenar a continuación, y
+devolver el resultado.
+
+\item Un nodo donde corre el servidor de aplicación que coordina los distintos componentes de la
+arquitectura y ofrece una interfaz RESTful [cita?] para interacción con el sistema. Sus funciones
+incluyen la administración de la cola de tareas, la realización de consultas en Elasticsearch, y la
+actualización del modelo de datos, entre otros.
+
+\item Un nodo que sirve una aplicación web encargada de ofrecer una interfaz web sobre el servidor
+de aplicaciones que pueda ser utilizada por un usuario no especializado.
+
+\end{itemize}
+
+Cabe notar que en la actualidad todos estos componentes corren en un único servidor con muchos
+recursos (mencionado en el capítulo anterior), por no tener la herramienta demasiada demanda. Sin
+embargo, es posible dividirlo en distintos servidores simplemente cambiando la configuración de los
+nodos, permitiendo así escalar a un mayor número de usuarios de ser necesario.
+
+La comunicación entre las distintas partes puede observarse en la figura [figura]. En el centro de
+la arquitectura se encuentra el servidor de aplicación, que se encarga de coordinar el resto de los
+nodos. Éste ofrece una API (o \textit{Application Programming Interface}) RESTful que permite
+realizar consultas sobre el corpus, crear nuevos modelos vectoriales, enviarlos a entrenar y
+evaluar, y todo el resto de las funcionaldiades que ofrece la herramienta. Tiene, por lo tanto, que
+comunicarse con el nodo de Elasticsearch, con el nodo de PostgreSQL, y mantener la cola de tareas
+que los \textit{workers} posteriormente consumirán.
+
+Los nodos workers también deben comunicarse con Elasticsearch, para obtener el contenido del
+corpus de entrenamiento, y con PostgreSQL, para actualizar el estado de los modelos vectoriales que
+se entrenan o evalúan.
+
+Por otro lado, la aplicación web se comunica únicamente con el servidor de aplicaciones, pues la
+interfaz de este último es capaz de abstraer toda la maquinaria interna de la herramienta. Por esta
+razón, denominamos la aplicación web como la parte delantera de la aplicación (o \textit{frontend})
+y al resto de los nodos (el servidor de aplicación y los otros nodos) la parte trasera (o
+\textit{backend}).
+
+[diagrama ES + PSQL + BACKEND + FRONTEND + JOBQUEUE]
 
 
 \subsection{Backend}
 
-- overview: de qué está compuesto (entrenamiento, api, job queue, etc.)
+El \textit{backend} de la aplicación busca, como se mencionó anteriormente, brindar una interfaz
+RESTful capaz de abstraer las particularidades de la implementación de la herramienta. Internamente
+se encarga de la comunicación con Elasticsearch (donde se almacena el corpus) y PostgreSQL (donde se
+mantiene el estado de la aplicación), y de coordinar y realizar el entrenamiento y evaluación de los
+vectores de manera distribuida a través de una cola de tareas. Permite también la interacción con
+los datos que componen el estado de la aplicación.
 
-- data model: manejo de resultados, de embeddings (tipo, parámetros, query, archivos en FS, etc.),
-              de archivos, de jobs (``como se detallará en la siguiente sección'')
 
-- manejo de jobs y job queue con celery, redis; progress report; por qué jobs (demoran mucho en entrenar), etc.
+\subsubsection{Modelo de Datos}
 
-- entrenamiento: librerías usadas para cada algoritmo
-    - word2vec-related (SG y CBOW): gensim
-    - glove: implementación de los autores, comunicación con subprocess
-    - ppmi+svd: implementación propia
+Empezaremos detallando el modelo de datos que define al dominio con el que trata la herramienta:
 
-- evaluación:
-    - cómo se hizo
-    - tipos de tests que existen, cómo se implementa cada uno y qué formato de archivo esperan
+\begin{itemize}
 
-- API e interacción con el resto (acceso a modelos, corpus search, entrenamiento, etc.)
-    - objetivo:
-        - brindar interfaz http restful que permita interactuar con el backend
-        - que intente lo más posible esconder las complejidades del backend
-          (la persona que usa la api no tiene que saber de celery, redis, postgres, elasticsearch,
-           las implementaciones de los algoritmos que existen, ni de evaluaciones; sólo se maneja
-           a nivel de los modelos)
-        - a ser consumida por el frontend
-    - ir sección a sección:
-        - corpus search
-        - consulta de modelos básicos
-        - job management
-        - deletion, etc.
+\item En primer lugar, se cuenta con modelos (esto es, tablas en la base de datos) para las
+representaciones vectoriales que se registraron en la herramienta. Para cada una de ellas se guarda
+el algoritmo empleado para su generación, los hiperparámetros del mismo (que dependen, claro está,
+del algoritmo), la consulta de Elasticsearch a través de la cual se obtiene el corpus de
+entrenamiento, y el tipo de preprocesamiento empleado para tratar el texto previo a entrenar.
 
----
+Además almacena la fecha de creación y el estado actual del modelo, que puede ser \textit{sin
+entrenar}, \textit{entrenando}, o \textit{entrenado}, dependiendo si ya se corrió el algoritmo o
+no. En caso de que ya se haya entrenado, se guarda también una referencia a la ubicación de los
+archivos de los vectores.
+
+\item También se cuenta con modelos para los distintos conjuntos de prueba dados de alta en el
+sistema. Para cada uno de ellos se registra el tipo de pruebas (esto es, si son analogías, similitud
+de palabras, etc.) y la ubicación del archivo que contiene los datos de prueba. Por comodidad,
+también se les puede asignar un nombre y una descripción.
+
+\item Se emplean modelos adicionales para almacenar los resultados de las evaluaciones de los
+distintos vectores de palabras. Cada uno de estos cuenta con referencias al modelo vectorial y el
+conjunto de pruebas a los que describe, junto con los resultados obtenidos en la evaluación (esto
+es, la precisión y otros datos, dependiendo del tipo de prueba).
+
+\item Por último, se cuenta con modelos para registrar las tareas (o \textit{jobs}) que corren en
+los nodos trabajadores para el entrenamiento y evaluación de los vectores. Su funcionamiento se
+describirá más adelante, pero se puede mencionar que se guardan datos acerca del tiempo empleado y
+fecha de agendado de la tarea, para poder luego estudiar el tiempo de cómputo requerido para generar
+las representaciones.
+
+\end{itemize}
+
+
+\subsubsection{Cola de Tareas}
+
+Para el entrenamiento de vectores, se ideó una arquitectura basada en una cola de tareas (o
+\textit{job queue}) en el que el servidor de aplicación da de alta tareas que serán luego llevadas a
+cabo por nodos trabajadores (o \textit{workers}), los cuales cuentan con amplios recursos
+computacionales para correr los algoritmos. Esto es necesario ya que los algoritmos pueden demorar
+horas e incluso días en finalizar, por lo que es imposible correrlos en el tiempo en que se debe
+atender un pedido HTTP\@.
+
+Se utilizó la biblioteca Celery [cita?] para la comunicación y la administración de dicha
+cola. Celery ofrece un mecanismo para producir y consumir mensajes en una cola de tareas en tiempo
+real, a través de un sistema distribuido, flexible, y confiable, lo que lo hace una buena opción
+para la herramienta a construir. A través de esta biblioteca, es posible definir tipos de tareas
+(como puede ser entrenar o evaluar un modelo vectorial) y luego dar de alta mensajes que serán
+consumido por nodos trabajadores, los cuales se encargarán de correr el código necesario y devolver
+el resultado.
+
+Celery se limita a coordinar el uso de la cola de tareas, por lo que toda la información adicional
+que sea necesaria almacenar respecto a las tareas (identificadores y resultados, por ejemplo), debe
+ser mantenida por una base de datos especializada. Para la presente arquitectura se decidió utilizar
+Redis, un almacén de estructuras de datos en memoria, por ser una solución simple y liviana.
+
+Se definen dos tipos de tareas que el sistema correrá de manera asincrónica: una para el
+entrenamiento de representaciones vectoriales y otra para la evaluación de las mismas. El primer tipo
+recibe el modelo vectorial a entrenar (esto es, el algoritmo a utilizar, sus hiperparámetros, la
+consulta de Elasticsearch que describe al corpus de texto, y las opciones de preprocesamiento de los
+datos) y luego procede a correr el algoritmo, reportando el progreso periódicamente. Una vez
+finalizado, actualiza los registros asociados a los vectores en la base de datos (pasando el estado
+de la tarea a \textit{entrenado}, por ejemplo) y los persiste en el sistema de archivos del
+servidor.
+
+El segundo tipo de tarea recibe el modelo vectorial (ya entrenado) a evaluar y el conjunto de
+pruebas a utilizar. Una vez cargados todos los datos en memoria, procede a realizar la evaluación,
+la cual dependerá del tipo de prueba que se está realizando (esto es, si es una tarea de analogías o
+de similitud de palabra, por ejemplo). Reporta el progreso conforme avanza con la evaluación y
+finalmente almacena el resultado en la base de datos. En caso de ya existir un resultado para la
+combinación de vectores y pruebas, lo sobreescribe.
+
+Para cada tipo de tarea, es necesario mantener ciertos metadatos asociados a la misma, por lo que se
+mantiene una tabla para cada una con este fin, como se mencionó anteriormente. En éstas se almacena
+información pertinente para la ejecución de la tarea (modelos vectoriales y conjuntos de pruebas
+sobre los que actuar, principalmente) e información sobre la tarea en sí. En particular, se registra
+un identificador (denominado \texttt{task\_id}) con el que se puede consultar el progreso y el
+estado de la tarea a través de Celery. También se almacenan otros metadatos como la fecha de
+agendado y el tiempo de ejecución de la tarea.
+
+Al recibir un pedido a través de la API para entrenar un modelo vectorial particular, el servidor de
+aplicación da de alta una nueva tarea en la cola mediante Celery, creando también un registro
+asociado en la base de datos, y devolviendo al pedido HTTP el identificador de la tarea. Por detrás,
+un nodo trabajador recibirá la tarea a ejecutar y la iniciará, cambiando el estado de la misma a
+\textit{entrenando} y reportando el progreso periódicamente. Mientras ejecuta, el usuario puede
+realizar otro llamado a la API para consultar el estado de la tarea utilizando el identificador de
+la misma. Una vez finalizada la ejecución el estado pasará a \textit{entrenado} y, cuando el
+usuario vuelva a consultar por el progreso, se le indicará que ya ha terminado. Esto lo habilitará a
+descargar o evaluar el modelo.
+
+Para la evaluación de modelos el procedimiento es análogo, con la diferencia que a través de un
+único llamado a la API es posible evaluar un modelo en varios conjuntos de prueba o vice versa.
+Para ambos casos (entrenamiento y evaluación) se tienen consideraciones especiales cuando se crea
+una tarea si la misma está actualmente en ejecución o ya ha terminado: para el entrenamiento de un
+vector, se devolverá un error, mientras que para la evaluación se borrarán primero los resultados
+existentes.
+
+En la figura [figura] se diagrama el funcionamiento del procedimiento completo. Se muestra además
+cómo interactúan los distintos componentes de la cola de tareas entre sí y cómo se comunican con el
+resto de los nodos del sistema.
+
+[diagrama (API -> celery -> redis -> worker -> redis; API -> celery -> redis)]
+
+
+\subsubsection{Entrenamiento}
+
+Con el fin de evitar errores de implementación en los algoritmos para generar representaciones
+vectoriales, se buscó, donde fue posible, aprovechar bibliotecas ya existentes y probadas.
+
+\paragraph{word2vec}
+
+Debido a su popularidad, existen varias implementaciones de \texttt{word2vec} en la comunidad. En
+primer lugar se encuentra, claro está, la implementación de los algoritmos CBOW y SGNS hechas por
+Mikolov [cita]. También existen implementaciones en diversos lenguajes de programación, como la
+provista por \texttt{Gensim} (escrita en Python [cita]), o la provista por \texttt{mllib} (escrita
+en Java [cita]), entre otras.
+
+Se optó por utilizar la implementación de la biblioteca \texttt{Gensim} pues el hecho de estar
+escrita en Python facilita mucho su integración con el resto del sistema. Además, como muestran los
+contactos que tuvo el autor de la misma con Mikolov [citas], es una implementación probada que llega
+incluso a ser más eficiente computacionalmente que la original, a pesar de estar escrita en Python.
+
+
+\paragraph{GloVe}
+
+Para el caso de GloVe se decidió utilizar la implementación provista por los autores [cita], pues no
+existen bibliotecas satisfactorias escritas en Python. Por esta razón la tarea de integración fue
+más compleja, pues fue necesario utilizar el módulo Python \texttt{subprocess} para comunicarse con
+un proceso hijo que corre los algoritmos, trasmitiendo el texto del corpus a través de la entrada
+estándar del mismo.
+
+
+\paragraph{Modelo Estadístico}
+
+Para el cuarto algortimo, el modelo estadístico basado en la matriz PPMI con SVD, fue necesario
+realizar una implementación propia, pues no fue posible encontrar ninguna que cumpliera con los
+requerimientos necesarios. Partiendo del artículo de Levy y Goldberg [cita], y aprovechando parte
+del código provisto por los autores en [cita hyperwords], se elaboró un módulo Python para la
+construcción de representaciones con dicho modelo.
+
+Se utilizaron las bibliotecas \texttt{numpy} [cita] y \texttt{scipy} [cita] para la manipulación
+numérica de matrices (matrices dispersas, en particular, como lo es la matriz de coocurrencias con
+medida PPMI), y el \textit{wrapper} \texttt{sparsesvd} [cita] de la biblioteca \texttt{SVDLIBC}
+[cita] para la aplicación de SVD a matrices dispersas.
+
+Teniendo en cuenta algunas sugerencias de los autores en cuanto al tratamiento efectivo de matrices
+dispersas (en lo que respecta al uso de memoria principalmente), se logró a una implementación
+satisfactoria del algoritmo con un comportamiento similar al que describen los autores en el
+artículo original. Se implementan también las heurísticas que los autores encuentran que favorecen
+la performance del algoritmo, como el \textit{subsampling} de palabras comunes y la eliminación de
+palabras poco frecuentes.
+
+[mencionar sobre cómo se guardan los vectores en el filesystem?]
+
+
+\subsubsection{Evaluación}
+
+Se implementaron [tres] mecanismos de evaluación para las representaciones vectoriales, a
+continuación se describe el proceso de implementación para cada uno.
+
+
+\paragraph{Analogías}
+
+El primero de ellos es la tarea de analogías, descrita anteriormente, donde se debe obtener una
+palabra ($w_4$) en base a otras tres ($w_1$, $w_2$, $w_3$) bajo el esquema ``$w_1$ es a $w_2$ lo que
+$w_3$ es a $w_4$''.
+
+Los conjuntos de pruebas para esta tarea se componen de una lista de 4-uplas con las palabras que
+forman la analogía, donde la última es que se debe recuperar. El \textit{job} encargado de correr la
+evaluación leerá el archivo con los datos (una analogía por línea) y utilizará las métricas
+\textsc{3CosAdd} y \textsc{3CosMul} para obtener el resultado (como se especifica en el [capítulo
+2]).
+
+Se almacena el porcentaje de aciertos exactos, el procentaje de aciertos entre las cinco primeras
+sugerencias, y el porcentaje de aciertos entre las diez primeras sugerencias. De esta forma se puede
+estimar, en caso de que haya fallado la recuperación, qué tan cerca se estuvo. Se registra también
+la cantidad de palabras que no se encontraron en el volcabulario del modelo para tener una idea de
+qué tanto afecta esto al resultado final, pues la ausencia en el vocabulario cuenta como un
+fallo\footnote{Si no contara como un fallo, un modelo vectorial con un vocabulario de diez palabras
+podría tener un porcentaje de aciertos perfecto en todas las pruebas.}.
+
+
+\paragraph{Similitud}
+
+El segundo mecanismo de evaluación es la similitud de palabras. Esta tarea asigna un puntaje entre 0
+y 10 a la similitud o relación entre pares de palabras, donde 10 significa que una palabra puede ser
+sustituida por otra en un contexto dado (caso similitud) o son palabras que están estrechamente
+relacionadas (caso relación).
+
+La prueba en sí consiste en cargar la lista de pares de palabras, asignar un puntaje a cada par de
+palabras (utilizando la distancia coseno entre sus representaciones vectoriales) y calcular la
+correlación entre los puntajes obtenidos y los del conjunto de pruebas (que son asignados por jueces
+humanos). Esta es la técnica estándar en la literatura para evaluar la capacidad de capturar
+relaciones de similitud por parte de los vectores de palabras, como se vio en el [capítulo 2].
+
+Los archivos con los datos de prueba consisten en una lista de dos palabras y su puntaje de
+similitud asociado. Por otro lado, y al igual que en las analogías, se guarda también la cantidad de
+palabras que no se encontraron en el vocabulario.
+
+
+\paragraph{Odd-one-out}
+
+El tercer mecanismo de evaluación consiste en encontrar la palabra que no encaja en un conjunto de
+palabras (encontrar el \textit{odd-one-out}). Por ejemplo, la palabra \textit{auto} en el conjunto
+de palabras \textit{auto}, \textit{rótula}, \textit{pelvis}, y \textit{metatarso}. Se pueden
+construir, por ejemplo, pruebas tanto por campo semántico (como el recién ejemplificado) como por
+campo sintáctico (donde se busca, por ejemplo, identificar al verbo con conjugación distinta).
+
+No existe mucho trabajo en la literatura con este esquema de pruebas, pero aún así es útil para
+comparar los distintos tipos de representaciones entre sí, en una tarea que busca medir también qué
+tanto se capturan las similitudes entre palabras.
+
+El conjunto de pruebas consta de una lista de palabras (de largo variable) donde la primera es la
+palabra que no encaja. Para obtener cuál es dicha palabra, se toma el centroide (el promedio
+componente a componente de los vectores) y se devuelve la palabra más lejana al mismo. En este caso
+se almacenan la cantidad de resultados donde ninguna palabra está presente en el vocabulario; se
+considera aceptable que falten palabras mientras que sea capaz de obtener correctamente el
+resultado.
+
+[más métodos?]
+
+\quad
+
+Cabe notar también que al momento de evaluar los modelos vectoriales se le aplica a las palabras del
+conjunto de pruebas el mismo preprocesamiento que se le aplicó al corpus de texto al construir los
+vectores. Así se evitan problemas de incompatibilidad entre las pruebas y las representaciones
+(donde uno saca los tildes y el otro no, por ejemplo).
+
+
+\subsubsection{API HTTP}
+
+El último gran componente del backend es la API web, cuyo objetivo es brindar una interfaz HTTP
+RESTful que permita interactuar con toda esta maquinaria ya descrita, buscando en lo posible
+esconder las complejidades de la misma. Esto es, se busca que el usuario que utilice esta API no
+requiera conocimiento de Celery, ni de PostgreSQL, ni de la implementación particular de los
+algoritmos y evaluaciones utilizados, ni de ningún otro componente interno del sistema. Así, para el
+usuario, los modelos vectoriales estarán siendo entrenados por una caja negra que devuelve una lista
+de vectores con determinadas características al finalizar.
+
+Con este fin, la API se maneja exclusivamente a nivel del modelo de datos: esto es, el usuario
+interactúa con recursos REST [cita rest resource] que representan al dominio del sistema que se
+describió antes, junto con un recurso especial para la búsqueda de documentos en el corpus.
+
+El principal objetivo de esta interfaz es ser consumida por el frontend de la herramienta, aunque
+puede ser utilizada por un usuario realizando los pedidos HTTP manualmente si así lo desea.
+
+
+\paragraph{Corpus}
+
+Se exponen tres \textit{endpoints} (URLs que referencian a un recurso particular) relacionados con
+el corpus de texto, todos bajo el prefijo \texttt{/corpus/}. El primero de ellos,
+\texttt{/corpus/search/} permite realizar una búsqueda en el texto, filtrando por la aparición de
+uno o más términos determinados o por campos de los metadatos asociados a cada documento. La
+consulta se especifica a través de un JSON [cita], siguiendo el formato empleado por Elasticsearch
+[cita], por lo que ofrece toda las funcionalidades que este motor de búsqueda brinda. Para cada
+documento recuperado, se devuelve fragmento de su contenido, con el texto que coincide con el
+término de búsqueda resaltado. También se provee funcionalidades de paginado para no tener problemas
+con consultas demasiado grandes.
+
+A través del endpoint \texttt{/corpus/document/<id>/}, es posible recuperar un documento en su
+totalidad, con el contenido completo y todos sus metadatos. En caso de existir, también se provee
+una URL para acceder al documento directamente en la fuente correspondiente.
+
+Puesto que recorrer todo el corpus documento a documento a través de los anteriores llamados sería
+extremadamente ineficiente, se provee un endpoint adicional, \texttt{/corpus/download/}, que, a
+partir de una consulta con el mismo formato de las búsquedas, devuelve un archivo con el contenido
+de todos los documentos que coinciden con la misma. Para ello, se recuperan los documentos y se
+construye un archivo comprimido en formato ZIP [cita] compuesto por un archivo de texto plano por
+documento.
+
+Dado que los contenidos asociados al resultado de una consulta podrían ocupar un gran tamaño (en el
+orden de \textit{gigabytes}), es imprescindible este archivo no se genere por completo en el
+servidor y que luego se envíe al usuario. Con este fin, se utilizó la biblioteca de Python
+\texttt{zipstream} [cita], que permite ir construyendo y sirviendo el contenido de un archivo ZIP
+mientras el usuario lo va descargando, agregándole los archivos con el contenido de los documentos
+uno a uno, logrando así que el archivo final nunca se almacene por completo en el servidor.
+
+
+Por otro lado, cabe notar que permitir al usuario ingresar una consulta genérica a través de la API
+plantea ciertas consideraciones de seguridad. Dado que la entrada del usuairo se restringe a una
+consulta sobre el corpus, no podrá modificar el contenido almacenado. Sin embargo, fue necesario
+tomar precauciones adicionales y bloquear la funcionalidad de consultas con scripts de Elasticsearch
+[cita] para evitar inconvenientes\footnote{De hecho, las nuevas versiones de Elasticsearch vienen
+con esta funcionalidad deshabilitadas por este mismo motivo.}.
+
+
+\paragraph{Vectores y Pruebas}
+
+La API también brinda funcionalidades para manipular vectores de palabras, conjuntos de pruebas y
+resultados. Para cada uno de estos tres recursos, es posible crearlos, obtener sus detalles (a
+través de un identificador asignado a cada uno, e.g. \texttt{/embeddings/1/}), listarlos,
+modificarlos, y eliminarlos.
+
+En el caso de las representaciones vectoriales, la vista detallada devuelve qué algoritmo se utilizó
+para entrenar, los hiperparámetros empleados, el corpus utilizado (la consulta de Elasticsearch, el
+tamaño en cantidad de palabras, y las opciones de preprocesamiento), y si ya ha sido entrenado o
+no. Es posible asignarles una descripción para poder identificarlos más fácilmente. También es
+posible descargar los vectores a través del endpoint \texttt{/embeddings/<id>/download/}, donde se
+emplea una técnica similar a la descrita en la sección anterior para devolverle al usuario los
+archivos asociados a dicho modelo.
+
+Los conjuntos de pruebas devuelven el tipo de prueba que contienen (e.g.\ analogías), junto con un
+nombre y una descripción asignadas por el usuario. Se devuelve también un ejemplo de la prueba, para
+que el usuario tenga como referencia (por ejemplo, ``\,`increíble' is to `increíblemente' as
+`aparente' is to\ldots (`aparentemente')''). Al igual que en los vectores, es posible descargar los
+datos del conjunto de pruebas a través del endpoint \texttt{/testsets/<id>/download/}, donde se
+devuelve directamente un archivo de texto plano con las entradas.
+
+Para los dos anteriores casos, sólo es posible modificar el nombre y descripción de los recursos; en
+caso de querar cambiar, por ejemplo, los hiperparámetros, es necesario crear un nuevo modelo, pues
+sino quedaría inconsistente el modelo ya entrenado con los registros en la base de datos. Se toma
+esta decisión para evitar que el usuario inadvertidamente tenga que volver a entrenar los vectores
+de palabras por realizar un cambio menor.
+
+Por último, en el caso de los resultados, sólo es posible ver, listar y eliminarlos. La vista de los
+detalles de un resultado contienen el porcentaje de aciertos logrados y datos adicionales
+dependiendo del tipo de prueba (por ejemplo, el porcentaje de aciertos en el top 10 en las
+analogías). El listado también permite filtrar por vector de palabras o por conjunto de pruebas,
+para poder fácilmente visualizar cuáles son los resultados de las pruebas para una representación, o
+vice versa.
+
+
+\paragraph{Manejo de Tareas}
+
+Como ya se mencionó anteriormente, la ejecución de tareas (que abarca tanto el entrenamiento como la
+evaluación de las representaciones) se realiza también a través de una API, bajo el prefijo
+\texttt{/jobs/}. Para entrenar un modelo vectorial, es necesario simplemente indicar cuál es el
+identificador del recurso. En caso de ya estar entrenado, o de estar actualmente en entrenamiento,
+se devolverá un error. En otro caso, se agregará a la cola de tareas y se devolverá el identificador
+de la tarea asociada.
+
+Estos identificadores se pueden luego utilizar para ver el estado de las tareas, mediante el
+endpoint \texttt{/jobs/training/<id>/}. A través de este llamado se devolverá el estado (si todavía
+está esperando, si ya está corriendo, o si ha ocurrido un error) y el progreso de la tarea (un
+porcentaje). Si no se indica ningún identificador, es posible listar todas las tareas existentes,
+las cuales se pueden filtrar según si ya han terminado o si están en la cola.
+
+Se puede también cancelar el entrenamiento utilizando el verbo HTTP \texttt{DELETE}, lo cual
+abortará al algoritmo y borrará el registro de la tarea de la base de datos.
+
+El tratamiento con las tareas de evaluación es análogo, con diferencias únicamente al momento de
+agregar una tarea. Es posible, en este caso, indicar que una representación vectorial debe ser
+evaluado con un conjunto de pruebas particular, con los conjuntos con los que no ha sido evaluado
+aún, o con todos los disponibles. En caso de ya haber sido evaluado, se eliminiará el resultado
+anterior y se correrá de nuevo. Lo opuesto también es posible indicando, para un conjunto de
+pruebas, que sea utilizado para evaluar todos los modelos vectoriales faltantes. Esto ayuda a evitar
+que tenga que enviarse todas las combinaciones de pruebas y vectores a la hora de evaluar.
+
+
+\paragraph{Introspección}
+
+En los endpoints que se han descrito hasta ahora hay muchos datos que el usuario debe ingresar que
+cumplen con ciertas restricciones: por ejemplo, el tipo de representación vectorial puede ser
+únicamente \texttt{word2vec}, \texttt{glove}, o \texttt{svd}. Cada uno de ellos, a su vez, tiene un
+conjunto de hiperparámetros particulares, con tipos de datos específicos.
+
+Con el fin de no tener que realizar un \textit{hard code} de estas alternativas en el frontend de la
+herramienta, y para dejar parte de la funcionalidad documentada para un posible usuario, se decidió
+brindar una serie de endpoints que describen las variantes de modelos vectoriales, conjuntos de
+pruebas, y opciones de preprocesamiento. Esto funciona también como una única \textit{fuente de
+verdad} sobre las funcionalidades de la herramienta.
+
+El primero de ellos, \texttt{/enums/models/}, devuelve una lista de modelos, junto con su nombre
+descriptivo, y una lista de hiperparámetros que el usuario debe especificar. Por ejemplo, para el
+caso \texttt{word2vec}, se indica que hay un hiperparámetro denominado \texttt{algorithm} que puede
+tomar los valores \texttt{skipgram} o \texttt{cbow}, para entrenar cualquiera de las dos variantes
+propuestas por Mikolov. También se indican valores por defecto para cada posible hiperparámetro, por
+si el usuario no especifica uno.
+
+Para los conjuntos de pruebas se indica, a través de \texttt{/enums/tests/}, los tipos de pruebas
+que el usuario puede elegir, junto con su nombre. Para las opciones de preprocesamiento se indica, a
+través de \texttt{/enums/corpus/}, las opciones que hay para elegir y los valores que éstas pueden
+tomar (por ejemplo, cómo realizar la tokenización de las palabras con la opción
+\texttt{word\_tokenizer}, o si remover los tildes con la opción \texttt{remove\_accents}).
+
+
+De esta forma, es posible agregar nuevos modelos, pruebas, y opciones de preprocesamiento
+dinámicamente, sin tener que estar modificando luego el frontend. Los detalles de cómo esto se lleva
+a cabo se presentan en la siguiente sección.
 
 
 \subsection{Frontend}
