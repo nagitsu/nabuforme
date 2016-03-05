@@ -102,6 +102,8 @@ implementación de estas técnicas en más detalle.
 mejor; que cada una de las fuentes cumplió con los requerimientos y más o menos qué enfoque se
 utilizó para scrapearla]
 
+[- comentar que se optó por sacar algo de cada tipo de fuentes, que en principio hay más info en cada área pero escapaba del alcance]
+
 
 \subsubsection{Portales de Noticias}
 
@@ -168,48 +170,156 @@ Scrapy [cita?] para estos portales, implementación que se detalla más adelante
 
 \subsubsection{Escritura Amateur}
 
-- sitios de escritura amateur en internet
-    - scraping y/o scraping automático
-    - texto potable, aunque ``diálogo'' y faltas de ortografía
+Existen diversos sitios en Internet dedicados a la escritura amateur, donde los usuarios se
+registran y publican historias propias. Puesto que muchos de estos sitios acumulan una gran cantidad
+de historias, se decidió investigar esta área en mayor profundidad.
+
+Algunos de estos sitios, como Los Cuentos [cita], son de carácter más bien general, donde los
+usuarios publican narraciones, ensayos, cuentos o poemas. La calidad y el contenido de estos textos
+varía drásticamente entre uno y otro, pudiendo encontrar piezas con una gran cantidad de faltas de
+ortografía y carentes de sentido, o piezas por autores renombrados que fueron republicados en el
+sitio.
+
+La otra gran categoría de escritura amateur presente en Internet es el \textit{fanfiction}
+(\textit{ficción de fans}, en inglés). Estos textos suelen ser escritos principalmente por jóvenes,
+centrados en universos o personajes de la cultura popular, como series de televisión, videojuegos o
+libros. Debido a esto, su calidad suele ser incluso inferior al anterior grupo. Suelen contener
+grandes cantidades de diálogo (como si fuera un guión) y muchas menciones a personajes o lugares
+ficticios.
+
+De todos modos, la media de los textos obtenidos de estas fuentes de palabras está compuesta por
+oraciones coherentes y con relativamente pocas faltas de ortografía, por lo que es de gran utilidad
+para el corpus que se pretende construir. Además, existe un gran volumen de datos, y el texto es
+fácil de limpiar.
+
+Para atacar estos sitios, se optó por usar principalmente la técnica de scraping automático
+mencionada en la sección anterior, pudiendo así incorporar al corpus nuevas historias en la medida
+que se escriban.
 
 
 \subsubsection{Wikimedia}
 
-- wikimedia (wikipedia, wikivoyage, wikibooks, etc.)
-    - texto bien escrito, vocabulario muy amplio (términos científicos, etc.)
-    - se necesita sacar el wikimarkup, comentar cómo se hace
+Los distintos proyectos de Wikimedia [cita], como Wikipedia, Wikilibros, Wikicitas, y Wikiviajes,
+son una fuente de palabras particularmente interesante, pues tiene todas las cualidades que se
+espera del corpus:
+
+\begin{itemize}
+
+\item En primer lugar, cuentan con grandes volúmenes de texto que ayudan a llegar a la meta
+propuesta. El principal proyecto de Wikimedia es Wikipedia, pero el resto tienen cantidades no
+despreciables de palabras también.
+
+\item Segundo, tienen una gran variedad de contenidos, en especial Wikipedia: siendo una
+enciclopedia, posee entradas y menciones para países, personas, lugares, eventos, fenómenos, etc.,
+dotando así al corpus de un gran y diverso vocabulario, lo cuál será muy positivo al entrenar
+modelos vectoriales.
+
+\item Tercero, el texto está bien escrito y suele ser activamente revisado por distintas personas,
+por lo que el nivel de calidad es superior al resto de las fuentes.
+
+\item Cuarto, se encuentra dividido en artículos bien delimitados que tratan de un único tema
+particular, permitiendo obtener resultados más coherentes cuando se realizan búsquedas sobre el
+corpus.
+
+\end{itemize}
+
+
+El contenido de los proyectos de Wikimedia puede ser descargado en línea a través de \textit{dumps}
+provistos por la fundación misma [cita]. La principal complejidad de incorporar esta fuente es, sin
+embargo, su limpieza, pues los artículos vienen con un \textit{markup} denominado \textit{wikitexto}
+[cita] que dificulta la extracción del texto. De todos modos, existen una gran variedad de
+herramientas para la limpieza del mismo, cuestión que se detallará más adelante.
 
 
 \subsubsection{Foros}
 
-- foros en español
-    - texto mal escrito en todos los sentidos
+Los foros de discusión de Internet [cita] son otra gran fuente de palabras, en cuanto al volumen de
+datos. Dado que muchos poseen miles de usuarios registrados, llegan a manejar cantidades de texto
+muy elevadas. Como contrapartida, sin embargo, el texto publicado suele ser de muy baja calidad,
+donde algunos mensajes no son más que imágenes o emotíconos y por lo tanto carentes de contenido
+útil para el propósito del proyecto. Esto último depende también de la audiencia que interactúe en
+dicho foro, donde sitios con una demografía de edad mayor suelen tener mejor calidad.
+
+De todos modos, se decidió utilizar estas plataformas como fuentes de noticias porque permiten
+experimentar con la calidad de los modelos vectoriales en función a la calidad del corpus. Además,
+puesto que suelen tener un estilo más similar al habla, tienen vocabularios distintos al resto de
+las fuentes y consecuentemente una mayor cantidad de expresiones del argot de los participantes.
+
+Se utilizaron técnicas de scraping a través de Scrapy para extraer el contenido de estas fuentes,
+punto que se detallará en la sección siguiente.
 
 
 \subsubsection{Subtítulos}
 
-- subtítulos
-    - principlamente diálogos, pero bien escritos (por lo general)
+Hay una gran cantidad de texto en los subtítulos de series y películas extranjeras. Como referencia,
+los subtítulos de un capítulo de una serie de televisión de una hora rondan las cinco mil
+palabras. Dada la enorme cantidad de series existentes, cada una con decenas de episodios, se llega
+a un volumen de palabras muy alto.
+
+El texto de los subtítulos por lo general está correctamente escrito, aunque se compone casi
+exclusivamente de diálogos. Esto también provee otro tipo de vocabulario distinto a las fuentes
+anteriores pues, por ejemplo, hay un mayor uso de la segunda persona.
+
+La descarga de los subtítulos se realizó con un script manual, bajando todo el contenido disponible
+en Tu Subtítulo [cita]. Luego fue necesario extraer el texto de los mismos, eliminando las
+indicaciones de tiempo (cuándo debe aparecer cada línea en pantalla) y el markup que pueden contener
+(tags HTML por lo general).
 
 
 \subsubsection{Documentos Oficiales}
 
-- documentos oficiales (parlamento)
+Muchas instituciones públicas publican grandes cantidades de textos con el fin de informar a sus
+poblaciones sobre distintos temas, o de mantener registro de las actividades de sus
+representantes. Entre este tipo de texto se encuentran las versiones taquigráficas de sesiones de
+parlamentos de países u organizaciones internacionales, como la UE o UNASUR, así como comunicados de
+distintas instituciones como la ONU\@. Estos textos suelen tener una jerga partícular, pues son
+muchas veces documentos altamente técnicos, pero son no obstante textos de calidad que pueden
+aportar mayor volumen y vocabulario al corpus.
+
+Se incorporaron dos fuentes de documentos oficiales al corpus: los diarios de sesiones del
+parlamento Uruguayo del año 1985 a la fecha y los comunicados emitidos por la ONU entre los años
+1999 a 2009.
+
+El primero fue descargado a través de un script de la página del Poder Legislativo Uruguayo [cita] y
+luego procesado para eliminar el markup. Contiene las sesiones de la Cámara de Diputados, la Cámara
+de Senadores, y de la Asamblea General. El mecanismo para su descarga se detalla más adelante.
+
+El segundo fue tomado de un corpus paralelo generado por [cita] como insumo para tareas de
+traducción automática. Fue descargado de [cita http://opus.lingfil.uu.se/MultiUN.php], procesado y
+finalmente agregado al corpus construido.
 
 
-\subsubsection{Mercadolibre}
+\subsubsection{Libros}
 
-- mercadolibre
-    - texto mal escrito
-    - cómo se sacan descripciones
-    - no tiene muchas oraciones coherentes, son publicidades principalmente
-    - mucho duplicado, se guarda a nivel de oración para evitar cosas repetidas
+Una fuente de palabras inmediata son libros de texto en español, pues se cuenta con cientos de
+miles, cada uno de gran tamaño. En la mayoría de los casos también son revisados por un editor, por
+lo que la calidad de la escritura es superior a la encontrada en las otras fuentes. Además cuentan
+con una gran variedad de vocabulario, pues su contenido va desde de ficciones narrativas hasta
+textos científicos.
+
+La incorporación de libros en el corpus presenta, sin embargo, varias dificultad: en primer lugar,
+no es fácil acceder digitalmente a colecciones importantes de libros, pues no están disponibles de
+manera pública en Internet fácilmente. Segundo, incluso cuando sí es posible obtener libros
+digitalmente, suelen estar en formatos que hacen la extracción de texto muy compleja (por ejemplo,
+PDFs con escaneos del texto).
+
+Se optó por utilizar un corpus ya existente que recopila textos relacionados a la Unión Europea (en
+particular a su librería, \textit{EU Bookshop} [cita]), provista por el proyecto \textit{LetsMT!}
+[cita letsmt.eu]. Este es un corpus paralelo para la traducción automática, pero es posible utilizar
+únicamente los textos en español para incorporar al corpus.
+
+Está compuesto principalmente por publicaciones escritas por instituciones de la UE, por lo que
+suelen ser de carácter más bien oficial (esto es, tratados, informes, y similares). Aún así, cuenta
+con algunos libros de lectura general.
 
 
 \subsubsection{Otros Corpus}
 
-- otros corpus en español
-    - cómo se adapta cada uno
+Se realizó también una investigación de los corpus en español existentes en la comunidad, como se
+mencionó en el capítulo anterior. Algunos de ellos, como los corpus paralelos de traducción
+automática a los que se hizo referencia arriba, fueron incluso incorporados al corpus.
+
+[alguno más? ya se mencionaron algunos arriba pero en la sección correspondiente]
 
 
 \section{Implementación}
