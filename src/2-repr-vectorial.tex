@@ -168,7 +168,7 @@ el contexto en el que estas ocurren en un determinado corpus de texto utilizado 
 de las representaciones. Con este fin, se construye un vector $v \in \mathbb{R}^N$ que captura, de
 alguna manera, información acerca del contexto donde aparece la palabra.
 
-Qué se considera el contexto de una palabra es una decisión propia de cada método; para un elemento
+Qué es considerado como el contexto de una palabra es una decisión propia de cada método; para un elemento
 lingüístico particular, se podría considerar la pertenencia a una región de texto dado (e.g.\ la
 pertenencia a una oración, un párrafo, o hasta un documento entero), o se puede considerar
 definiciones que sean independientes de la estructura, considerando la relación con otros elementos
@@ -176,20 +176,20 @@ lingüísticos (e.g.\ la cantidad de \textit{coocurrencias} con otra palabra).
 
 Para el punto anterior, también es importante definir qué \textit{métrica de asociación} se estará
 midiendo respecto al contexto elegido: el caso más básico es contar la cantidad de ocurrencias de la
-palabra dicho contexto, pero existen técnicas que capturan mejor esta relación.
+palabra en dicho contexto, pero existen técnicas que capturan mejor esta relación.
 
 Otro punto importante a considerar es que la cantidad de contextos que se consideran puede ser muy
 elevada: en el caso de coocurrencias con elementos lingüísticos, el vector asociado a un contexto
 tendrá un tamaño del orden de $|V|$ elementos (donde $V$ es el vocabulario), mientras que si se
 consideran regiones de texto se estará tratando con dimensiones aun mayores. Por esta razón, es
-necesario evaluar el empleo de técnicas de reducción de dimensionalidad, o al menos métricas de
+necesario evaluar el uso de técnicas de reducción de dimensionalidad, o al menos métricas de
 asociación que generen representaciones dispersas que hagan al resultado tratable computacionalmente
 (esto es, vectores con muchos ceros).
 
 Por último, cómo utilizar la representación final obtenida y cómo medir la similitud entre dos
 palabras es un tema no menor a resolver, que dependerá de la aplicación final de los vectores. Por
 ejemplo, cuando se trata con representaciones dispersas, medir la similitud con una distancia
-euclidea tendrá resultados inferiores que la distancia coseno, pues esta última estará menos sesgada
+euclídea tendrá resultados inferiores que la distancia coseno, pues esta última estará menos sesgada
 a la cantidad de componentes nulas que hay en el vector.
 
 Resumiendo, a la hora de construir un modelo estadístico para la representación vectorial de
@@ -220,7 +220,7 @@ Siguiendo los puntos anteriores, un modelo estadístico se podría formalizar de
 
 \begin{itemize}
 
-\item Un vocabulario $V$, conjunto de palabras que se considerarán. $V$ podría formarse las palabras
+\item Un vocabulario $V$, conjunto de palabras que se considerarán. $V$ podría formarse con las palabras
 que están presentes en el corpus, por ejemplo.
 
 \item Un conjunto de contextos $C$, que captura las decisiones respecto al tipo y forma de los
@@ -284,7 +284,7 @@ combinación (denominada \textit{mixture}) de dichos tópicos. Cada palabra tien
 probabilidad de utilizarse en un tópico dado, y todos los parámetros se ajustan mediante un
 algoritmo de maximización de la esperanza.
 
-Otra variante al último algoritmo fue la propuesta en~\cite{Blei2003}, donde los autores plantean un
+Otra variante al último algoritmo es la propuesta en~\cite{Blei2003}, donde los autores plantean un
 modelo generativo denominado LDA (asignación de Dirichlet latente) que sigue un esquema de pLSI
 donde la distribución de fondo para los tópicos se asume que sigue una distribución de Dirichlet.
 
@@ -334,23 +334,23 @@ esquema HAL\@. Una de los principales aportes fue la introducción de la PMI pos
 la PMI pero donde los valores negativos se sustituyen por cero. La intuición detrás de este cambio,
 plantean los autores, es que los valores negativos implican que el par de palabras tiene menos
 coocurrencias de lo esperado, punto que se podría dar por, por ejemplo, un corpus de tamaño
-insuficiente o ruidoso. Otra ventaja de esta métrica es que la matriz de asociación resultantes es
+insuficiente o ruidoso. Otra ventaja de esta métrica es que la matriz de asociación resultante es
 dispersa, lo que ayuda a que su cálculo sea manejable computacionalmente y a que la reducción de
 dimensionalidad no sea imprescindible.
 
 Además de métricas de asociación, los autores realizan pruebas con la dimensionalidad de los
-vectores resultantes (quedándose con las $d$ palabras de mayor frecuencia únicamente), con el tamaño
+vectores resultantes (quedándose únicamente con las $d$ palabras de mayor frecuencia), con el tamaño
 del corpus utilizado para tomar las estadísticas, y con el tamaño de la ventana empleada. Llegan
 finalmente a que, en todos los casos, los mejores resultados se obtienen con la métrica PPMI, en
 especial cuando los tamaños de las ventanas son muy chicos (1 ó 2 a ambos lados de la palabra). En
-cuanto al corpus y la dimensionalidad, cuánto mayor mejor, aunque está claro que esto afectará muy
+cuanto al corpus y la dimensionalidad, cuanto mayor mejor, aunque está claro que esto afectará muy
 negativamente a la eficiencia computacional.
 
 Esta línea de investigación se continúa en~\cite{BullinariaLevy2012}, donde se evalúa también la
 utilización de técnicas de reducción de dimensionalidad. Los autores muestran que los resultados se
 pueden mejorar significativamente aplicando SVD y truncando a los $d$ valores singulares más grandes
 (donde $d$ varía según el problema objetivo, pero suele estar cerca de $d = 1000$).  Además, logran
-mejorar aún más los resultados de mediante una variante de SVD propuesta por~\cite{Caron2001}, donde
+mejorar aún más los resultados mediante una variante de SVD propuesta por~\cite{Caron2001}, donde
 la matriz de valores singulares se eleva a un exponente $P$, nivelando dichos valores para quitarles
 peso a los más grandes.
 
@@ -391,13 +391,13 @@ neuronales. El autor plantea la idea de utilizar el espacio real para modelar el
 fin de explotar la continuidad local para obtener una mejor generalización, cualidad que carecen los
 modelos estadísticos basados en espacios discretos. Por ejemplo, en un modelo de ngramas, la
 ocurrencia de la frase ``el gato corre'' es completamente independiente (y no elevará la
-probabilidad) de la frase ``el perro corre''. Esto implica, además que es necesario una mayor
+probabilidad) de la frase ``el perro corre''. Esto implica además que es necesaria una mayor
 cantidad de parámetros para la estimación: una probabilidad de ocurrencia por ngrama. Otro punto
 positivo es que, al requerir menos parámetros, es posible utilizar contextos más grandes: mientras
 que el estado del arte en modelos estadísticos utilizan 3 ó 4 palabras, los modelos continuos llegan
 a utilizar hasta 10 ó 15.
 
-La idea principal detrás modelado continuo de lenguaje es distribuir la densidad de probabilidad de
+La idea principal detrás del modelado continuo de lenguaje es distribuir la densidad de probabilidad de
 la siguiente palabra (dada una secuencia de palabras inicial) de forma más inteligente: mientras que
 los modelos estadísticos la distribuyen uniformemente alrededor de cada combinación de ngramas
 (e.g.\ de igual manera para ``el gato árbol'' que para ``el gato camina'', dada la frase ``el gato
@@ -408,9 +408,9 @@ En su artículo, Bengio presenta un esquema distinto al usual para entrenar el m
 plantea una arquitectura que consta de vectores continuos de palabras y una función paramétrica
 definida sobre dicho espacio de vectores, el cual modela la probabilidad de la siguiente palabra
 dada una ventana de $N$ palabras precedentes. El autor utiliza una red neuronal para modelar la
-probabildad, pero deja abierta la posibilidad de usar modelos como modelos de combinación gaussiana
+probabildad, pero deja abierta la posibilidad de usar otros modelos, como modelos de combinación gaussiana
 (o \textit{gaussian mixture models}). Bajo esta arquitectura, tanto los vectores de palabras como la
-función de probabilidad son aprendidas en simultáneo, utilizando un corpus texto de gran tamaño como
+función de probabilidad son aprendidas en simultáneo, utilizando un corpus de gran tamaño como
 entrada al algoritmo.
 
 La principal innovación de este artículo fue la separación de los vectores de palabras y la función
@@ -434,7 +434,7 @@ LSA fijos, en lugar de entrenarlos junto a la red, pero obtuvo resultados inferi
 Otra variante propuesta por Mikolov~\cite{Mikolov2010, Mikolov2011a, Mikolov2011b, Mikolov2011c}
 fue, en lugar de utilizar una ventana de largo fijo y una red neuronal estándar, utilizar una red
 neuronal recursiva simple para modelar el lenguaje. Esta arquitectura es similar a las \textit{Elman
-networks}, pero el autor tiene mejores resultados por utilizar técnicas de entrenamiento modernas
+networks}, pero el autor obtiene mejores resultados por utilizar técnicas de entrenamiento modernas
 que atenúan los problemas usuales de entrenar redes neuronales recursivas (RNNs). Como derivado de
 este modelo también se generan representaciones vectoriales. El autor incluso ofrece una herramienta
 de código abierto (\textit{RNN toolkit}) para la creación de modelos de lenguaje que sigan esta
@@ -460,7 +460,7 @@ utilización de representaciones vectoriales como una nueva alternativa para la 
 problemas y muestra que es una técnica competitiva con las técnicas existentes.
 
 
-Con este nuevo auge de aplicaciones de las representaciones, se comienzan también a buscar mejorar
+Con este nuevo auge de aplicaciones de las representaciones, se comienza también a buscar mejorar
 la eficiencia en la generación de vectores de palabras independientemente del modelado de
 lenguaje. En~\cite{MnihHinton2007}, los autores proponen variantes a la arquitectura de Bengio que
 buscan ser mejores desde el punto de vista computacional. De las cuatro variantes que proponen, una
@@ -499,7 +499,7 @@ el contexto o vice versa. El primer caso recibe el nombre de \textit{Continuous 
 CBOW, esquematizado en la [figura 1]), mientras que el segundo recibe el nombre de \textit{Skipgram}
 (o SG, esquematizado en la [figura 2]).
 
-La probabilidad se modela en los dos casos utilizando exclusivamente un softmax jerárquico, como el
+En los dos casos la probabilidad se modela utilizando exclusivamente un softmax jerárquico, como el
 propuesto por Morin y Bengio en~\cite{MorinBengio2005}, con el fin de mejorar la eficiencia. Estos
 dos nuevos modelos logran, por lo tanto, mejorar los resultados en la tarea de analogías a un costo
 computacional significativamente menor que el de entrenar una RNN completa.
@@ -558,7 +558,7 @@ estadísticos.
 
 Siguiendo esta línea de pensamiento, en~\cite{Levy2015} el autor busca identificar qué es lo que
 hace que Skipgram con Negative Sampling (SGNS) funcione tanto mejor que un modelo PPMI que utiliza
-SVD\@. Los resultados a los que lleva, sin embargo, son contradictorios con los de Baroni. Plantea
+SVD\@. Los resultados a los que llega, sin embargo, son contradictorios con los de Baroni. Plantea
 que la diferencia entre la performance de ambos métodos se debe a que SGNS tiene una ventaja por
 utilizar, además del modelo básico, una serie de heurísticas en el preprocesamiento del corpus y el
 posprocesammiento de los vectores que mejoran drásticamente los resultados.
@@ -639,7 +639,7 @@ relación entre palabras, que busca decidir si una palabra es sustituible por ot
 dado. Para esto, se construye un conjunto de pruebas compuesto por pares de palabras y un puntaje,
 determinado por un grupo de humanos, de qué tan similares son dichas palabras. El objetivo es
 obtener un buen nivel de correlación entre los puntajes de los pares de palabras y las
-distancias\footnote{Es usual utilizar la distancia euclidea o la distancia coseno.} en el espacio de
+distancias\footnote{Es usual utilizar la distancia euclídea o la distancia coseno.} en el espacio de
 vectores, medida utilizando la correlación de Spearman. Distinguimos también entre similitud, donde
 se mide relaciones más fuertes, como la sinonimia y la hiponimia, de la relación
 (\textit{relatedness} en la literatura), donde se incluyen relaciónes más amplias, posiblemente
