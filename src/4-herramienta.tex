@@ -557,4 +557,87 @@ a cabo se presentan en la siguiente sección.
 
 \subsection{Frontend}
 
-- frontend
+El principal objetivo del componente \textit{frontend} de la herramienta es brindar a un usuario la
+posibilidad de utilizar de forma intuitiva todas las funcionalidades expuestas por el backend sin la
+exigencia adicional de poseer conocimientos detallados del funcionamiento interno de la herramienta.
+El frontend es el componente de la aplicación web que se ejecuta en el navegador del usuario y que
+funciona como interfaz entre el mismo y la API expuesta por el backend.
+
+Además de exponer las funcionalidad de las capas inferiores de forma sencilla e intuitiva, el frontend
+tiene como gran objetivo ofrecer herramientas de visualización que complementen las complejas tareas de
+cómputo que se realizan en los demás nodos. Se busca entonces lograr una interfaz amigable y expresiva
+que permita la interacción con la aplicación escondiendo lo máximo posible la gran complejidad del resto
+del sistema.
+
+Para el desarrollo de este componente se decidió aprovechar al máximo el rico ecosistema de herramientas
+de código abierto existente para el desarrollo de aplicaciones web dinámicas. Dado que la elección de las
+herramientas utilizadas y su combinación para lograr el producto final son actividades de valor en sí
+mismas, comenzaremos por listar las herramientas elegidas y los motivos que nos llevaron a hacerlo para
+luego describir la solución finalmente implementada.
+
+\subsubsection{Herramientas}
+
+Como herramienta principal se decidió utilizar AngularJS [cita], un popular framework JavaScript de
+código abierto mantenido por Google. AngularJS brinda importantes ventajas en comparación con otras
+alternativas populares como puede ser jQuery [cita?]. Entre sus principales características se encuentra
+el hecho de implementar el patrón de diseño MVC (modelo, vista, controlador) [cita] el cual permite una
+organización de la aplicación que fomenta la reutilización de código y la separación de conceptos.
+Además, abstrae las operaciones de modificación del modelo de objetos del documento (DOM) del navegador,
+lo que simplifica el desarrollo de la aplicación.
+
+Para lograr un estilo visual elegante y consistente de forma sencilla se decidió aprovechar el proyecto
+Angular Material [cita]. Dicho proyecto provee una implementación de la especificación del Diseño Material
+de Google [cita], de forma totalmente compatible con AngularJS. Dicha especificación de diseño es la que
+actualmente puede encontrarse en dispositivos móviles ejecutando el sistema operativo Android.
+
+También se utilizó Yeoman [cita], un generador de proyectos usualmente utilizado como andamiaje para la
+construcción inicial de una aplicación web. Su objetivo principal es sentar los fundamentos básicos de
+una aplicación tales como estructura de directorios, archivos de configuración iniciales e instalación
+de herramientas recomendadas.
+
+Se decidió a su vez la adopción de una herramienta de ejecución de tareas, Grunt [cita] en este caso,
+para simplificar y automatizar labores como minimización de código JavaScript y CSS o empaquetado de
+dependencias. Estas tareas ayudan reducir la cantidad y el tamaño de los archivos requeridos desde el
+navegador y por tanto mejoran el tiempo de respuesta de la aplicación.
+
+Para el manejo de estilos de la aplicación se optó por utilizar Sass [cita], una extensión del lenguaje de hojas de estilos CSS. Sass provee un conjunto de funcionalidades que simplifican la definición de estilos para las aplicaciones del lado de usuario. Naturalmente los navegadores no pueden interpretar hojas de estilos escritas en Sass, pero para resolver ese problema se automatizó una tarea en Grunt para realizar la traducción de Sass a CSS puro.
+
+\subsubsection{Arquitectura de la aplicación}
+
+Desde el punto de vista conceptual, el frontend de la herramienta se divide en cuatro grandes secciones:
+\textit{Dashboard}, \textit{Corpus}, \textit{Embeddings} y \textit{Tests}. Por otro lado, desde el punto
+de vista lógico, y dado que se utiliza un framework MVC como AngularJS, la aplicación puede dividirse en
+tres grandes componentes: vistas, modelos y controladores.
+
+Para el análisis de la arquitectura realizaremos un análisis guiado por la división conceptual de forma
+de mantener el foco en las funcionalidades de la herramienta y no perdernos en los detalles de
+implementación. Sin embargo, en cada caso nos detendremos a mencionar brevemente los componentes MVC
+que hacen a cada sección.
+
+[diagrama de la arquitectura de la aplicación (lógico y conceptual)]
+
+\paragraph{Dashboard}
+
+La sección \textit{Dashboard} es la más sencilla aunque aporta elementos de visualización muy útiles.
+Principalmente se incluye una tarjeta por cada fuente utilizada para componer el corpus. En dichas tarjetas
+se detalla el nombre de la fuente, la cantidad de palabras que la misma aporta al corpus y una pequeña
+gráfica que muestra la cantidad de palabras que han sido obtenidas recientemente de dicha fuente.
+
+Estás gráficas cumplen la doble función de presentar la cantidad de palabras obtenidas de cada fuente
+de forma diaria y además alertar de un posible defecto en el correspondiente script de extracción cuando
+la cantidad extraída presenta una caída muy pronunciada con respecto a registros inmediatamente anteriores.
+
+Como se explicó en secciones anteriores, fue necesario elaborar una considerable cantidad de scripts para
+extraer información de las diferentes fuentes elegidas para construir el corpus. En algunos casos dicha
+extracción se realizó en una única etapa. En otros casos, como por ejemplo los portales de noticias, es
+de interés volver a visitar las fuentes de forma diaria para poder indexar los nuevos documentos que hayan
+sido agregados. Dado este requerimiento, contar con una forma visual de detectar problemas con los scripts
+resulta sumamente útil.
+
+Finalmente, en esta sección se incluye la cantidad total de palabras que forman el corpus. Dicho número
+se actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
+nuevas palabras de alguna de las fuentes.
+
+[continuar con descripción lógica]
+
+[imagen ilustrativa de esta sección]
