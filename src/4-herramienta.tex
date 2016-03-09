@@ -638,6 +638,54 @@ Finalmente, en esta sección se incluye la cantidad total de palabras que forman
 se actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
 nuevas palabras de alguna de las fuentes.
 
-[continuar con descripción lógica]
+[imagen ilustrativa de esta sección]
+
+Desde el punto de vista lógico, esta sección cuenta con una sola vista principal, donde se muestra la
+información ya especificada de cada fuente que compone el corpus. Esta vista se implementa en el archivo
+\texttt{dashboard.html} en el directorio \texttt{views} de la aplicación. Para la elaboración de las
+gráficas se utilizó angular-chart.js, una colección de directivas nativas para la popular biblioteca
+Chart.js [cita].
+
+Se utilizó un sólo controlador ubicado, como todos los controladores de la aplicación, en el directorio
+\texttt{scripts/controllers}. Dicho controlador, \texttt{dashboard.js}, se encarga simplemente de dibujar
+y mantener actualizadas las gráficas con llamadas periódicas al servidor. Para la comunicación con el
+servidor se utiliza el servicio \texttt{corpus.js}, ubicado en el directorio \texttt{services}. Dicho
+servicio es utilizado en diferentes lugares de la aplicación y funciona como interfaz con los endpoints
+de Corpus ya descritos en la sección 4.3.2.
+
+\paragraph{Corpus}
+
+La sección \textit{Corpus} permite explorar la totalidad del corpus construido en el proyecto sin apenas
+restricciones. Se ofrece un campo de búsqueda en el cual un usuario puede escribir una serie de términos
+de búsqueda de interés y se ofrece además la posibilidad de filtrar por un subconjunto de las fuentes
+consideradas.
+
+Estas dos operaciones de apariencia sencilla construyen por detrás consultas en el formato JSON empleado
+por Elasticsearch. Se permite visualizar y eventualmente modificar completamente la consulta inherente en
+formato JSON a través del interruptor de \textit{consulta avanzada}. Al activar este interruptor, el
+usuario cuenta con todo el poder de expresividad del formato de consultas de Elasticsearch y por tanto
+puede ejecutar consultas potencialmente complejas sobre el corpus.
+
+Una vez ejecutada una consulta se presenta una tabla con los documentos resultantes de la misma, con su
+correspondiente paginación. En la tabla se incluye la fecha de extracción del documento, un breve fragmento
+del texto que lo compone, resaltando los términos que lo hacen relevante a la consulta, y la fuente de la
+que fue extraído.
+
+Al hacer click en un documento de la tabla se presenta un cuadro de diálogo con información más detallada
+del mismo. Se incluye cantidad de total de palabras, etiquetas, la fecha de creación en la fuente (si
+está disponible) y el cuerpo completo del texto que lo compone. Se ofrece además un botón para abrir en
+una nueva pestaña el documento original en su fuente de origen, de modo de poder corroborar en cualquier
+momento la fidelidad de los elementos del corpus.
+
+En la vista principal se ofrecen además dos acciones adicionales. La primera de ellas permite descargar
+el conjunto completo de documentos retornado al ejecutar la consulta, comprimidos en formato ZIP. La
+segunda acción permite utilizar la consulta como entrada para crear un nuevo vector, que se entrenará con
+el subconjunto de documentos retornado por la consulta. Los detalles de creación de vectores en el
+frontend se detallan más adelante. Pero dado que el corpus se encuentra en constante crecimiento, es
+importante mencionar aquí que es recomendable especificar rangos de fechas de extracción en las consultas
+al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
+obtenidos.
 
 [imagen ilustrativa de esta sección]
+
+[análisis de la implementación de la sección]
