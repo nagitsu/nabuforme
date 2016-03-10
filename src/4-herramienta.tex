@@ -688,4 +688,62 @@ obtenidos.
 
 [imagen ilustrativa de esta sección]
 
+En la implementación de esta sección se utilizaron dos vistas. La vista principal implementada en el
+archivo \texttt{corpus-search.html} presenta el formulario de búsqueda y los resultados. Se tiene una
+vista secundaria en \texttt{document-detail.html} para presentar el cuadro de diálogo con los detalles
+de un documento particular.
+
+Se utilizaron además dos controladores para la lógica de la sección. En \texttt{corpus.js} se maneja la
+creación de las consultas en formato JSON, el control de la tabla de resultados y la utilización de la
+biblioteca ace.js [cita] para dibujar el cuadro de texto para las consultas avanzadas. También se cuenta
+con el controlador \texttt{document-detail-dialog.js} que se encarga de controlar el cuadro de diálogo
+para los detalles de los documentos. Esta sección utiliza también el servicio \texttt{corpus.js}, ya fue
+descrito en la sección anterior.
+
+\paragraph{Embeddings}
+
+En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalidades vinculadas a las
+operaciones sobre vectores. En su vista principal se listan todos los vectores creados en el sistema.
+De cada uno se detalla su descripción, el tipo de representación vectorial utilizada (\texttt{word2vec},
+\texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y su estado de
+entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
+\textit{en entrenamiento} y \textit{sin entrenar}.
+
+Esta vista ofrece un botón para crear y poner a entrenar un nuevo vector. Al momento de crear vectores se
+debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además especificar
+el algoritmo a utilizar, \texttt{Skipgram} ó \texttt{CBOW}), fijar los valores de sus parámetros,
+especificar la consulta en formato JSON que Elasticsearch utilizará para devolver los documentos de
+entrenamiento y finalmente elegir los parámetros de preprocesamiento de texto. Una vez creado el vector,
+este será agregado a la cola de entrenamiento.
+
+Al hacer click en las tarjetas de información de los vectores se accede a una vista en detalle del vector
+seleccionado. En los detalles, además de la información ya provista en la vista de listado, se incluye el
+tamaño total en palabras del sub-corpus utilizado en el entrenamiento del vector, el detalle completo de
+los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar los documentos de
+entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando el vector se
+encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
+entrenamiento.
+
+De forma conveniente, junto al cuadro de la consulta en formato JSON se incluye un botón para ejecutar la
+misma en la sección de \textit{Corpus}. Esto facilita la posibilidad de explorar el conjunto de documentos
+utilizados para entrenar el vector. Eventualmente, un usuario podría descargar dicho conjunto para entrenar
+un nuevo vector de forma local utilizando el mismo algoritmo, de modo de verificar los resultados logrados
+con la herramienta presentada en este proyecto.
+
+Continuando con la descripción de la vista en detalle, se incluye al final de la misma una tabla con
+información acerca de resultados de evaluación del vector. En esta tabla se listan todos los conjuntos de
+prueba con los que este fue evaluado, la fecha de cada evaluación, el porcentaje de precisión alcanzado en
+cada una y una botón para obtener una visión más detallada de los resultados de cada prueba. Se incluye una
+acción adicional para ejecutar nuevas pruebas sobre el vector en cuestión permitiendo revaluar todas las
+pruebas, sólo evaluar aquellas aun no ejecutadas, o evaluar un caso de prueba particular.
+
+Finalmente se ofrecen acciones para eliminar el vector y para descargarlo a la computadora del usuario. La
+opción de descargar los vectores entrenados con la herramienta es una de las funcionalidad más valiosas e
+importantes del proyecto. Esta funcionalidad permite a cualquier usuario interesado en el campo de las
+representaciones vectoriales de palabras poder entrenar sus propios vectores y luego descargarlos para su
+uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
+bajo nivel de las representaciones.
+
+[imagen ilustrativa de esta sección]
+
 [análisis de la implementación de la sección]
