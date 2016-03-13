@@ -759,11 +759,13 @@ en los archivos \texttt{embedding-new.html} y \texttt{evaluate-on-testset-dialog
 
 Desde el punto de vista lógico, se utiliza el controlador \texttt{embeddings.js} para dibujar la lista de
 vectores  y actualizar el indicador de progreso para aquellos vectores que están siendo entrenados. El
-controlador \texttt{embedding-detail.js} es utilizado en la vista de detalles de un vector y se encarga
-de construir las tablas de datos y mantener actualizado el indicador de progreso de entrenamiento. Además,
-se encarga de realizar algunos procesos de formateo de los datos obtenidos de los servicios
+controlador \texttt{embedding-detail.js} es utilizado en la vista de detalles de un vector y se encarga de
+construir las tablas de datos y mantener actualizado el indicador de progreso de entrenamiento. Además, se
+encarga de realizar algunos procesos de formateo de los datos obtenidos de los servicios
 \texttt{services/embeddings.js} y \texttt{services/jobstesting.js}, utilizados para consumir los endpoints
-de vectores y casos de prueba respectivamente.
+de vectores y casos de prueba respectivamente. También se utiliza el servicio
+\texttt{services/jobstraining.js} para la comunicación con los endpoints encargados de manejar el
+entrenamiento de vectores.
 
 Conviene destacar también el controlador \texttt{embedding-new-dialog.js} que se encarga de presentar los
 datos para la creación de un nuevo vector de forma eficiente y mutando los parámetros presentados en función
@@ -808,4 +810,27 @@ cada columna depende de cada categoría, como bien se explicó en secciones ante
 
 [imagen ilustrativa de esta sección]
 
-[análisis de la implementación de la sección]
+Como en el caso de la sección \textit{Embeddings}, para la implementación de esta sección también se
+utilizaron dos vistas principales. La vista con la lista de casos de prueba del sistema fue implementada en
+el archivo \texttt{tests.html}. La implementación de la vista de detalles de un caso de prueba se incluye
+en el archivo \texttt{test-detail.html}. Para las demás funcionalidades se utilizaron vistas auxiliares. La
+creación de nuevos casos de prueba y nuevos trabajos de evaluación fueron implementadas utilizando sendos
+cuadros de diálogo implementados en \texttt{test-new.html} y \texttt{test-embedding-new.html},
+respectivamente. Finalmente, la vista en detalle de los resultados de una evaluación sobre un vector fue
+implementada con otro cuadro de diálogo en \texttt{test-result-dialog.html}.
+
+Para la lógica de esta sección se utilizaron varios controladores. En la vista de listado de casos de
+prueba se utilizó el controlador \texttt{tests.js}, encargado mayoritariamente de dibujar la lista y
+actualizar el progreso de ejecución de los trabajos de evaluación. Para la vista de detalles se implementó
+el controlador \texttt{test-detail.js}, responsable de dibujar las tablas de datos, mantener actualizadas
+las barras de progreso de evaluación y llevar la cuenta de la cantidad de trabajos ejecutándose en cada
+momento. Adicionalmente, el controlador \texttt{test-new-dialog.js} fue utilizado para manejar la creación
+de nuevos casos de prueba. Finalmente los controladores \texttt{test-result-dialog.js} y
+\texttt{new-embedding-test-dialog.js} fueron utilizados para desplegar la información detallada de la
+ejecución de un caso de prueba en un vector y la creación de nuevos trabajos de entrenamiento,
+respectivamente.
+
+Los servicios más importantes para esta sección son \texttt{testsets.js} para realizar operaciones
+CRUD (crear, recuperar, actualizar y destruir) sobre los casos de prueba, \texttt{results.js} para
+consultar los resultados de la evaluación de vectores y \texttt{jobstesting.js}, para la creación de nuevos
+trabajos de evaluación en el sistema.
