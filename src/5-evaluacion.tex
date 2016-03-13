@@ -1,0 +1,71 @@
+\chapter{Evaluación}
+
+introducción: qué/cómo se evalúa, etc.
+secciones del capítulo
+
+
+\section{Modelos Entrenados}
+
+- cuáles modelos se entrenaron (``como se mencionó anteriormente... word2vec, etc.'')
+- recordar las implementaciones
+- qué hiperparámetros tiene cada uno de los modelos (listado), más breve descripción; capaz que una reintroducción a cada modelo (que ya se vieron en el e-d-a)
+- qué hiperparámetros se prueban: los mejores de la literatura, más variantes hacia arriba y abajo para estudiar particularidades en el idioma español
+- ``en la tabla X se puede ver la lista completa...''
+    - no mencionar los uruguay-specific y spain-specific capaz (o mejor sí capaz, ``composición de corpus'' como hiperparámetro), sólo mencionar ``tamaño de corpus'' (como hiperparámetro también)
+- hablar sobre el proceso de entrenamiento: cuántos son en total; cuánto demoraron en entrenarse; cuánto ocupan los vectores, etc. (que quede claro que el tiempo de entrenamiento es una de las principales limitantes, sino probábamos más); que se crearon a través de la herramienta, etc.
+
+
+\section{Comparación con la Literatura}
+(section name TBD)
+
+- comparación con pruebas en inglés: cuáles testsets se tomaron y por qué (estándares de la bibliografía, varias fuentes para comparar)
+- (subsection?) se traducen TODOS estos testsets a mano: comentar scripts de traducción con google translate + arreglo manual
+    - más sobre el proceso de traducción: qué secciones se sacan de cada testset, algún ejemplo de entrada que se saque, de qué tamaños quedan comparado con los originales
+    - disclaimer: pueden haber errores, aunque se los revisó bastante
+- presentación de resultados para cada embedding
+    - no poner lista entera, sino los mejores 5 o algo así (o dos mejores por algoritmo)
+    - comparar valores con resultados en inglés
+    - mencionar, para analogías, el hecho de que se sacan comparatives que tienen alto porcentaje de accuracy (lo que hace que baje el promedio)
+        - comparar sección a sección
+    - ver qué embedding consigue mejores resultados por área (en similitud por ejemplo), etc.
+- alguna discusión más:
+    - comentar que los resultados son bastante comparables al inglés
+    - mostrar algún ejemplo donde erre (capaz que eso de levy de errores por defecto? el paper de 3cosmul)
+    - comparar con otros trabajos que hicieron lo mismo que nosotros de traducir vectores (billion word corpus, el italiano, polyglot, etc.; mejores resultados en español?)
+    - discusión de 3cosadd vs 3cosmul (se corrobora lo mismo de levy, que es mejor el segundo)
+    - discusión de resultados en top5 y top10 (``le erra pero está cerca'')
+    - syntactic vs semantic
+    - accents vs remove accents (casi no hay diferencia)
+
+
+- disclaimer: el corpus afecta mucho el resultado como vio Levy, así que tomar las comparaciones con pinzas; además de los problemas de traducción
+
+
+\section{Comportamiento Específico al Español}
+(section name TBD)
+
+- se arman testsets para hacer pruebas específicas del comportamiento en español, puesto que tiene mayor complejidad morfológica y hay más cosas para probar
+- son todos testsets propuestos por nosotros, así que no hay comparación, pero está bueno para tener un poco más de insight de cómo se manejan
+- cuáles son y cómo se armaron los testsets:
+    - detallar cuáles son los que se crearon (verbos, semantic field, noun gender, spain conjugations, etc.); comentar el tipo (analogy, ooo, etc.)
+    - cómo se construyeron:
+        - 150 verbos más comunes, scraping de conjugaciones, armado de testsets con selección random (mencionar scripts)
+        - scraping de semantic fields (fue de wikipedia?)
+        - lista de géneros para nouns (comentar que algunos se usan pero no son correctos, e.g. presidenta)
+- presentar resultados para cada embedding
+    - para los no-spain, hacer como la vez pasada
+    - alguna discusión más sobre los ooo, que hasta ahora no había
+- discusión de resultados
+    - (falta esperar a que se entrene)
+    - distinguir por tipo de conjugación: hay algunas más simples que otras? (e.g. subjuntivo), puede ser por el corpus
+    - ver resultados de spain-specific para evaluar composición del corpus
+    - rever alguno de los puntos de la sección anterior
+    - cantidad de ocurrencias de palabras por tiempo verbal (count de las palabras de las analogías en el corpus)
+
+
+\section{Análisis Cualitativo de Resultados}
+
+- estudiar resultados del most_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river)
+  (más informal)
+- e.g. UTE, ANCAP y eso con corpus en español y corpus general; cómo se ``diluyen'' los significados (i.e. no recupera UTE o ANCAP en todo el corpus pero sí sólo en español, a pesar de que ANCAP sólo se menciona en uruguay (o no, pero buscar ejemplo donde sí en otro caso))
+- algún ejemplo interesante
