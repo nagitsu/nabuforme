@@ -697,7 +697,7 @@ Se utilizaron además dos controladores para la lógica de la sección. En \text
 creación de las consultas en formato JSON, el control de la tabla de resultados y la utilización de la
 biblioteca ace.js [cita] para dibujar el cuadro de texto para las consultas avanzadas. También se cuenta
 con el controlador \texttt{document-detail-dialog.js} que se encarga de controlar el cuadro de diálogo
-para los detalles de los documentos. Esta sección utiliza también el servicio \texttt{corpus.js}, ya fue
+para los detalles de los documentos. Esta sección utiliza también el servicio \texttt{corpus.js}, que ya fue
 descrito en la sección anterior.
 
 \paragraph{Embeddings}
@@ -743,6 +743,63 @@ importantes del proyecto. Esta funcionalidad permite a cualquier usuario interes
 representaciones vectoriales de palabras poder entrenar sus propios vectores y luego descargarlos para su
 uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
 bajo nivel de las representaciones.
+
+[imagen ilustrativa de esta sección]
+
+Para la implementación de esta sección se utilizaron dos vistas principales. En el archivo
+\texttt{embeddings.html} se implementa la lista de vectores del sistema, mientras que en
+\texttt{embedding-detail.html} se encuentra el código de la vista en detalle para un vector en particular.
+Se tienen además vistas adicionales para crear un nuevo vector y para ejecutar evaluaciones en los vectores,
+en los archivos \texttt{embedding-new.html} y \texttt{evaluate-on-testset-dialog.html} respectivamente.
+
+Desde el punto de vista lógico, se utiliza el controlador \texttt{embeddings.js} para dibujar la lista de
+vectores  y actualizar el indicador de progreso para aquellos vectores que están siendo entrenados. El
+controlador \texttt{embedding-detail.js} es utilizado en la vista de detalles de un vector y se encarga
+de construir las tablas de datos y mantener actualizado el indicador de progreso de entrenamiento. Además,
+se encarga de realizar algunos procesos de formateo de los datos obtenidos de los servicios
+\texttt{services/embeddings.js} y \texttt{services/jobstesting.js}, utilizados para consumir los endpoints
+de vectores y casos de prueba respectivamente.
+
+Conviene destacar también el controlador \texttt{embedding-new-dialog.js} que se encarga de presentar los
+datos para la creación de un nuevo vector de forma eficiente y mutando los parámetros presentados en función
+del algoritmo de entrenamiento seleccionado. Este controlador y su vista acompañante pueden ser invocados
+desde la vista de resultados de consultas al corpus, como ya se explico en la sección anterior.
+
+\paragraph{Tests}
+
+En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de los vectores
+de palabras creados en el sistema. En su vista principal se presenta la lista de casos de prueba
+disponibles, indicando para cada uno su nombre, descripción y categoría. Las categorías principales son
+\textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De forma
+conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad de
+vectores que están siendo evaluados actualmente, junto con un indicador de progreso de la tarea actual.
+
+Los usuarios pueden hacer click en un caso de prueba para acceder a la vista de detalles, donde se presenta
+información adicional. Además de los datos mostrados en la vista principal, se presenta un ejemplo puntual
+del caso de prueba para mayor claridad de lo que se pretende evaluar. De manera adicional, se muestran
+mayores detalles acerca de las tareas de evaluación que se están ejecutando en el momento.
+
+En la vista de detalles se presenta también una tabla con resultados de evaluación. Para cada vector
+evaluado con el caso de prueba se indica la fecha de la evaluación, un enlace a la página de detalles del
+vector, el modelo utilizado por dicho vector, el porcentaje de precisión logrado en el caso de prueba y un
+botón para ver los detalles en profundidad de la evaluación. En los detalles en profundidad se encuentra,
+cuando corresponde, el desempeño en las métricas \textsc{3CosAdd} y \textsc{3CosMul} (porcentaje de aciertos
+exactos, y entre las primeras cinco y diez sugerencias), palabras no encontradas, entradas faltantes,
+entradas equivocadas y cantidad total de entradas.
+
+Desde la vista de detalles también es posible agendar nuevos trabajos de evaluación. Al momento de crearlos
+se puede optar por elegir todos los vectores que aun no fueron evaluados con el caso de prueba ó por elegir
+uno en particular. También es posible optar por ejecutar el caso de prueba en todos los vectores del
+sistema. En la parte superior de la pantalla se ofrecen además dos acciones adicionales, una para eliminar
+el caso de prueba del sistema y otra para descargarlo en un archivo en formato de cuatro columnas.
+
+Finalmente, en la vista principal se cuenta con un botón que da acceso a un formulario para crear un nuevo
+caso de pruebas en el sistema. En el formulario es necesario especificar nombre, descripción y categoría
+para la nueva evaluación. Además es necesario subir un archivo de texto en formato de cuatro columnas desde
+la computadora del cliente. Dicho archivo debe contener cuatro palabras separadas por un espacio por línea,
+donde las primeras tres columnas se utilizarán en la evaluación y la cuarta es el resultado esperado. El
+formato recién descrito es el mismo para las tres categorías existentes actualmente, pero la semántica de
+cada columna depende de cada categoría, como bien se explicó en secciones anteriores.
 
 [imagen ilustrativa de esta sección]
 
