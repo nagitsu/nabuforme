@@ -834,3 +834,36 @@ Los servicios más importantes para esta sección son \texttt{testsets.js} para 
 CRUD (crear, recuperar, actualizar y destruir) sobre los casos de prueba, \texttt{results.js} para
 consultar los resultados de la evaluación de vectores y \texttt{jobstesting.js}, para la creación de nuevos
 trabajos de evaluación en el sistema.
+
+\subsubsection{Consideraciones de diseño}
+
+Una vez terminado el análisis de la arquitectura del frontend es interesante mencionar ciertos objetivos y
+decisiones que guiaron la construcción del mismo. Se incluye a continuación una lista de puntos que fueron
+tomados en cuenta al momento de construir la solución.
+
+\begin{itemize}
+
+\item Desde su concepción se buscó que el frontend sea altamente flexible ante cambios en la API expuesta
+por el backend. Es decir, se buscó parametrizar la vistas más complejas de modo de soportar cambios en la
+cantidad o formato de ciertos campos con el mínimo impacto en el código del frontend. Como ejemplo se tiene
+la vista de creación de nuevos vectores. La API define un formato específico y flexible para los parámetros
+de entrenamiento de un nuevo vector en función del algoritmo de entrenamiento elegido. De esta forma se
+pueden agregar nuevas clases de algoritmos en el backend y estos estarán disponibles en el frontend sin
+requerir modificaciones adicionales.
+
+\item Se buscó también lograr una interfaz sencilla e intuitiva. Fue por este motivo que se decidió
+utilizar el Diseño Material de Google al ser una tecnología ampliamente probada y aceptada. Principalmente
+se logró presentar la información y funcionalidades de forma directa y clara pero manteniendo un estilo
+consistente y elegante en todas las pantallas.
+
+\item Se consideró como prioritario construir una interfaz rápida y eficiente que aproveche al máximo las
+ventajas de los navegadores modernos. A pesar de que este proyecto no tiene como objetivo probar técnicas
+de diseño y programación para la web, buscamos en todo momento lograr un desarrollo de calidad que utilice
+las bondades y excelentes avances de las herramientas para la creación de aplicaciones web modernas.
+
+\item Finalmente se puso como objetivo lograr un diseño desacoplado para la interacción de los componentes
+backend y frontend de la herramienta. Esto se consiguió utilizando la API REST expuesta como único punto de
+intercambio entre ambas componentes. Entre otras ventajas, esto permite eventualmente poner en producción
+cada componente en nodos separados.
+
+\end{itemize}
