@@ -1,27 +1,204 @@
 \chapter{Evaluación}
 
-introducción: qué/cómo se evalúa, etc.
-secciones del capítulo
+Contando ya con la herramienta y el corpus de texto en español, se procede a construir
+representaciones vectoriales empleando los principales algoritmos en el área y a evaluar su
+comportamiento en el idioma español. Con el fin de tener valores de referencia con los cuales
+comparar los modelos entrenados, se traducen del inglés al español los conjuntos de pruebas más
+utilizados en la literatura.
+
+El capítulo comienza detallando el proceso de entrenamiento, enumerando cuáles son los modelos
+vectoriales entrenados y qué hiperparámetros estos utilizan. Luego se expone la comparación de
+dichos modelos con los resultados obtenidos para el inglés, presentando cuáles son los principales
+conjuntos de pruebas empleados. También se realiza un estudio sobre la performance de los modelos
+frente a pruebas diseñadas para evaluar particularidades del idioma español. Por último, se realiza
+un análisis cualitativo de las representaciones, mostrando algunos ejemplos de su comportamiento de
+manera más informal pero ilustrativa.
 
 
 \section{Modelos Entrenados}
 
-- cuáles modelos se entrenaron (``como se mencionó anteriormente... word2vec, etc.'')
-- recordar las implementaciones
-- qué hiperparámetros tiene cada uno de los modelos (listado), más breve descripción; capaz que una reintroducción a cada modelo (que ya se vieron en el e-d-a)
-- qué hiperparámetros se prueban: los mejores de la literatura, más variantes hacia arriba y abajo para estudiar particularidades en el idioma español
-- ``en la tabla X se puede ver la lista completa...''
-    - no mencionar los uruguay-specific y spain-specific capaz (o mejor sí capaz, ``composición de corpus'' como hiperparámetro), sólo mencionar ``tamaño de corpus'' (como hiperparámetro también)
-- hablar sobre el proceso de entrenamiento: cuántos son en total; cuánto demoraron en entrenarse; cuánto ocupan los vectores, etc. (que quede claro que el tiempo de entrenamiento es una de las principales limitantes, sino probábamos más); que se crearon a través de la herramienta, etc.
+Como se mencionó anteriormente, se optó por entrenar representaciones vectoriales siguiendo los tres
+principales enfoques de la literatura: modelos neuronales a través del algoritmo \texttt{word2vec},
+modelos estadísticos mediante el empleo de una matriz PPMI con SVD, y modelos híbridos mediante el
+algoritmo \texttt{GloVe}. El primero y el último utilizaron implementaciones ya existentes
+(\texttt{Gensim} y la provista por los autores, respectivamente), mientras que el segundo fue una
+implementación propia siguiendo los lineamientos de [Levy y Goldberg cita].
+
+Cada uno de estos modelos tiene distintos hiperparámetros que pueden afectar significativamente su
+performance. En [Levy y Goldberg] los autores buscan unificar los hiperparámetros de estos modelos,
+proponiendo un subconjunto de los mismos que contempla las tres variantes. El enfoque tomado en este
+proyecto no llega a tal profundidad, pues quita parte de la versatilidad de algunos algoritmos, pero
+intenta aún así presentarlos de manera unificada cuando es posible.
+
+En el caso de \texttt{word2vec}, los hiperparámetros disponibles para modificar son:
+
+\begin{itemize}
+
+\item \textbf{Dimensión} (\texttt{dim}): dimensión de las representaciones inducidas (valor por
+defecto: 300).
+
+\item \textbf{Cantidad de ocurrencias mínima} (\texttt{min\_count}): cantidad mínima de ocurrencias
+que una palabra debe tener para ser considerada parte del vocabulario (valor por defecto: 5). En
+caso de no llegar a dicho límite, se excluye del corpus como si no estuviera presente.
+
+\item \textbf{Ventana de contexto} (\texttt{win}): tamaño de la ventana de contexto utilizada hacia
+cada lado de la palabra central (valor por defecto: 5). Notar que no se estudian variantes con
+contextos asimétricos o con otras características.
+
+\item \textbf{Subsampling} (\texttt{sub}): qué nivel de \textit{subsampling} realizar a las palabras
+muy frecuentes, para evitar que sean sobrerrepresentadas en los vectores finales (valor por defecto:
+0.0). Hacer subsampling de una palabra implica removerla de una oración con una probabilidad
+$p$\footnote{Se realiza subsampling si $\mathtt{sub} \times |V| > \#w$, donde $|V|$ es el tamaño del
+vocabulario y $\#w$ la cantidad de ocurrencias de la palabra $w \in V$. En ese caso, el subsampling
+se realiza con una probabilidad $p = 1 - \sqrt{\frac{\mathtt{sub}}{\#w}}$, siguiendo la sugerencia
+de [Levy y Goldberg cita].}.
+
+\item \textbf{Algoritmo empleado} (\texttt{algo}): qué algoritmo de \texttt{word2vec} utilizar,
+Skipgram (\texttt{sg}) o CBOW (\texttt{cbow}) (valor por defecto: \texttt{sg}).\ Como fue mencionado
+en el capítulo 2, el primero busca predecir la palabra central en base a su contexto y el segundo lo
+opuesto.
+
+\item \textbf{Variante utilizada} (\texttt{var}): si construir y utilizar un softmax jerárquico para
+la estimación de la probabilidad (\texttt{hs}) o si emplear la técnica de \textit{negative sampling}
+(\texttt{ns}) (valor por defecto: \texttt{ns}).
+
+\item \textbf{Cantidad de muestras negativas} (\texttt{neg}): en caso de utilizar negative sampling,
+la cantidad de muestras negativas a tomar por cada ejemplo positivo (valor por defecto: 7).
+
+\item \textbf{Ritmo de aprendizaje} (\texttt{alpha}): ritmo de aprendizaje a utilizar en el empleo
+del descenso estocástico por el gradiente (SGD) mediante el cuál se aproximan las probabilidades
+(valor por defecto: $0.025$). Un mayor valor para este parámetro corre el riesgo de que SGD no
+converja, mientras que un menor valor puede hacer que se requieran de múltiples recorridas sobre el
+corpus para obtener resultados aceptables. De todos modos, este valor es el ritmo inicial, e irá
+disminuyendo conforme avance el entrenamiento para ayudar a la convergencia.
+
+\item \textbf{Recorridas sobre el corpus} (\texttt{epoch}): cantidad de veces que se recorre el
+corpus de texto (valor por defecto: 1). Recorrer un mayor número de veces el corpus de entrenamiento
+mejora la convergencia del algoritmo pero, obviamente, hará que aumente el tiempo de entrenamiento
+drásticamente.
+
+\end{itemize}
+
+El modelo \texttt{GloVe} presenta mucho de los mismos hiperparámetros (en particular, \texttt{dim},
+\texttt{min\_count}, \texttt{win}, \texttt{alpha}, y \texttt{epoch}), con algunos hiperparámetros
+adicionales:
+
+\begin{itemize}
+
+\item \textbf{Tamaño máximo del vocabulario} (\texttt{max\_count}): cantidad máxima de palabras que
+puede contener el vocabulario donde, en caso de alcanzarse, se utilizan únicamente las
+\texttt{max\_count} palabras más frecuentes (valor por defecto: \textit{sin máximo}).
+
+\item \textbf{Cota de la función de peso} (\texttt{x\_max}): cota superior a utilizar para la
+métrica de asociación entre los pares de las palabras en la matriz de coocurrencia intermedia (valor
+por defecto: $100$). Si la métrica asume valores superiores a $100$, se toma el valor $100$ en su
+lugar.
+
+\item \textbf{Exponente para la función de peso} (\texttt{eta}): exponente a utilizar en la función
+de peso, tal como es definido en [glove cita] (valor por defecto: $0.75$). Tanto este parámetro como
+el anterior fueron dejados en sus valores por defecto en todos los modelos generados, puesto que son
+muy particulares al algoritmo y su estudio escapa el alcance del proyecto. De todos modos, como
+comentan los propios autores, su valor no debería ser determinante en la performance de las
+representaciones resultantes.
+
+\end{itemize}
+
+Cabe notar, sin embargo, que el hiperparámetro \texttt{epoch} tiene una importancia mayor en este
+algoritmo, pues no implica una recorrida por todo el corpus sino por la matriz de coocurrencias
+intermedia que se genera (en particular, por el vocabulario empleado). \texttt{epoch} en este
+contexto indica la cantidad de iteraciones empleada en la generación de la matriz reducida, y debe
+ser un número alto para asegurar una correcta factorización. El valor por defecto es 15, aunque los
+autores sugieren utilizar entre 50 y 100 iteraciones.
+
+Por último, el modelo PPMI con SVD tiene también algunos hiperparámetros adicionales (\texttt{dim},
+\texttt{min\_count}, \texttt{max\_count}, \texttt{win}, \texttt{sub}) con la incorporación de dos
+adicionales:
+
+\begin{itemize}
+
+\item \textbf{Suavizado de la distribución del contexto} (\texttt{cds}): suavizado empleado para las
+coocurrencias de las palabras en la construcción de la matriz de coocurrencia, tal como es detallado
+en [levy goldberg cita] (valor por defecto: $0.75$). Este parámetro disminuye el sesgo natural que
+la medida PMI tiene con las palabras raras, e incrementa consistentemente la performance sobre la
+opción sin suavizado (valor $1.0$). Por esta razón, en los modelos entrenados siempre se utilizó el
+valor por defecto.
+
+\item \textbf{Sumado de vectores de contexto} (\texttt{w+c}): luego de aplicar SVD a la matriz de
+coocurrencias, se obtiene una matriz que asocia las palabras del vocabulario al espacio reducido y
+otra que asocia las palabras de los contextos al mismo espacio (valor por defecto:
+\texttt{true}). En [Levy Goldberg cita], los autores proponen utilizar la suma de ambos vectores en
+lugar de únicamente los vectores base, obteniendo en algunos casos mejores resultados.
+
+\end{itemize}
+
+Este último modelo tal como es planteado por los autores cuenta con algunos hiperparámetros
+adicionales, como la normalización de los vectores resultantes y la variante de~\cite{Caron2001} en
+SVD\@. Sin embargo, puesto que los resultados a los que llegan los autores sistemáticamente
+favorecen a una variante particular, se optó por dejarlos fijos.
+
+
+Por otro lado, también se cuenta con hiperparámetros para el preprocesamiento del corpus de texto
+previo a ser alimentado a los algoritmos. En particular, se tienen dos opciones: \textbf{remover
+tildes} (\texttt{acc}), que remueve todo tipo de tildes del texto previo al entrenamiento, y
+\textbf{pasar a minúsculas} (\texttt{lower}), que pasa todo el texto a minúsculas, no haciendo
+distinción entre \textit{Papa} y \textit{papa}.
+
+También está la posibilidad de evaluar distintos mecanismos para la tokenización de oraciones y
+palabras, pero se decidió limitar el estudio a los dos anteriores. En en el caso de la tokenización
+de palabras, se partió las oraciones en secuencias de caracteres alfanuméricos, descartando todo
+tipo de símbolo distinto.
+
+
+La gran cantidad de hiperparámetros disponibles para cada algoritmo deja un espacio de búsqueda
+extremadamente grande, que no es posible explorar por completo. Por este motivo se construyó sobre
+el trabajo previo en la literatura, utilizando los valores de parámetros que mejores resultados han
+obtenido y explorando en la proximidad de cada uno.
+
+[- decir cuáles son las mejores combinaciones o los mejores valores para cada hiperparámetro]
+[- decir que se prueba eso más variantes hacia arriba y hacia abajo o algo]
+[- objetivos (e.g. dim grande vs. chica, win grande vs chica, cantidad de epochs, negative sampling vs cbow)]
+[- objetivo: construir modelos con las principales variantes para tener una buena idea de cómo funciona en español y que no se nos escape nada grande]
+[- el detalle fino de cuáles se entrenan va en la tabla]
+
+En cuanto al corpus de entrenamiento empleado, se entrenaron dos grandes grupos de modelos
+vectoriales: uno con un corpus de $4000$ millones de palabras de todos las fuentes (con la excepción
+del texto de baja calidad obtenido de los foros) y otro de $400$ millones de palabras entrenado
+exclusivamente con noticias de Uruguay, ambos con los tildes removidos. Esto se hizo con el objetivo
+de estudiar cómo afecta el tamaño del corpus en la calidad de los vectores resultantes.
+
+Además de estos dos grupos se entrenaron modelos adicionales con datos exclusivamente de España (con
+alrededor de $400$ millones de palabras), con datos provenientes tanto de noticias como de foros,
+con los datos anteriores pero sin los tildes removidos, y con la totalidad del corpus obtenido
+finalmente ($6000$ millones de palabras).
+
+En la tabla [tabla] se listan todas las variantes de corpus entrenados, junto con un código para
+identificarlos fácilmente, mientras que en la tabla [tabla] se listan todos los modelos vectoriales,
+especificando los hiperparámetros empleados para cada uno y el corpus utilizado.
+
+[tabla corpus: id, descripción específica (e.g. docs scrapeados antes de... (footnote con
+explicación de por qué cualquier cosa)), cantidad palabras, preprocessing options]
+
+[tabla embeddings: id, descripción?, corpus utilizado, tiempo entr.; hiperparámetros; seccionar por
+embedding type así puedo poner columna por hiperparámetro?]
+
+[- mencionar alguna cosa más específica del objetivo de algún embedding? tipo:]
+    [- no mencionar los uruguay-specific y spain-specific capaz (o mejor sí capaz, ``composición de corpus'' como hiperparámetro), sólo mencionar ``tamaño de corpus'' (como hiperparámetro también)]
+    [- o de embeddings de foros, remove\_accents]
+
+
+[- hablar sobre el proceso de entrenamiento: que se crearon a través de la herramienta; cuántos son en total; cuánto demoraron en entrenarse; cuánto ocupan los vectores, etc. (que quede claro que el tiempo de entrenamiento es una de las principales limitantes, sino probábamos más); etc.]
+
 
 
 \section{Comparación con la Literatura}
 (section name TBD)
 
+[volver a hablar de analogies y wordsim?]
 - comparación con pruebas en inglés: cuáles testsets se tomaron y por qué (estándares de la bibliografía, varias fuentes para comparar)
 - (subsection?) se traducen TODOS estos testsets a mano: comentar scripts de traducción con google translate + arreglo manual
     - más sobre el proceso de traducción: qué secciones se sacan de cada testset, algún ejemplo de entrada que se saque, de qué tamaños quedan comparado con los originales
     - disclaimer: pueden haber errores, aunque se los revisó bastante
+
 - presentación de resultados para cada embedding
     - no poner lista entera, sino los mejores 5 o algo así (o dos mejores por algoritmo)
     - comparar valores con resultados en inglés
@@ -35,7 +212,7 @@ secciones del capítulo
     - discusión de 3cosadd vs 3cosmul (se corrobora lo mismo de levy, que es mejor el segundo)
     - discusión de resultados en top5 y top10 (``le erra pero está cerca'')
     - syntactic vs semantic
-    - accents vs remove accents (casi no hay diferencia)
+    - accents vs remove accents (casi no hay diferencia, aunque parece ser mejor dejarlos)
 
 
 - disclaimer: el corpus afecta mucho el resultado como vio Levy, así que tomar las comparaciones con pinzas; además de los problemas de traducción
@@ -52,6 +229,7 @@ secciones del capítulo
         - 150 verbos más comunes, scraping de conjugaciones, armado de testsets con selección random (mencionar scripts)
         - scraping de semantic fields (fue de wikipedia?)
         - lista de géneros para nouns (comentar que algunos se usan pero no son correctos, e.g. presidenta)
+
 - presentar resultados para cada embedding
     - para los no-spain, hacer como la vez pasada
     - alguna discusión más sobre los ooo, que hasta ahora no había
@@ -65,7 +243,7 @@ secciones del capítulo
 
 \section{Análisis Cualitativo de Resultados}
 
-- estudiar resultados del most_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river)
+- estudiar resultados del most\_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river)
   (más informal)
 - e.g. UTE, ANCAP y eso con corpus en español y corpus general; cómo se ``diluyen'' los significados (i.e. no recupera UTE o ANCAP en todo el corpus pero sí sólo en español, a pesar de que ANCAP sólo se menciona en uruguay (o no, pero buscar ejemplo donde sí en otro caso))
 - algún ejemplo interesante
