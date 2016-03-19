@@ -351,7 +351,7 @@ texto se basa en fuentes hispanas y no tendrá muchas menciones de las mismas.
 
 En la tabla [tabla testsets] se resumen los conjuntos de pruebas empleados para la evaluación, junto
 con la cantidad de entradas originales y resultantes de cada uno. Como se puede apreciar, las
-pruebas resultantes tienen un promedio de $[num]%$ de las entradas originales, con algunos conjuntos
+pruebas resultantes tienen un promedio de [num]\% de las entradas originales, con algunos conjuntos
 más afectados que otros.
 
 [tabla de testset; con cantidad original y final de entradas]
@@ -379,18 +379,79 @@ más afectados que otros.
 
 
 \section{Comportamiento Específico al Español}
-(section name TBD)
 
-- se arman testsets para hacer pruebas específicas del comportamiento en español, puesto que tiene mayor complejidad morfológica y hay más cosas para probar
-- son todos testsets propuestos por nosotros, así que no hay comparación, pero está bueno para tener un poco más de insight de cómo se manejan
-- los ooo van acá (todos, porque no son comparación con literatura)
-- cuáles son y cómo se armaron los testsets:
-    - detallar cuáles son los que se crearon (verbos, semantic field, noun gender, spain conjugations, etc.); comentar el tipo (analogy, ooo, etc.)
-    - cómo se construyeron:
-        - 150 verbos más comunes, scraping de conjugaciones, armado de testsets con selección random (mencionar scripts)
-        - scraping de semantic fields (fue de wikipedia?)
-        - lista de géneros para nouns (comentar que algunos se usan pero no son correctos, e.g. presidenta)
-- tabla de testsets con cantidad de entradas y eso
+Teniendo un punto de comparación de la performance de los modelos vectoriales en español y en
+inglés, se procedió a realizar un estudio más detallado de su comportamiento en español, con el
+objetivo siendo obtener una mejor visión de qué tanta información son capaces de capturar los
+vectores en un idioma con mayor compejidad [morfológica? sintáctica?], investigando cuáles son las
+características que resultan más difíciles de representar.
+
+Con este fin, se armaron conjuntos de pruebas que exponen cualidades del español, como conjugaciones
+verbales, géneros de sustantivos, y más. Son conjuntos de prueba construidos para el presente
+proyecto, por lo que no se tiene un punto de comparación con otros trabajos en la literatura. De
+todos modos, consideramos que la información que aportan es valiosa, pues ayudan a tener un mejor
+entendimiento de cómo actúan los modelos bajo diferentes circunstancias.
+
+
+El primer grupo de pruebas construido está compuesto por analogías que buscan estudiar la capacidad
+de representar las conjugaciones de los verbos. Se eligen doce formas verbales a evaluar
+(e.g.\ participio, gerundio) y se arman grupos de analogías con el verbo en infinitivo y cada una de
+estas formas verbales. Esto es, para el verbo \textit{correr} se arma, por ejemplo, una analogía de
+la forma \textit{correr es a corriendo lo que cantar es a cantando} y una de la forma
+\textit{corrido es a correr lo que jugado es a jugar}.
+
+Para la construcción de dicho conjunto, se eligieron los 147 verbos más comunes del
+español\footnote{Acorde a [cita].}, se obtuvieron sus conjugaciones\footnote{Las conjugaciones se
+consiguieron mediante el scraping de [cita].}, y se generaron un grupo de analogías para cada una de
+las doce formas verbales. Estos grupos se armaron tomando, para cada verbo, otros diez verbos de la
+lista y construyendo analogías de la forma \textit{verbo\_infinitivo\_1 es a verbo\_conjugado\_1 lo
+que verbo\_infinitivo\_2 es a verbo\_conjugado\_2}, o en el orden inverso, con el conjugado primero.
+
+Esta tarea se realizó con la ayuda de un script que facilitó la tarea de conjugar y elegir verbos
+aleatoriamente, asegurando una distribución no sesgada en el conjunto de pruebas. Así, se obtuvieron
+1470 analogías por cada grupo, teniendo un total de 17640 analogías dedicadas al estudio de
+conjugaciones verbales.
+
+
+Buscando estudiar la relación de los vectores con el corpus utilizado para el entrenamiento, también
+se generaron analogías utilizando conjugaciones verbales específicas a España (en particular, la
+conjugación de \textit{vosotros}), con el fin de ver la performance de los vectores en estas pruebas
+cuando se entrena con un corpus exclusivamente hispanoamericano o uno exclusivamente español. La
+construcción de dicho conjunto de pruebas fue igual al recién detallado, donde se tomaron tres
+formas verbales en lugar de doce.
+
+
+El último conjunto de analogías construido estudia el género de sustantivos. Más específicamente,
+toma ocupaciones (como \textit{plomero}, \textit{maestro}, o \textit{doctor}) y genera analogías de
+la forma \textit{doctor es a doctora lo que pescador es a pescadora}. Para su construcción, se tomó
+una lista de 78 ocupaciones en sus formas masculina y femenina\footnote{La lista fue tomada de
+[cita].} y se generaron analogías en un esquema similar a los anteriores, donde cada ocupación fue
+emparejada con otras seis ocupaciones, teniendo así un total de 468 entradas.
+
+
+Se construyeron, por último, dos conjuntos de pruebas siguiendo el esquema \textit{odd-one-out}
+descrito en el capítulo anterior. El primero no estudia fenómenos particulares del español, sino que
+tiene un enfoque semántico: busca identificar la palabra que no encaja (desde el punto de vista de
+su significado) con un conjunto de varias palabras. Para ello, se obtuvieron listas de palabras por
+campo semántico\footnote{Obtenidas mediante [niidea].}, como colores, frutas, y vehículos, y se
+generaron combinaciones con tres o cuatro palabras de un campo particular y una de otro. Se
+construyó un conjunto con un total de 529 entradas con estas características, obteniendo así una
+forma de probar la capacidad de los vectores de agrupar palabras similares sin tener que recurrir a
+una prueba que asigne puntajes (a veces arbitrarios) a pares de palabras, como en el caso de las
+pruebas de similitud antes mencionadas.
+
+El segundo conjunto de pruebas de este esquema tiene las mismas características pero propone pruebas
+sintácticas en lugar de semánticas. Para ello, se generaron entradas utilizando la misma lista de
+147 verbos y se armaron diez pruebas para cada uno de ellos. Se tomaron cinco formas verbales y se
+generaron así cinco subconjuntos de pruebas con 294 entradas cada una, obteniendo un total de 1470
+entradas.
+
+En la tabla [tabla testsets] se listan todos los conjuntos de pruebas construidos en esta sección,
+junto a la cantidad de entradas de cada uno y cuál es su propósito (i.e.\ qué área buscan evaluar).
+
+[tabla de testsets con cantidad de entradas y qué busca evaluar (e.g. presente 3era persona singular, etc.)]
+
+
 
 - presentar resultados para cada embedding
     - para los no-spain, hacer como la vez pasada
