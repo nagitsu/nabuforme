@@ -246,14 +246,119 @@ modelos o de cargarlos en memoria, pues tiene un tiempo de arranque no desprecia
 
 
 \section{Comparación con la Literatura}
-(section name TBD)
 
-[volver a hablar de analogies y wordsim?]
-- comparación con pruebas en inglés: cuáles testsets se tomaron y por qué (estándares de la bibliografía, varias fuentes para comparar)
-- (subsection?) se traducen TODOS estos testsets a mano: comentar scripts de traducción con google translate + arreglo manual
-    - más sobre el proceso de traducción: qué secciones se sacan de cada testset, algún ejemplo de entrada que se saque, de qué tamaños quedan comparado con los originales
-    - disclaimer: pueden haber errores, aunque se los revisó bastante
+Uno de los principales objetivos del proceso de evaluación es comparar la calidad de las
+representaciones vectoriales generadas con texto en español con las generadas con texto en
+inglés. Puesto que todos los conjuntos de pruebas son inherentemente dependientes al idioma de los
+vectores, no es posible realizar una comparación perfecta, en especial debido a la fuerte
+dependencia que tiene la calidad de los vectores con el corpus de entrenamiento empleado.
 
+De todos modos, y para tener al menos un punto de comparación inicial entre ambos idiomas, se optó
+por tomar los principales conjuntos de pruebas utilizados en la literatura inglesa y traducirlos al
+idioma español, adaptando las pruebas cuando fuera necesario (por ejemplo, cuando se evalúan
+cualidades sintácticas no existentes en español). Así, es posible obtener una referencia aproximada
+de qué tanto se acercan los modelos entrenados a los obtenidos por la comunidad.
+
+Un trabajo similar se realiza en... [mencionar algún otro paper que ya lo haya hecho]
+
+Se emplean dos tipos de pruebas para realizar la comparación: pruebas basadas en analogías y pruebas
+basadas en similitud de palabras. Como ya fue mencionado en capítulos anteriores, la primera busca
+recuperar una palabra en base a otras tres palabras dadas, mientras la segunda busca asignar un
+puntaje de similitud entre pares de palabras.
+
+Para las analogías existen dos conjuntos de pruebas muy utilizados por la comunidad: el conjunto de
+analogías de Microsoft (MSR) [cita], compuesto exclusivamente por analogías que buscan regularidades
+sintácticas en los vectores, y el conjunto de Google [cita], compuesto tanto por analogías
+sintácticas como semánticas. De estos dos, se optó por utilizar únicamente el de Google, pues el
+MSR tiene demasiadas pruebas sintácticas específicas al inglés (como posesivos, comparativos, y
+superlativos) que deben ser descartadas en el proceso de traducción, haciendo que el conjunto
+resultante sea tan distinto que una comparación de los resultados sería insustancial.
+
+Debido a la antigüedad del campo, existe una gran cantidad de conjuntos de pruebas para la tarea de
+similitud de palabras, en especial en lo que respecta a la evaluación de modelos estadísticos. Se
+decidió, para limitar la cantidad de conjuntos a un número razonable, elegir las pruebas más
+recientemente utilizados por la literatura, con el fin de tener comparaciones más fiables. En
+particular, se toman los conjuntos empleados por [Levy y Goldberg], pues son evaluados con los tres
+tipos de modelos empleados en el proyecto. Estos conjuntos son:
+
+\begin{itemize}
+
+\item WordSim [cita], un conjunto compuesto por 353 pares de palabras puntuados en base a la
+relación entre ambas palabras (si los jueces humanos consideran que las palabras están relacionadas
+de alguna manera cualquiera) y su similitud (si existe una relación más fuerte entre los pares, ya
+sea sinonimia, hiponimia, etc.). Se utiliza el conjunto partido entre los pares que miden relación y
+los que miden similitud, como se hace en [cita].
+
+\item MEN [cita bruni et al], compuesto por 3000 pares de palabras elegidas al azar entre las
+palabras que aparecen al menos 700 veces en el corpus WaCky [cita]. Los autores utilizaron la
+plataforma Mechanical Turk [cita] para la construcción del conjunto, y el puntaje se asigna en base
+a comparaciones binarias entre entradas del conjunto.
+
+\item El conjunto MTurk [cita radinsky et al], compuesto de 287 pares de palabras, con puntajes
+también asignados a partir de la herramienta Mechanical Turk.
+
+\item SimLex [cita hill et al], compuesto de 999 pares puntuados exclusivamente en base a la
+similitud entre las palabras. Esto implica que pares como \textit{ropa} y \textit{ropero} tienen
+asignado un puntaje bajo, por no ser estrictamente similares. Este conjunto es particularmente
+complicado de resolver por parte de los modelos vectoriales, pues éstos aprenden en base a la
+coocurrencia de pares y la coocurrencia refleja principalmente la relación que existe entre las
+palabras.
+
+\end{itemize}
+
+Por otro lado, se descarta el conjunto de palabras raras propuesto por [Luong et al] debido a que la
+sutileza entre los pares de palabras empleados se perdería en el proceso de traducción.
+
+
+Los cinco conjuntos de pruebas seleccionados para realizar la comparación debieron ser traducidos
+manualmente, pues no fue posible encontrar traducciones satisfactorias de los mismos.
+
+Se construyó un script que aprovecha el servicio de Google Translate [cita] para realizar una
+traducción semi-automática de las pruebas. Este script lee una lista de palabras de entrada, realiza
+un pedido HTTP al servicio y obtiene la primer traducción sugerida. Esta palabra se toma
+posteriormente como una sugerencia que es revisada manualmente, pero que no obstante ayuda a
+agilizar la tarea.
+
+El proceso de traducción para cada conjunto contó, pues, de cuatro etapas: en primer lugar, se
+corrió el script para la lista de palabras del conjunto; luego se recorrió la lista de palabras
+traducidas, comparándolas con las versiones en inglés y se corrigieron o eliminan las traducciones
+incorrectas, ya sea por estar mal la traducción en sí o porque no era el sentido que esperaba en la
+prueba; en tercer lugar, se sustituyen las traducciones por las palabras originales en los conjuntos
+de prueba, eliminando la entrada si no se encuetra la traducción; por último, se recorre la lista
+pruebas buscando posibles errores y eliminando o corrigiendo entradas adicionales.
+
+El proceso de traducción, sin embargo, es falible, por lo que es de esperar que existan traducciones
+incorrectas en los conjuntos de pruebas, aunque la proporción no sea alta. Puesto que algunos
+conjuntos de pruebas llegan a tener más de diez mil líneas, la revisión final fue más bien
+superficial.
+
+En el caso de las tareas de similitud de palabra, donde se encuentra frecuentemente diferencias
+finas en el significado de los pares de palabras, se buscó que las traducciones siguieran la
+intención de los autores. Por ejemplo, mientras que Google Translate sugería la traducción
+\textit{costa} tanto para \textit{shore} como para \textit{coast}, se tomó la decisión de traducir
+\textit{shore} como \textit{orilla}, que es una palabra también válida pero que se ajusta al puntaje
+que el par tenía asociado. Esto indudablemente está sesgando el conjunto de pruebas, pero es la
+única alternativa para realizar una comparación, fuera de construir los conjuntos de nuevo como
+hicieron los autores originales.
+
+En el conjunto de analogías de Google fue necesario eliminar por completo algunas secciones por no
+ser pertinentes al idioma español. En particular, se eliminaron las categorías
+\texttt{gram3-comparative} y \texttt{gram4-superlative}, que tienen analogías entre adjetivos y sus
+comparativos o sus superlativos (e.g. \textit{great}, \textit{greater}, y \textit{greatest}), pues
+no tienen traducciones al español de una única palabra. También se decidió eliminar la sección
+\texttt{city-in-state}, que tiene analogías de ciudades y estados de EE.UU., pues nuestro corpus de
+texto se basa en fuentes hispanas y no tendrá muchas menciones de las mismas.
+
+En la tabla [tabla testsets] se resumen los conjuntos de pruebas empleados para la evaluación, junto
+con la cantidad de entradas originales y resultantes de cada uno. Como se puede apreciar, las
+pruebas resultantes tienen un promedio de $[num]%$ de las entradas originales, con algunos conjuntos
+más afectados que otros.
+
+[tabla de testset; con cantidad original y final de entradas]
+
+
+
+- [3cosmul y 3cosadd, mencionar; ver dónde]
 - presentación de resultados para cada embedding
     - no poner lista entera, sino los mejores 5 o algo así (o dos mejores por algoritmo)
     - comparar valores con resultados en inglés
@@ -278,12 +383,14 @@ modelos o de cargarlos en memoria, pues tiene un tiempo de arranque no desprecia
 
 - se arman testsets para hacer pruebas específicas del comportamiento en español, puesto que tiene mayor complejidad morfológica y hay más cosas para probar
 - son todos testsets propuestos por nosotros, así que no hay comparación, pero está bueno para tener un poco más de insight de cómo se manejan
+- los ooo van acá (todos, porque no son comparación con literatura)
 - cuáles son y cómo se armaron los testsets:
     - detallar cuáles son los que se crearon (verbos, semantic field, noun gender, spain conjugations, etc.); comentar el tipo (analogy, ooo, etc.)
     - cómo se construyeron:
         - 150 verbos más comunes, scraping de conjugaciones, armado de testsets con selección random (mencionar scripts)
         - scraping de semantic fields (fue de wikipedia?)
         - lista de géneros para nouns (comentar que algunos se usan pero no son correctos, e.g. presidenta)
+- tabla de testsets con cantidad de entradas y eso
 
 - presentar resultados para cada embedding
     - para los no-spain, hacer como la vez pasada
