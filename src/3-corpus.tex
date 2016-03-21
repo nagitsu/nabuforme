@@ -16,14 +16,14 @@ construido.
 
 Como ya se mencionó, una de las claves principales para la calidad de los vectores generados es contar
 con un corpus de gran tamaño, compuesto de documentos con estilos de redacción y temáticas variadas.
-Se procedió por tanto a investigar la oferta existente de corpus en idioma español en internet. En esta
+Se procedió por tanto a investigar la oferta existente de corpus en idioma español en Internet. En esta
 sección se discutirán los proyectos de construcción de corpus más relevantes, detallando de cada uno su
 composición, medidas de calidad y limitantes de acceso ó uso, en caso de haberlas.
 
 La investigación incluida en esta sección no pretende ser completamente exhaustiva, pero si lo
-suficientemente profunda como para justificar la decisión de construir un nuevo corpus en el presente
-proyecto en lugar de utilizar alguno ya existente para el entrenamiento de vectores. Como se verá, muchos
-de los proyectos de construcción de corpus existentes no cumplen con las condiciones más importantes
+suficientemente profunda como para justificar la decisión de construir un nuevo corpus en lugar de
+utilizar alguno ya existente para el entrenamiento de vectores. Como se verá, muchos de los
+proyectos de construcción de corpus existentes no cumplen con las condiciones más importantes
 requeridas por el presente proyecto.
 
 Se procedió entonces a realizar una investigación formal de las alternativas existentes. Una de las
@@ -42,22 +42,31 @@ privadas o gubernamentales para su desarrollo. Consideramos que este hecho pone 
 obtenidos en el presente proyecto de grado para la construcción de un corpus masivo, cuyos detalles se
 explicarán en las secciones posteriores.
 
+\subsection{Análisis de proyectos existentes}
+
+A continuación se incluye un listado de los corpus encontrados en nuestra investigación y un análisis de
+las principales características de cada uno.
+
 \subsubsection{Wikipedia}
 
-Como punto inicial es interesante considerar el corpus formado por todos los artículos de Wikipedia.
-La enrome cantidad de artículos abarcando una multitud de temáticas junto con su esencia libre y abierta
-hacen de Wikipedia una elección natural para tareas de PLN que requieren una gran cantidad de texto
-[CITA1]. En idioma inglés, Wikipedia contiene casi tres billones de palabras repartidas en aproximadamente
+Como punto inicial es interesante considerar el corpus formado por todos los artículos de Wikipedia en
+español. En los últimos años, numerosos trabajos en el área del PLN han utilizado exitosamente los
+textos de Wikipedia para sus algoritmos [CITA1]. Entre sus principales ventajas se destaca la calidad
+de sus textos, la enorme variedad de temáticas abarcadas por los mismos y, para nada menos importante,
+la naturaleza abierta y de libre acceso que diferencia a Wikipedia de otras fuentes de datos.
+
+En idioma inglés, Wikipedia contiene casi tres billones de palabras repartidas en aproximadamente
 cinco millones de artículos [Cita2]. En idioma español la cifra es mucho menor, ubicándose en 400 millones
 de palabras. Por tanto, quedó claro desde un principio que utilizar un corpus constituido únicamente
-por artículos de Wikipedia no sería suficiente.
+por artículos de Wikipedia no sería suficiente para nuestros objetivos, aunque si resultaría de gran
+utilidad para comenzar a construir un corpus de mayor tamaño.
 
 \subsubsection{Sketch Engine: TenTen}
 
-Se consideró también el trabajo realizado por la organización Sketch Engine [cita], organización
-dedicada a la construcción de corpus masivos en varios idiomas y la elaboración de herramientas
-para la manipulación y consulta de los corpus generados, pensadas para profesionales de distintas
-áreas. Entre los corpus ofrecidos por Sketch Engine se destaca principalmente el proyecto TenTen [cita].
+Se consideró también el trabajo realizado por la organización Sketch Engine [cita], dedicada a la
+construcción de corpus masivos en varios idiomas. Además, la organización elabora herramientas para
+la manipulación y consulta de los corpus generados, pensadas para profesionales de distintas áreas.
+Entre los corpus ofrecidos por Sketch Engine se destaca principalmente el proyecto TenTen [cita].
 TenTen consiste en una colección de corpus repartidos en varios idiomas superando en varios de ellos la
 barrera del billón de palabras. Para el caso concreto del español se tiene un corpus de ocho billones de
 palabras. El corpus TenTen es catalogado por sus autores como un corpus web, lo que implica que para
@@ -65,12 +74,12 @@ su construcción se utilizaron únicamente textos disponibles en Internet.
 
 Existen diferentes estrategias para la construcción de corpus basados en Internet. En el caso de TenTen
 los autores utilizaron un proceso basado en crawling masivo, limpieza de documentos, detección de
-duplicados y almacenamiento. Para esto los autores construyeron varias herramientas que posteriormente
+duplicados y almacenamiento. Para esto, los autores construyeron varias herramientas que posteriormente
 liberaron como código abierto.
 
-Para la tarea de crawling masivo en la construcción de TenTen se usó la herramienta Spiderling [CITA4],
-desarrollada especialmente para la construcción de corpus utilizando Internet. En la experiencia de los
-autores, el principal problema de los corpus web es la enorme cantidad de páginas que es necesario
+Para la tarea de crawling masivo en la construcción de TenTen se utilizó la herramienta Spiderling
+[CITA4], desarrollada especialmente para la construcción de corpus utilizando Internet. En la experiencia
+de los autores, el principal problema de los corpus web es la enorme cantidad de páginas que es necesario
 descargar para obtener una cantidad relativamente pequeña de texto útil. En su análisis definen la
 medida \textit{tasa de rendimiento} (\textit{yield rate}), que se aplica a cada página web descargada y
 expresa la relación entre la cantidad de bytes de la página y la cantidad de bytes de información útil
@@ -96,9 +105,9 @@ de publicidad, metadatos de la estructura del sitio, etcétera.
 
 Lamentablemente, los corpus generados por Sketch Engine no están disponibles de forma gratuita. La
 organización ofrece en su sitio web un período de prueba sin costo para acceder a los mismos, pero la
-utilización prolongada de sus servicios requiere una subscripción. Esta modalidad de uso, además de estar
+utilización prolongada de sus servicios requiere una suscripción. Esta modalidad de uso, además de estar
 por fuera del alcance de este proyecto de grado, entra en conflicto con uno de nuestros principales
-objetivos, como es la publicación total del corpus construido para el entrenamiento de vectores de palabras.
+objetivos como es la publicación total del corpus construido para el entrenamiento de vectores de palabras.
 
 \subsubsection{Linguistic Data Consortium: Gigaword en español}
 
@@ -114,17 +123,17 @@ Agence France-Presse, Associated Press (AP) y Xinhua News Agency.
 
 Los documentos del corpus fueron catalogados por los autores, aunque estos advierten que las categorías
 asignadas son simplemente aproximaciones. Dichas categorías no son de mucha utilidad pues apenas
-distinguen entre reportes, aquellos que pueden encontrarse en cualquier revista de noticias, y cables
+distinguen entre reportes, como los que pueden encontrarse en cualquier revista de noticias, y cables
 dirigidos a editores y reporteros de periódicos. En cuanto a la calidad, los autores sólo aseguran
-controles exhaustivos en el formato de los datos, eliminado errores de recepción que corrompan el
-texto original. Se realiza también un proceso de filtro de cables repetidos, aunque se menciona que
-dicho proceso no es totalmente riguroso. Los autores advierten que es probable encontrar algunos
-errores de redacción o de ortografía, típicos del ritmo y exigencias diarias que se dan en los
+controles exhaustivos en el formato de los datos, eliminando errores de recepción que corrompan el
+texto original, pero nada más. Se realiza también un proceso de filtro de cables repetidos, aunque se
+menciona que dicho proceso no es totalmente riguroso. Los autores advierten que es probable encontrar
+algunos errores de redacción o de ortografía, típicos del ritmo y exigencias diarias que se dan en los
 periódicos y agencias de noticias.
 
 Como ocurre con TenTen el acceso a Gigaword no es gratuito, salvo para miembros del LDC. Los costos de
-adquisición del corpus resultan prohibitivos para el alcance de el presente proyecto y, como ya se
-mencionó, esta modalidad de distribución tampoco se alinea con los objetivos del proyecto.
+adquisición del corpus resultan prohibitivos para el alcance del presente proyecto y, como ya se mencionó,
+esta modalidad de distribución tampoco se alinea con los objetivos del mismo.
 
 \subsubsection{Universidad de Brigham Young: Corpus del Español}
 
@@ -137,21 +146,21 @@ contener documentos de bastante antigüedad, abarcando el período desde el sigl
 Recientemente, el proyecto recibió una beca para extender el tamaño del corpus a dos billones de
 palabras. Dicha extensión comenzó a realizarse en 2015 y continuará durante el año 2016.
 
-En la descripción de su trabajo, Davies explica los motivos para construir este corpus en español
+En la descripción de su trabajo, Davies explica los motivos para construir este corpus en español,
 habiendo ya alternativas disponibles de mucho mayor tamaño. Su argumento principal es que el tamaño
 no lo es todo y resulta muy importante contar con un corpus correctamente anotado y etiquetado para
-que este pueda ser de utilidad en la mayoría de las tareas. En su crítica a otros proyectos el autor
+que este pueda ser de utilidad en la mayoría de las tareas. En su crítica a otros proyectos, el autor
 argumenta que en la mayoría de los casos se aprecia un bajo conocimiento del idioma español por parte
 de los encargados de los mismos y que el etiquetado de los corpus publicados fue hecho de manera
 automática sin prestar demasiada atención al resultado final.
 
-Curiosamente, y a pesar de que los argumentos de Davies no deben ser despreciados, en el caso del
-entrenamiento de vectores de palabras con los algoritmos que nos competen en este trabajo, no es
-necesario contar con un corpus anotado y etiquetado, como lo es en una gran cantidad de aplicaciones.
+Curiosamente, y a pesar de que los argumentos de Davies no deben ser despreciados, en el caso de
+entrenamiento de vectores de palabras no es necesario contar con un corpus anotado y etiquetado, como
+lo es en una gran cantidad de otras aplicaciones.
 
 Finalmente, el acceso al Corpus del Español es totalmente gratuito, aunque no cuenta con mecanismos
 explícitos para descargarlo en su totalidad. Además, y de forma entendible, las consultas al corpus
-están limitadas de forma diaria por usuario registrado y por dirección IP para usuarios anónimos.
+están limitadas de forma diaria por usuario registrado, y por dirección IP para usuarios anónimos.
 Estas limitantes de acceso, sumadas a las características ya descritas, hacen que este corpus no sea
 de gran utilidad para el presente proyecto.
 
@@ -163,29 +172,37 @@ de una colección de corpus web en varios idiomas, entre los que se encuentra el
 caso se cuenta con ESCOW14, un corpus en español de más de siete billones de palabras repartidas en
 cinco millones de documentos. El corpus fue generado realizando crawling masivo en Internet y en su
 versión actual cuenta con documentos del período comprendido entre 2012 y 2014, abarcando además
-documentos de una gran cantidad de países.
+documentos de una gran cantidad de países de habla hispana.
 
 Para la limpieza de documentos obtenidos de la web y posterior extracción de texto útil se utilizó
 texrex, una herramienta creada por Roland Schäfer, integrante del equipo de COW. La herramienta cuenta
 con funcionalidades para filtrar duplicados, remover código HTML, extraer metadatos de los cabezales
 HTTP obtenidos del proceso de crawling, normalización de codificación de caracteres a UTF-8, entre
-otras. Este proceso resulta de mucha importancia, pues en su descripción del corpus los autores
-mencionan que una de sus grandes prioridades es generar corpus de alta calidad y no solamente
-conformarse con construir corpus con grandes cantidades de palabras.
+otras. Este proceso resulta de mucha importancia pues en su descripción del corpus los autores
+mencionan como una de sus prioridades generar corpus de alta calidad, y no solamente enfocarse en el
+tamaño de los mismos.
 
 El acceso a ESCOW14 está altamente limitado por los autores y regido por políticas de acceso muy
 estrictas, en un esfuerzo por ajustarse a las leyes alemanas de derecho de autor. Por este motivo
-los autores sólo ofrecen para descargar grupos de oraciones mezcladas lejos de su contexto original
+los autores ofrecen para descargar solamente grupos de oraciones mezcladas lejos de su contexto inicial
 y no permiten acceso directo a los documentos originales. Además, para obtener acceso a este contenido
 es necesario completar un formulario detallando el uso que se planea hacer del corpus, entre otros
 datos. Lamentablemente, al momento de escribir este informe aún no fuimos capaces de obtener acceso
 a ESCOW14.
 
-\subsubsection{Conclusiones}
+\subsection{Conclusiones}
 
----- Conclusiones acá ----
-TODO: - Arreglar formato, corregir, agregar citas y escribir conclusiones.
---------------------------
+La investigación realizada demuestra la dificultad que existe actualmente para acceder a un corpus en
+español de gran tamaño. Se comprobó que la mayoría de los proyectos existentes colocan
+numerosas restricciones para el acceso a sus recursos. En muchos casos la restricción es económica,
+y se requiere pagar para acceder a los textos. En otros, los corpus son ofrecidos de forma gratuita pero
+se limita la cantidad de consultas que pueden realizarse sobre los mismos. Es también común que se
+permita el acceso a los datos solamente a través de interfaces gráficas, útiles en ciertos contextos, pero
+que no sirven para nuestro caso de estudio.
+
+Se llegó pues a la conclusión de que para alcanzar el objetivo inicial de un corpus con dos mil millones
+de palabras, resultaría necesario construirlo de forma independiente. En las próximas secciones se describe
+el proceso llevado a cabo para cumplir este objetivo.
 
 \section{Proceso de Construcción}
 
