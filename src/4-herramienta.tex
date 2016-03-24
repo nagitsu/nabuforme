@@ -91,10 +91,164 @@ distintos artefactos (corpus, modelos, pruebas) de la aplicación.
 
 \section{Diseño de la Solución}
 
-- diseño llegado
-    - descripción de funcionalidades de la solución
-    - general primero (o no)
-    - ir pantalla por pantalla describiendo las principales (o todas) funcionalidades
+En esta sección se presenta el diseño de la herramienta a alto nivel. El objetivo principal aquí es
+mostrar las funcionalidades principales de la misma desde el punto de vista de un usuario. La discusión
+es por tanto a nivel conceptual, haciendo especial hincapié en mostrar qué puede hacerse con la herramienta
+y cómo se organizan estas funcionalidades.
+
+Desde el punto de vista conceptual, la herramienta se divide en cuatro grandes secciones:
+\textit{Dashboard}, \textit{Corpus}, \textit{Embeddings} y \textit{Tests}. A continuación se encuentra la
+descripción en detalle de cada una de estas secciones.
+
+\subsection{Dashboard}
+
+La sección \textit{Dashboard} es la más sencilla aunque aporta elementos de visualización muy útiles.
+Principalmente se incluye un apartado por cada fuente utilizada para construir el corpus. En dichos
+apartados se detalla el nombre de la fuente, la cantidad de palabras que la misma aporta al corpus y una
+pequeña gráfica que muestra la cantidad de palabras que han sido obtenidas recientemente de dicha fuente.
+
+Estás gráficas cumplen la doble función de presentar la cantidad de palabras obtenidas de cada fuente de
+forma diaria y además alertar de un posible defecto en el correspondiente script de extracción cuando la
+cantidad extraída presenta una caída muy pronunciada con respecto a registros inmediatamente anteriores.
+
+Como se explicó en secciones anteriores, fue necesario elaborar una cantidad considerable de scripts para
+extraer información de las diferentes fuentes elegidas para construir el corpus. En algunos casos dicha
+extracción se realizó en una única etapa. En otros casos, como por ejemplo los portales de noticias, es de
+interés volver a visitar las fuentes de forma diaria para poder indexar los nuevos documentos que hayan
+sido agregados. Naturalmente, las fuentes pueden cambiar su estructura y los scripts utilizados pueden
+fallar ante estos cambios. Por este motivo, resulta sumamente útil contar con una forma visual de detectar
+estos problemas rápidamente.
+
+Finalmente, en esta sección se incluye la cantidad total de palabras que forman el corpus. Dicho número se
+actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
+nuevas palabras de alguna de las fuentes.
+
+[imagen ilustrativa de esta sección]
+
+\subsection{Corpus}
+
+La sección \textit{Corpus} permite explorar la totalidad del corpus construido en el proyecto sin apenas
+restricciones. Se ofrece un campo de búsqueda en el cual un usuario puede escribir una serie de términos
+de consulta y se ofrece además la posibilidad de filtrar por un subconjunto de las fuentes consideradas.
+
+Estas dos operaciones de apariencia sencilla construyen por detrás consultas en el formato JSON empleado
+por Elasticsearch. Se permite visualizar y eventualmente modificar completamente la consulta inherente en
+formato JSON a través del interruptor de \textit{consulta avanzada}. Al activar este interruptor, el
+usuario cuenta con todo el poder de expresividad del formato de consultas de Elasticsearch y por tanto
+puede ejecutar consultas potencialmente complejas sobre el corpus.
+
+Una vez ejecutada una consulta se presenta una tabla con los documentos resultantes de la misma, con su
+correspondiente paginación. En la tabla se incluye la fecha de extracción del documento, un breve fragmento
+del texto que lo compone, resaltando los términos que lo hacen relevante a la consulta, y la fuente de la
+que fue extraído.
+
+Al hacer click en un documento de la tabla se presenta un cuadro de diálogo con información más detallada
+del mismo. Se incluye cantidad de total de palabras, etiquetas, la fecha de creación en la fuente (si está
+disponible) y el cuerpo completo del texto que lo compone. Se ofrece además un botón para abrir en una
+nueva pestaña el documento en su fuente original, de modo de poder corroborar en cualquier momento la
+fidelidad de los elementos del corpus.
+
+En la vista principal se ofrecen además dos acciones adicionales. La primera de ellas permite descargar el
+conjunto completo de documentos retornado al ejecutar la consulta, comprimidos en formato ZIP. La segunda
+acción permite utilizar la consulta como entrada para crear un nuevo vector, que se entrenará con el
+subconjunto de documentos obtenido a partir de la consulta. Los detalles de creación de vectores en el
+frontend se detallan más adelante. Pero dado que el corpus se encuentra en constante crecimiento, es
+importante mencionar aquí que es recomendable especificar rangos de fechas de extracción en las consultas
+al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
+obtenidos.
+
+[imagen ilustrativa de esta sección]
+
+\subsection{Embeddings}
+
+En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalidades vinculadas a las
+operaciones sobre vectores. En su vista principal se listan todos los vectores creados en el sistema.
+De cada uno se detalla su descripción, el tipo de representación vectorial utilizada (\texttt{word2vec},
+\texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y su estado de
+entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
+\textit{en entrenamiento} y \textit{sin entrenar}.
+
+Esta vista ofrece un botón para crear y poner a entrenar un nuevo vector. Al momento de crear vectores se
+debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además especificar
+el algoritmo a utilizar, \texttt{Skipgram} ó \texttt{CBOW}), fijar los valores de sus parámetros,
+especificar la consulta en formato JSON que Elasticsearch utilizará para devolver los documentos de
+entrenamiento y finalmente elegir los parámetros de preprocesamiento de texto. Una vez creado el vector,
+este será agregado a la cola de entrenamiento.
+
+Al hacer click en las tarjetas de información de los vectores se accede a una vista en detalle del vector
+seleccionado. En los detalles, además de la información ya provista en la vista de listado, se incluye el
+tamaño total en palabras del sub-corpus utilizado en el entrenamiento del vector, el detalle completo de
+los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar los documentos de
+entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando el vector se
+encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
+entrenamiento.
+
+De forma conveniente, junto al cuadro de la consulta en formato JSON se incluye un botón para ejecutar la
+misma en la sección de \textit{Corpus}. Esto facilita la posibilidad de explorar el conjunto de documentos
+utilizados para entrenar el vector. Eventualmente, un usuario podría descargar dicho conjunto para entrenar
+un nuevo vector de forma local utilizando el mismo algoritmo, de modo de verificar los resultados logrados
+con la herramienta presentada en este proyecto.
+
+Continuando con la descripción de la vista en detalle, se incluye al final de la misma una tabla con
+información acerca de resultados de evaluación del vector. En esta tabla se listan todos los conjuntos de
+prueba con los que este fue evaluado, la fecha de cada evaluación, el porcentaje de precisión alcanzado en
+cada una y una botón para obtener una visión más detallada de los resultados de cada prueba. Además, se
+incluye una columna que indica el desempeño del vector en cada evaluación en comparación con el resto de
+vectores del sistema. Cuando el vector es el de mayor precisión en una determinada prueba, se muestra un
+indicador del hecho junto a su posición.
+
+La tabla de resultados de evaluación ofrece también una acción para ejecutar nuevas evaluaciones sobre los
+vectores, permitiendo revaluar todas las pruebas, sólo evaluar aquellas aun no ejecutadas, o evaluar un
+caso de prueba particular.
+
+Finalmente se ofrecen acciones para eliminar el vector y para descargarlo a la computadora del usuario. La
+opción de descargar los vectores entrenados con la herramienta es una de las funcionalidad más valiosas e
+importantes del proyecto. Esta funcionalidad permite a cualquier usuario interesado en el campo de las
+representaciones vectoriales de palabras poder entrenar sus propios vectores y luego descargarlos para su
+uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
+bajo nivel de las representaciones.
+
+[imagen ilustrativa de esta sección]
+
+\subsection{Tests}
+
+En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de los vectores
+de palabras creados en el sistema. En su vista principal se presenta la lista de casos de prueba
+disponibles, indicando para cada uno su nombre, descripción y categoría. Las categorías principales son
+\textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De forma
+conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad
+de vectores que están siendo evaluados actualmente, junto con un indicador de progreso de la tarea actual.
+
+Los usuarios pueden hacer click en un caso de prueba para acceder a la vista de detalles, donde se
+presenta información adicional. Además de los datos mostrados en la vista principal, se presenta un
+ejemplo puntual del caso de prueba para mayor claridad de lo que se pretende evaluar. De manera adicional,
+se muestran mayores detalles acerca de las tareas de evaluación que se están ejecutando en el momento.
+
+En la vista de detalles se presenta también una tabla con resultados de evaluación. Para cada vector
+evaluado con el caso de prueba se indica la fecha de la evaluación, un enlace a la página de detalles del
+vector, el modelo utilizado por dicho vector, el porcentaje de precisión logrado en el caso de prueba y
+un botón para ver los detalles en profundidad de la evaluación. En los detalles en profundidad se
+encuentra, cuando corresponde, el desempeño en las métricas \textsc{3CosAdd} y \textsc{3CosMul}
+(porcentaje de aciertos exactos, y entre las primeras cinco y diez sugerencias), palabras no encontradas,
+entradas faltantes, entradas equivocadas y cantidad total de entradas.
+
+Desde la vista de detalles también es posible agendar nuevos trabajos de evaluación. Al momento de
+crearlos se puede optar por elegir todos los vectores que aun no fueron evaluados con el caso de prueba
+ó por elegir uno en particular. También es posible optar por ejecutar el caso de prueba en todos los
+vectores del sistema. En la parte superior de la pantalla se ofrecen además dos acciones adicionales,
+una para eliminar el caso de prueba del sistema y otra para descargarlo en un archivo en formato de
+cuatro columnas.
+
+Finalmente, en la vista principal se cuenta con un botón que da acceso a un formulario para crear un
+nuevo caso de pruebas en el sistema. En el formulario es necesario especificar nombre, descripción y
+categoría para la nueva evaluación. Además es necesario subir un archivo de texto en formato de cuatro
+columnas desde la computadora del cliente. Dicho archivo debe contener cuatro palabras separadas por un
+espacio por línea, donde las primeras tres columnas se utilizarán en la evaluación y la cuarta es el
+resultado esperado. El formato recién descrito es el mismo para las tres categorías existentes
+actualmente, pero la semántica de cada columna depende de cada categoría, como bien se explicó en
+secciones anteriores.
+
+[imagen ilustrativa de esta sección]
 
 
 \section{Implementación}
@@ -606,41 +760,20 @@ realizar la traducción de Sass a CSS puro.
 
 \subsubsection{Arquitectura de la aplicación}
 
-Desde el punto de vista conceptual, el frontend de la herramienta se divide en cuatro grandes secciones:
+Siguiendo las pautas explicadas en la sección de diseño, se analizarán aquí las diferentes secciones que
+componen el frontend desde el punto de vista conceptual. De esta forma se tiene que el frontend de la
+herramienta se divide, nuevamente, en las cuatro secciones mencionadas en el análisis de diseño:
 \textit{Dashboard}, \textit{Corpus}, \textit{Embeddings} y \textit{Tests}. Por otro lado, desde el punto
 de vista lógico, y dado que se utiliza un framework MVC como AngularJS, la aplicación puede dividirse en
 tres grandes componentes: vistas, modelos y controladores.
 
-Para el análisis de la arquitectura realizaremos un análisis guiado por la división conceptual de forma
-de mantener el foco en las funcionalidades de la herramienta y no perdernos en los detalles de
-implementación. Sin embargo, en cada caso nos detendremos a mencionar brevemente los componentes MVC
-que hacen a cada sección.
+Para el análisis de la implementación de los distintos componentes realizaremos un análisis guiado por la
+división conceptual, pero prestando atención a los detalles de implementación de cada uno, en
+particular haciendo referencia a los componentes MVC que hacen a cada sección.
 
 [diagrama de la arquitectura de la aplicación (lógico y conceptual)]
 
 \paragraph{Dashboard}
-
-La sección \textit{Dashboard} es la más sencilla aunque aporta elementos de visualización muy útiles.
-Principalmente se incluye una tarjeta por cada fuente utilizada para componer el corpus. En dichas tarjetas
-se detalla el nombre de la fuente, la cantidad de palabras que la misma aporta al corpus y una pequeña
-gráfica que muestra la cantidad de palabras que han sido obtenidas recientemente de dicha fuente.
-
-Estás gráficas cumplen la doble función de presentar la cantidad de palabras obtenidas de cada fuente
-de forma diaria y además alertar de un posible defecto en el correspondiente script de extracción cuando
-la cantidad extraída presenta una caída muy pronunciada con respecto a registros inmediatamente anteriores.
-
-Como se explicó en secciones anteriores, fue necesario elaborar una considerable cantidad de scripts para
-extraer información de las diferentes fuentes elegidas para construir el corpus. En algunos casos dicha
-extracción se realizó en una única etapa. En otros casos, como por ejemplo los portales de noticias, es
-de interés volver a visitar las fuentes de forma diaria para poder indexar los nuevos documentos que hayan
-sido agregados. Dado este requerimiento, contar con una forma visual de detectar problemas con los scripts
-resulta sumamente útil.
-
-Finalmente, en esta sección se incluye la cantidad total de palabras que forman el corpus. Dicho número
-se actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
-nuevas palabras de alguna de las fuentes.
-
-[imagen ilustrativa de esta sección]
 
 Desde el punto de vista lógico, esta sección cuenta con una sola vista principal, donde se muestra la
 información ya especificada de cada fuente que compone el corpus. Esta vista se implementa en el archivo
@@ -650,45 +783,12 @@ Chart.js [cita].
 
 Se utilizó un sólo controlador ubicado, como todos los controladores de la aplicación, en el directorio
 \texttt{scripts/controllers}. Dicho controlador, \texttt{dashboard.js}, se encarga simplemente de dibujar
-y mantener actualizadas las gráficas con llamadas periódicas al servidor. Para la comunicación con el
-servidor se utiliza el servicio \texttt{corpus.js}, ubicado en el directorio \texttt{services}. Dicho
+y mantener actualizadas las gráficas con llamadas periódicas al servidor. Para la comunicación con la
+API del backend se utiliza el servicio \texttt{corpus.js}, ubicado en el directorio \texttt{services}. Dicho
 servicio es utilizado en diferentes lugares de la aplicación y funciona como interfaz con los endpoints
 de Corpus ya descritos en la sección 4.3.2.
 
 \paragraph{Corpus}
-
-La sección \textit{Corpus} permite explorar la totalidad del corpus construido en el proyecto sin apenas
-restricciones. Se ofrece un campo de búsqueda en el cual un usuario puede escribir una serie de términos
-de búsqueda de interés y se ofrece además la posibilidad de filtrar por un subconjunto de las fuentes
-consideradas.
-
-Estas dos operaciones de apariencia sencilla construyen por detrás consultas en el formato JSON empleado
-por Elasticsearch. Se permite visualizar y eventualmente modificar completamente la consulta inherente en
-formato JSON a través del interruptor de \textit{consulta avanzada}. Al activar este interruptor, el
-usuario cuenta con todo el poder de expresividad del formato de consultas de Elasticsearch y por tanto
-puede ejecutar consultas potencialmente complejas sobre el corpus.
-
-Una vez ejecutada una consulta se presenta una tabla con los documentos resultantes de la misma, con su
-correspondiente paginación. En la tabla se incluye la fecha de extracción del documento, un breve fragmento
-del texto que lo compone, resaltando los términos que lo hacen relevante a la consulta, y la fuente de la
-que fue extraído.
-
-Al hacer click en un documento de la tabla se presenta un cuadro de diálogo con información más detallada
-del mismo. Se incluye cantidad de total de palabras, etiquetas, la fecha de creación en la fuente (si
-está disponible) y el cuerpo completo del texto que lo compone. Se ofrece además un botón para abrir en
-una nueva pestaña el documento original en su fuente de origen, de modo de poder corroborar en cualquier
-momento la fidelidad de los elementos del corpus.
-
-En la vista principal se ofrecen además dos acciones adicionales. La primera de ellas permite descargar
-el conjunto completo de documentos retornado al ejecutar la consulta, comprimidos en formato ZIP. La
-segunda acción permite utilizar la consulta como entrada para crear un nuevo vector, que se entrenará con
-el subconjunto de documentos retornado por la consulta. Los detalles de creación de vectores en el
-frontend se detallan más adelante. Pero dado que el corpus se encuentra en constante crecimiento, es
-importante mencionar aquí que es recomendable especificar rangos de fechas de extracción en las consultas
-al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
-obtenidos.
-
-[imagen ilustrativa de esta sección]
 
 En la implementación de esta sección se utilizaron dos vistas. La vista principal implementada en el
 archivo \texttt{corpus-search.html} presenta el formulario de búsqueda y los resultados. Se tiene una
@@ -703,55 +803,6 @@ para los detalles de los documentos. Esta sección utiliza también el servicio 
 descrito en la sección anterior.
 
 \paragraph{Embeddings}
-
-En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalidades vinculadas a las
-operaciones sobre vectores. En su vista principal se listan todos los vectores creados en el sistema.
-De cada uno se detalla su descripción, el tipo de representación vectorial utilizada (\texttt{word2vec},
-\texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y su estado de
-entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
-\textit{en entrenamiento} y \textit{sin entrenar}.
-
-Esta vista ofrece un botón para crear y poner a entrenar un nuevo vector. Al momento de crear vectores se
-debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además especificar
-el algoritmo a utilizar, \texttt{Skipgram} ó \texttt{CBOW}), fijar los valores de sus parámetros,
-especificar la consulta en formato JSON que Elasticsearch utilizará para devolver los documentos de
-entrenamiento y finalmente elegir los parámetros de preprocesamiento de texto. Una vez creado el vector,
-este será agregado a la cola de entrenamiento.
-
-Al hacer click en las tarjetas de información de los vectores se accede a una vista en detalle del vector
-seleccionado. En los detalles, además de la información ya provista en la vista de listado, se incluye el
-tamaño total en palabras del sub-corpus utilizado en el entrenamiento del vector, el detalle completo de
-los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar los documentos de
-entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando el vector se
-encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
-entrenamiento.
-
-De forma conveniente, junto al cuadro de la consulta en formato JSON se incluye un botón para ejecutar la
-misma en la sección de \textit{Corpus}. Esto facilita la posibilidad de explorar el conjunto de documentos
-utilizados para entrenar el vector. Eventualmente, un usuario podría descargar dicho conjunto para entrenar
-un nuevo vector de forma local utilizando el mismo algoritmo, de modo de verificar los resultados logrados
-con la herramienta presentada en este proyecto.
-
-Continuando con la descripción de la vista en detalle, se incluye al final de la misma una tabla con
-información acerca de resultados de evaluación del vector. En esta tabla se listan todos los conjuntos de
-prueba con los que este fue evaluado, la fecha de cada evaluación, el porcentaje de precisión alcanzado en
-cada una y una botón para obtener una visión más detallada de los resultados de cada prueba. Además, se
-incluye una columna que indica el desempeño del vector en cada prueba en comparación con el resto de
-vectores del sistema. Cuando el vector es el de mayor precisión en una determinada prueba, se muestra un
-indicador del hecho junto a su posición.
-
-La tabla de resultados de evaluación ofrece también una acción para ejecutar nuevas evaluaciones sobre los
-vectores, permitiendo revaluar todas las pruebas, sólo evaluar aquellas aun no ejecutadas, o evaluar un
-caso de prueba particular.
-
-Finalmente se ofrecen acciones para eliminar el vector y para descargarlo a la computadora del usuario. La
-opción de descargar los vectores entrenados con la herramienta es una de las funcionalidad más valiosas e
-importantes del proyecto. Esta funcionalidad permite a cualquier usuario interesado en el campo de las
-representaciones vectoriales de palabras poder entrenar sus propios vectores y luego descargarlos para su
-uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
-bajo nivel de las representaciones.
-
-[imagen ilustrativa de esta sección]
 
 Para la implementación de esta sección se utilizaron dos vistas principales. En el archivo
 \texttt{embeddings.html} se implementa la lista de vectores del sistema, mientras que en
@@ -775,42 +826,6 @@ del algoritmo de entrenamiento seleccionado. Este controlador y su vista acompa�
 desde la vista de resultados de consultas al corpus, como ya se explico en la sección anterior.
 
 \paragraph{Tests}
-
-En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de los vectores
-de palabras creados en el sistema. En su vista principal se presenta la lista de casos de prueba
-disponibles, indicando para cada uno su nombre, descripción y categoría. Las categorías principales son
-\textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De forma
-conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad de
-vectores que están siendo evaluados actualmente, junto con un indicador de progreso de la tarea actual.
-
-Los usuarios pueden hacer click en un caso de prueba para acceder a la vista de detalles, donde se presenta
-información adicional. Además de los datos mostrados en la vista principal, se presenta un ejemplo puntual
-del caso de prueba para mayor claridad de lo que se pretende evaluar. De manera adicional, se muestran
-mayores detalles acerca de las tareas de evaluación que se están ejecutando en el momento.
-
-En la vista de detalles se presenta también una tabla con resultados de evaluación. Para cada vector
-evaluado con el caso de prueba se indica la fecha de la evaluación, un enlace a la página de detalles del
-vector, el modelo utilizado por dicho vector, el porcentaje de precisión logrado en el caso de prueba y un
-botón para ver los detalles en profundidad de la evaluación. En los detalles en profundidad se encuentra,
-cuando corresponde, el desempeño en las métricas \textsc{3CosAdd} y \textsc{3CosMul} (porcentaje de aciertos
-exactos, y entre las primeras cinco y diez sugerencias), palabras no encontradas, entradas faltantes,
-entradas equivocadas y cantidad total de entradas.
-
-Desde la vista de detalles también es posible agendar nuevos trabajos de evaluación. Al momento de crearlos
-se puede optar por elegir todos los vectores que aun no fueron evaluados con el caso de prueba ó por elegir
-uno en particular. También es posible optar por ejecutar el caso de prueba en todos los vectores del
-sistema. En la parte superior de la pantalla se ofrecen además dos acciones adicionales, una para eliminar
-el caso de prueba del sistema y otra para descargarlo en un archivo en formato de cuatro columnas.
-
-Finalmente, en la vista principal se cuenta con un botón que da acceso a un formulario para crear un nuevo
-caso de pruebas en el sistema. En el formulario es necesario especificar nombre, descripción y categoría
-para la nueva evaluación. Además es necesario subir un archivo de texto en formato de cuatro columnas desde
-la computadora del cliente. Dicho archivo debe contener cuatro palabras separadas por un espacio por línea,
-donde las primeras tres columnas se utilizarán en la evaluación y la cuarta es el resultado esperado. El
-formato recién descrito es el mismo para las tres categorías existentes actualmente, pero la semántica de
-cada columna depende de cada categoría, como bien se explicó en secciones anteriores.
-
-[imagen ilustrativa de esta sección]
 
 Como en el caso de la sección \textit{Embeddings}, para la implementación de esta sección también se
 utilizaron dos vistas principales. La vista con la lista de casos de prueba del sistema fue implementada en
@@ -839,7 +854,7 @@ trabajos de evaluación en el sistema.
 
 \subsubsection{Consideraciones de diseño}
 
-Una vez terminado el análisis de la arquitectura del frontend es interesante mencionar ciertos objetivos y
+Una vez terminado el análisis de la arquitectura del frontend, es interesante mencionar ciertos objetivos y
 decisiones que guiaron la construcción del mismo. Se incluye a continuación una lista de puntos que fueron
 tomados en cuenta al momento de construir la solución.
 
