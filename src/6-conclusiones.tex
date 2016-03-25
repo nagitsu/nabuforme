@@ -1,0 +1,124 @@
+\chapter{Conclusiones y Trabajo Futuro}
+
+[algo?]
+
+\section{Conclusiones}
+
+- dificultad de trabajar con word embeddings: cantidad de requerimientos (corpus, impl, etc.), recursos computacionales necesarios (almacenamiento, computation), etc.
+- dificultad de recopilar texto limpio de internet: hay mucho, pero es necesario tener especial cuidado con cada fuente de datos
+- alto costo computacional de los word embeddings que dificulta su utilización y evaluación: no es tan fácil conseguir la mejor combinación de hieprparámetros porque demoran hasta 5 días en entrenar
+
+- mucho trabajo en el área recientemente, lo hace un buen tema para meterse; posibilidad de contribuir a algo; resultados muy interesantes y prometedores, hay mucha cosa para investigar y probar
+- está abierta la mejor forma de construirlos, pero parecen ser la mejor opción para adaptar/conectar deep learning a NLP
+
+[alguna cosa más]
+
+
+---
+\section{Trabajo Futuro}
+
+Se identifican dos grandes caminos para extender y continuar lo realizado en el proyecto de
+grado. El primero va por seguir las tareas de generación del corpus y de construcción de la
+herramienta, mientras que el segundo por continuar la línea de investigación identificada durante el
+relevamiento del estado del arte y de la evaluación de los modelos vectoriales.
+
+
+\paragraph{Corpus}
+
+Respecto al corpus de texto construido, se obtuvo un tamaño muy satisfactorio, pero se podría
+conseguir un volumen incluso mayor y con más variedad: se priorizó incluir fuentes de palabras
+diversas con el objetivo de mostrar qué tipos de datos existen, pero para cada una de estas áreas es
+posible recolectar aún más palabras.
+
+La mayor parte del corpus generado consta de noticias, pero se podrían incluir libros de texto (en
+[cita gotoitaly] los autores obtienen dos mil millones de palabras de libros en italiano, y en el
+presente proyecto apenas se incluyeron libros), más literatura amateur, más subtítulos (incluyendo
+películas demás de series), más foros (de distintas temáticas, se tomó un único sitio), el resto de
+los portales de Wikimedia (como Wikilibros, Wikiviajes, y Wikicitas), y más documentos oficiales
+(podrían buscarse parlamentos de otros países además de Uruguay).
+
+Yendo más allá del español, se podría incluir texto en otros idiomas; todos los documentos que se
+almacenaron se etiquetaron como texto en español, por lo que no sería necesario adaptar ninguna
+parte del proyecto.
+
+
+\paragraph{Herramienta}
+
+La herramienta cumplió con los objetivos planteados originalmente, pero vemos muchas oportunidades
+de mejora que podrían aumentar su versatilidad y utilidad en futuros proyectos.
+
+Por un lado, por más que la arquitectura fue pensada con un enfoque distribuido que permite escalar
+agregando más nodos trabajadores, presenta algunas debilidades que podrían hacerla menos robusta;
+por ejemplo, la transferencia de modelos vectoriales y datos de entrenamiento entre nodos puede ser
+un cuello de botella importante. Su comportamiento no ha sido evaluado en profundidad salvo por el
+escenario donde se corrió, por lo que sería recomendable desplegar la aplicación en un cluster
+dedicado y ponerla a prueba.
+
+Otra funcionalidad de utilidad sería implementar un sistema de autenticación de usuarios que brinde
+acceso común al corpus pero que permita mantener distintos conjuntos de modelos para cada
+usuario. Dicho sistema permitiría también restringir el acceso a la herramienta para usuarios no
+identificados, evitando así que un usuario malintencionado entre a la aplicación e interfiera con el
+correcto funcionamiento (por ejemplo, entrenando miles de modelos vectoriales).
+
+En cuanto a la administración de representaciones vectoriales, sería de gran utilidad poder dar de
+alta y entrenar modelos masivamente pasando una lista de hiperparámetros a utilizar, en lugar de
+crearlos de a uno como se hace en la actualidad. Se podría permitir, incluso, que dada una lista de
+conjuntos de pruebas se busque el modelo que mejores resultados obtenga automáticamente, realizando
+una exploración del espacio de hiperparámetros (claro está, acotado) y empleando validación cruzada
+para evaluarlos, de manera similar al enfoque tomado por los autores en [Levy-compar].
+
+Relacionado al último punto, sería bueno también agregar más opciones de evaluación, incluyendo
+idealmente algún tipo de evaluación implícita para la cual valga la pena optimizar al máximo la
+performance de los modelos vectoriales.
+
+Por último, con el fin de evitar tener que descargar las representaciones vectoriales para hacer
+pruebas básicas, sería bueno ofrecer más funcionalidades de introspección de las mismas permitiendo,
+por ejemplo, probar analogías desde la misma aplicación web, de manera de hacer evaluaciones
+cualitativas simples fácilmente. También se podría utilizar en algoritmo tSNE [cita] para mostrar
+una visualización de algunas palabras comunes en el espacio de vectores.
+
+--
+[más:]
+[- poder agrupar y etiquetar testsets, y ver más en detalle el comportamiento de los vectores
+(wrong entries, etc.) sin tener que descargarlos y probarlos manualmente (e.g. subir mikolov por
+partes y no tener que subirlo todo junto)]
+[- agrupar embeddings y testsets en sessions o algo así, que asistan al entrenamiento de
+vectores para una tarea particular (subiendo pruebas específicas y embeddings específicos, sin que
+se mezcle todo con todo), más reportes automatizados]
+[- mejorar implementaciones: uniformizar más los hiperparámetros, utilización de GPUs o
+multicore (en el caso de SVD), etc.]
+[- monitoreo de spiders para cuando se cae un scraper]
+--
+
+
+\paragraph{Investigación}
+
+A raíz de los resultados obtenidos en el proceso de evaluación realizado, surge la necesidad de
+estudiar en mayor profundidad el comportamiento de los modelos vectoriales en los escenarios
+particulares vistos en el proyecto. Por ejemplo, investigar qué es lo que hace que algunas
+conjugaciones verbales sean más fáciles de recuperar que otras, si la cantidad de ocurrencias en el
+corpus de entrenamiento es lo único que las afecta o si existe una propiedad inherente a las mismas
+que disminuye su performance (como el hecho de ser una construcción gramatical más compleja en,
+e.g., conjugaciones del subjuntivo).
+
+Viendo también la influencia que tuvo el eliminar los tildes del corpus de entrenamiento en los
+resultados obtenidos, el estudio de cómo tratar palabras polisémicas parecería ser una rama de
+investigación con potencial para mejorar en gran medida la calidad de las representaciones
+obtenidas.
+
+
+Durante el relevamiento del estado del arte también se identificaron algunas líneas de investigación
+más generales que resultarían muy interesantes de continuar. Una de ellas, planteada por los autores
+en [Levy-fact], es buscar mejoras en la factorización de la matriz PPMI de los modelos estadísticos,
+pues ya se vio cómo las palabras con pocas ocurrencias (como conjugaciones verbales menos comunes)
+obtienen representaciones inferiores, afectando la performance en las tareas de analogías.
+
+Otro punto a investigar, planteado en el capítulo 2, es la relación entre la evaluación implícita y
+explícita de los modelos vectoriales, y ver hasta qué punto se transfiere el hecho de obtener buena
+performance en tareas como las analogías a tareas de mayor complejidad y que usen los vectores como
+parte de una solución de mayor porte.
+
+Como última propuesta de investigación, y algo que se tocó brevemente durante el proceso evaluación,
+es estudiar en mayor profundidad la viabilidad de emplear vectores preentrenados genéricos para
+otras tareas de PLN, y ver qué tan inferiores éstos resultan comparando con vectores entrenados para
+una tarea específica con, por ejemplo, texto del dominio particular.
