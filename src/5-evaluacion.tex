@@ -356,26 +356,152 @@ más afectados que otros.
 
 [tabla de testset; con cantidad original y final de entradas]
 
+\quad
+
+La tabla [tabla] muestra los resultados obtenidos para los mejores dos modelos vectoriales de cada
+algoritmo. También se presentan, como punto inicial de comparación, los resultados obtenidos en la
+literatura.
+
+[tabla resultados por grupos (Google total, wordsim, etc.)]
+
+El primer punto a observar es que los resultados obtenidos por nuestros vectores son muy similares a
+los obtenidos en inglés, particularmente en las tareas de analogías: los resultados de estado del
+arte varían entre una exactitud de $0.61$ y $0.69$ [Levy y Goldberg, Baroni, GloVe, Mikolov],
+mientras que los vectores en español (particularmente, el modelo [modelname]), obtiene $0.63$.
+
+Parte de esta diferencia puede explicarse por el hecho de que las secciones que se remueven del
+conjunto de pruebas (comparativos, superlativos, y ciudad en estado) son entradas que obtienen por
+lo general buenos resultados. Este fenómeno puede observarse en [Levy 3cosmul], donde los autores
+presentan los resultados desglosados por sección. Allí, el conjunto de comparativos, por ejemplo,
+obtiene una exactitud de $0.86$.
+
+En la tabla [tabla desgl] se muestran los valores obtenidos separados por sección del conjunto de
+analogías, junto a los valores obtenidos por [Levy 3cosmul]. Es interesante ver que el
+comportamiento del mejor modelo es relativamente similar al inglés, incluso con las pruebas
+sintácticas donde ambos idiomas, proveniendo de familias de lenguajes distintos, varían
+significativamente. Por ejemplo, las secciones que peor performance obtienen son las mismas en ambos
+idiomas: \texttt{currency}, \texttt{gram1-adjective-to-adverb}, \texttt{gram2-opposite}, todas muy
+debajo del promedio. Por otro lado, también se repiten las que mejor funcionan:
+\texttt{capital-common-countries}, \texttt{gram6-nationality-adjective},
+\texttt{gram9-plural-verbs}, donde hay tanto categorías sintácticas como semánticas.
+
+[tabla analogías desglosada]
+
+El modelo vectorial vectorial que más éxito obtiene en analogías es [modelname], el cual utiliza el
+algoritmo \texttt{word2vec} con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y
+finalmente por un modelo PPMI/SVD\@. Esto sigue lo observado por los autores en [Levy comparison],
+aunque en ese caso la diferencia entre el modelo híbrido y el estadístico es mucho menor.
+
+De todos modos, en el conjunto de pruebas MSR (el cual cuenta con analogías exclusivamente
+sintácticas) los autores sí tienen una diferencia amplia entre ambos algoritmos, lo que puede
+explicar este fenómeno; en especial si se nota que la mayor diferencia de aciertos en los vectores
+en español se da en las secciones \texttt{gram8-plural-nouns} y \texttt{gram9-plural-verbs}: en
+pruebas sintácticas. La diferencia en el conjunto de Google en particular podría explicarse por la
+extracción de secciones durante el proceso de traducción.
 
 
-- [3cosmul y 3cosadd, mencionar; ver dónde]
-- presentación de resultados para cada embedding
-    - no poner lista entera, sino los mejores 5 o algo así (o dos mejores por algoritmo)
-    - comparar valores con resultados en inglés
-    - mencionar, para analogías, el hecho de que se sacan comparatives que tienen alto porcentaje de accuracy (lo que hace que baje el promedio)
-        - comparar sección a sección
-    - ver qué embedding consigue mejores resultados por área (en similitud por ejemplo), etc.
-- alguna discusión más:
-    - comentar que los resultados son bastante comparables al inglés
-    - mostrar algún ejemplo donde erre (capaz que eso de levy de errores por defecto? el paper de 3cosmul)
-    - comparar con otros trabajos que hicieron lo mismo que nosotros de traducir vectores (billion word corpus, el italiano, polyglot, etc.; mejores resultados en español?)
-    - discusión de 3cosadd vs 3cosmul (se corrobora lo mismo de levy, que es mejor el segundo)
-    - discusión de resultados en top5 y top10 (``le erra pero está cerca'')
-    - syntactic vs semantic
-    - accents vs remove accents (casi no hay diferencia, aunque parece ser mejor dejarlos)
+Curiosamente, el comportamiento en el caso de similitud de palabras es opuesto: salvo por el
+conjunto de pruebas [mturk], PPMI/SVD es consistentemente superior a las alternativas, con los
+modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también es
+similar al comportamiento obtenido en [Levy comp].
+
+Algo que cabe resaltar, sin embargo, es que la diferencia entre los resultados en inglés y español
+es mayor que para el caso de las analogías: mientras que las analogías obtenían aproximadamente un
+$5\%$ de diferencia relativa en los resultados, estas pruebas llegan hasta un $25\%$ de diferencia
+(en el conjunto SimLex, por ejemplo).
+
+Esto último se puede explicar, en parte, porque los conjuntos de similitud de palabras son más
+difíciles de traducir: el puntaje asignado es una noción muy intuitiva a la persona que los asigna,
+algo que difícilmente se traslade de un par de palabras en inglés a su traducción en español. El
+hecho de que el conjunto WordSim (entradas de similitud) y MEN obtengan resultados que van más
+acorde al estado del arte, con aproximadamente un $5\%$ de diferencia relativa, podría explicarse
+porque tienen entradas que resisten más el proceso de traducción (con menos sutilezas del
+significado de las palabras).
+
+Para obtener resultados equivalentes, sería necesario seguir un proceso similar a los creadores de
+los conjuntos y buscar asignar puntajes a los traducciones de las palabras (así, por lo menos, es
+equivalente el conjunto).
 
 
-- disclaimer: el corpus afecta mucho el resultado como vio Levy, así que tomar las comparaciones con pinzas; además de los problemas de traducción
+Vale la pena repetir que, como muestran los autores en [Levy comp-de-todo], la calidad de los
+vectores resultantes están fuertemente ligada a la composición del corpus con que se entrenan, por
+lo que las medidas presentadas de vectores en inglés, entrenados por otros autores, con otras
+implementaciones, y otros corpus, deben limitarse a ser una referencia. Esto es particularmente
+cierto en el escenario actual por el hecho de estar además traduciendo los conjuntos de pruebas
+mediante un proceso de traducción que, como ya se mencionó anteriormente, no está ni cerca de ser
+perfecto.
+
+
+Otro punto interesante a comentar es que se logran reproducir los resultados obtenidos por los
+autores en [Levy], donde se propone la medida \textsc{3CosMul} para la recuperación de analogías. En
+todas las pruebas realizadas, esta medida obtiene resultados consistentemente superiores a
+\textsc{3CosAdd}.
+
+
+Una cuestión que no ha sido estudiado en profundidad en la literatura es, en los casos donde la
+recuperación de la analogía falla, qué tan cerca se queda la respuesta. Con este objetivo se
+calcula, además del porcentaje de aciertos en la primer posición (esto es, la palabra que maximiza
+\textsc{3CosMul}), el porcentaje de entradas para las cuales la respuesta está entre las cinco o
+diez palabras con mejor puntaje. En la tabla [tabla top1-5-10] se presenta esta información para los
+modelos de antes.
+
+[tabla top1-5-10]
+
+Es interesante ver que los valores mejoran significativamente al considerar el top 5 y el top 10:
+para el mejor modelo vectorial, se pasa de un $0.63$ a un $0.76$ en el top 5 y un $0.79$ en el top
+10. Esto podría sugerir que con más cantidad de texto o con una mejor forma de recuperar analogías
+se podrían obtener resultados aún mejores, porque los modelos cuentan con la información y no están
+tan alejados de las respuestas correctas como parecería a priori: la sección
+\texttt{gram1-adjective-to-adverb}, por ejemplo, pasa de un $0.22$ a un $0.48$, la mayor mejora de
+todas las categorías.
+
+
+Por último, es llamativo ver que, en contradicción a nuestra primera intuición, eliminar los tildes
+tiene un efecto negativo sobre los resultados del corpus: en todos los casos donde se entrenaron
+modelos con los mismos hiperparámetros salvo por la eliminación de los tildes, la versión que los
+mantenía obtuvo mejores resultados en la mayoría de las pruebas.
+
+Es posible que este fenómeno se dé por la dificultad que tienen estos algoritmos de distinguir
+palabras polisémicas. Cuando una palabra puede tener más de un significado, el vector resultante
+asociado será una mezcla de los vectores de cada uno de los sentidos de la palabra si se
+intercambiaran por un \textit{token} propio\footnote{Esta mezcla, además, estará sesgada en base a
+qué uso de la palabra es más frecuente: cuando uno es mucho más usado que otro, se corre el riesgo
+de \textit{diluir} uno de los significados en el otro}.
+
+Esto es, de hecho, lo que hacen los autores en [abajo], donde construyen tokens de la forma
+\textit{palabra\_1}, \textit{palabra\_2} para los significados 1 y 2. Así, incluir los tildes de las
+palabras ayuda a distinguir entre las diferentes acepciones de las palabras, bajo la suposición de
+que la cantidad de faltas de ortografía en el corpus de entrenamiento no es demasiado elevada.
+
+% http://nlp.stanford.edu/pubs/HuangACL12.pdf
+% http://home.ustc.edu.cn/~tianfei/Fei%20Tian's%20Homepage_files/papers/coling14_multi_emb.pdf
+
+[hay algún otro paper?]
+
+En la literatura existen también comparaciones de los algoritmos aquí presentados en distintos
+idiomas, aunque con un nivel de profundidad menor. En [italy], los autores realizan una comparación
+de \texttt{word2vec} y \texttt{GloVe} con vectores entrenados en italiano con un corpus compuesto de
+la Wikipedia (alrededor de 300 millones de palabras) y libros (alrededor de 2200 millones de
+palabras) en dicho idioma, realizando también una traducción de las analogías de Google similar a la
+hecha en este proyecto. Consiguen, sin embargo, resultados significativamente inferiores a los aquí
+presentados: entrenando con Wikipedia obtienen un acierto de $0.40$, mientras que agregando libros
+$0.47$.
+
+Los autores también corren las pruebas con Polyglot [cita], que son un conjunto de modelos
+vectoriales en múltiples idiomas propuestos por sus autores como línea de base para distintos
+experimentos, entrenados con las Wikipedias de cada lenguaje. Consiguen, sin embargo, una exactitud
+en la recuperación de tan solo $0.04$, por lo que se decidió ni evaluar los vectores en español.
+
+En español se cuenta con los vectores presentados en [sbwce], donde el autor obtiene resultados
+levemente inferiores a los nuestros con el conjunto de pruebas de Google traducido por
+él\footnote{Dicha traducción no fue utilizada en el proyecto porque se publicó una vez que ya se
+había traducido el conjunto de pruebas. Aún así, se realizó una comparación entre ambas traducciones
+y se vio que la misma contenía algunos errores.}. No hay, sin embargo, una publicación adjunta que
+describa el proceso de evaluación, por lo que se desconoce el detalle de las pruebas realizadas.
+
+% http://ceur-ws.org/Vol-1404/paper_11.pdf
+% http://www.aclweb.org/anthology/W13-3520
+% http://crscardellino.me/SBWCE/
 
 
 \section{Comportamiento Específico al Español}
