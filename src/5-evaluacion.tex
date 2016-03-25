@@ -506,11 +506,11 @@ describa el proceso de evaluación, por lo que se desconoce el detalle de las pr
 
 \section{Comportamiento Específico al Español}
 
-Teniendo un punto de comparación de la performance de los modelos vectoriales en español y en
-inglés, se procedió a realizar un estudio más detallado de su comportamiento en español, con el
-objetivo siendo obtener una mejor visión de qué tanta información son capaces de capturar los
-vectores en un idioma con mayor compejidad [morfológica? sintáctica?], investigando cuáles son las
-características que resultan más difíciles de representar.
+Teniendo un punto de comparación de la performance de los modelos vectoriales en ambos idiomas, se
+procedió a realizar un estudio más detallado de su comportamiento en español, con el objetivo siendo
+obtener una mejor visión de qué tanta información son capaces de capturar los vectores en un idioma
+con mayor compejidad gramatical, investigando cuáles son las características que resultan más
+difíciles de representar.
 
 Con este fin, se armaron conjuntos de pruebas que exponen cualidades del español, como conjugaciones
 verbales, géneros de sustantivos, y más. Son conjuntos de prueba construidos para el presente
@@ -540,7 +540,7 @@ conjugaciones verbales.
 
 
 Buscando estudiar la relación de los vectores con el corpus utilizado para el entrenamiento, también
-se generaron analogías utilizando conjugaciones verbales específicas a España (en particular, la
+se generaron analogías utilizando conjugaciones verbales específicas de España (en particular, la
 conjugación de \textit{vosotros}), con el fin de ver la performance de los vectores en estas pruebas
 cuando se entrena con un corpus exclusivamente hispanoamericano o uno exclusivamente español. La
 construcción de dicho conjunto de pruebas fue igual al recién detallado, donde se tomaron tres
@@ -577,22 +577,109 @@ junto a la cantidad de entradas de cada uno y cuál es su propósito (i.e.\ qué
 
 [tabla de testsets con cantidad de entradas y qué busca evaluar (e.g. presente 3era persona singular, etc.)]
 
+\quad
+
+En la tabla [tabla resultados] se muestran los resultados a los que llegan las mejores dos
+representaciones vectoriales de cada algoritmo. En el caso de los conjuntos sintácticos, se dividen
+también por conjugación verbal.
+
+[tabla resultados]
+
+El primer punto a notar es que en el caso de las analogías los mejores resultados son similares a
+los obtenidos en la sección anterior, con las pruebas de ocupaciones levemente superiores y las de
+verbos algunos puntos por debajo. El algoritmo que mejor funciona en la tarea de analogías es
+nuevamente \texttt{word2vec}, con \texttt{GloVe} en segundo lugar y PPMI/SVD en tercero.
+
+Observando los valores, es posible ver que los resultados de las pruebas varían significativamente
+entre una conjugación y otra: mientras los gerundios (\texttt{AV04}) llegan a un acierto de $0.84$,
+el futuro subjuntivo singular (\texttt{AV11}) obtiene sólo $0.08$. Esto parece razonable, pues una
+conjugación es mucho más usada que la otra, y los algoritmos aprenden mejores representaciones para
+palabras más comunes\footnote{Esto es especialmente cierto en el lenguaje empleado en las noticias,
+que abarcan la mayor parte del corpus.}.
+
+De hecho, uno de los principales problemas con el conjunto \texttt{AV11} es que muchas de las
+palabras que lo componen no se encuentran ni siquiera en el vocabulario del mejor modelo vectorial
+(ver tabla [tabla missingwords]), lo que hace que casi la tercera parte de las entradas no puedan
+ser respondidas correctamente.
+
+[tabla missing words: para mejor algoritmo, missing words per verbtest; count; missing entries]
+
+Es de esperar, por lo tanto, que si se obtiene un corpus con una mejor distribución de conjugaciones
+verbales, el resultado de las pruebas mejore significativamente. En la tabla [tabla timeposv] se
+presenta la distribución de los distintos tiempos verbales en el corpus de entrenamiento, derivado
+en base a la ocurrencia en el texto de las palabras utiliaadas en el conjunto de analogías
+verbales. Como es de esperar, las conjugaciones que mejores resultados obtienen son las más
+frecuentemente empleadas enel corpus.
+
+[tabla cantidad de ocurrencias de palabras por tiempo verbal (count de las palabras de las analogías
+en el corpus)]
+
+Siguiendo la discusión de la sección anterior respecto al uso de tildes en el corpus, es interesante
+ver que en el conjunto \texttt{AV07} (conjugaciones en pretérito simple, tercera persona del
+singular) el resultado obtenido por el modelo vectorial que mantiene los tildes es
+significativamente superior al que no usa, presentando una mejora de un $32\%$.
+
+Esto refuerza la idea de que los tildes ayudan a desambiguar palabras que de otra forma serían
+polisémicas. En el caso de esta conjugación verbal, permite distinguir entre \textit{cambió} y
+\textit{cambio}, \textit{cortó} y \textit{corto}, o \textit{sacó} y \textit{saco}. De hecho, la
+única otra conjugación verbal para la cual hay una diferencia grande entre ambas modalidades de
+preprocesamiento es en \texttt{AV11} (subjuntivo futuro, singular), pues es la otra donde hay
+colisiones de palabras al remover los tildes: \textit{apagare} y \textit{apagaré}, \textit{volare} y
+\textit{volaré}, o \textit{tocare} y \textit{tocaré}. Las otras conjugaciones que utilizan tildes,
+como \texttt{AV01} (condicionales), no pasan a ser otra conjugación al removerlos.
+
+[algo de ocupaciones (A02)? que falla más en ocupaciones que ve menos? plomera, carpintera, etc?]
+[o no mencionar nada, son bastante estándares los resultados fuera de eso]
+
+Es interesante ver que el aumento en los aciertos en el top 1 y el top 10 es mucho mayor para el
+caso de los verbos (pasando de $0.54$ a $0.77$ en el mejor modelo) que en el caso de las ocupaciones
+(que va de $0.63$ a $0.78$). Esto podría explicarse porque en el caso de los verbos es más posible
+que se confunda la palabra con distintas conjugaciones de la misma (que muchas veces pueden
+utilizarse en contextos similares), lo que más difícilmente ocurre en el caso de ocupaciones (por
+haber dos ejes para variar: género y número).
 
 
-- presentar resultados para cada embedding
-    - para los no-spain, hacer como la vez pasada
-    - alguna discusión más sobre los ooo, que hasta ahora no había
-- discusión de resultados
-    - (falta esperar a que se entrene)
-    - distinguir por tipo de conjugación: hay algunas más simples que otras? (e.g. subjuntivo), puede ser por el corpus
-    - ver resultados de spain-specific para evaluar composición del corpus
-    - rever alguno de los puntos de la sección anterior
-    - cantidad de ocurrencias de palabras por tiempo verbal (count de las palabras de las analogías en el corpus)
+En cuanto a las pruebas del tipo \textit{odd-one-out}, los resultados obtenidos son muy elevados,
+con el $90\%$ y $80\%$ de las respuestas siendo correctas en las pruebas semánticas y sintácticas,
+respectivamente. El mejor algoritmo vuelve a ser \texttt{word2vec}, pero en el caso de la prueba
+semántica, \texttt{O01}, PPMI/SVD está en un cercano segundo lugar.
+
+En las prueba sintáctica (\texttt{O02}), sin embargo, PPMI/SVD consigue resultados bastante
+inferiores a los otros modelos, con \texttt{GloVe} en un segundo lugar. Este punto sigue apoyando la
+noción de que el modelo estadístico captura mejor las relaciones semánticas entre las palabras que
+las relaciones sintácticas, pues vuelve a sobresalir en este escenario al igual que lo hizo en las
+tareas de similitud de palabras.
+
+Este último punto es importante, porque parecería indicar que PPMI/SVD logra capturar únicamente
+relaciones de más alto nivel, donde las relaciones de coocurrencia son más fuertes, y no las
+sutilezas entre usos de palabras menos frecuentes, como distintas conjugaciones de verbos en las que
+cada variante aparece una menor cantidad de veces. Esto coincide con las conclusiones de [Levy
+Goldberg neural fact], en la que los autores plantean que la principal fortaleza de
+\texttt{word2vec} (específicamente, de Skipgram con negative sampling) radica en la capacidad que
+tiene este algoritmo de no sobrerrepresentar palabras demasiado comunes, distribuyendo la
+información en los vectores de manera más uniforme.
+
+[by verb conjugation? OV2-4 mejores porque son usos más específicos que el infinitivo, que lleva a
+que se mezclen?]
+
+
+
+
+[esto no pasa, si no se consigue un mejor conjunto de pruebas sacar; sino mencionar algo de esto en
+el análisis cualitativo, con lo de UTE y ANCAP]
+En la tabla [tabla spain-spec] se muestran los resultados de las evaluaciones con los conjuntos de
+conjugaciones verbales específicas de España. Es interesante ver cómo los modelos vectoriales que
+son entrenados exclusivamente con texto de España obtienen resultados mejores que los entrenados con
+todo el texto. Este punto vuelve a resaltar la importancia de la composición del corpus de
+entrenamiento, además de indicar una especie de dilución de los vectores de las palabras cuando la
+ocurrencia de las palabras está en un subconjunto del texto muy específico del corpus completo.
+[tabla spain-spec]
 
 
 \section{Análisis Cualitativo de Resultados}
 
-- estudiar resultados del most\_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river)
-  (más informal)
-- e.g. UTE, ANCAP y eso con corpus en español y corpus general; cómo se ``diluyen'' los significados (i.e. no recupera UTE o ANCAP en todo el corpus pero sí sólo en español, a pesar de que ANCAP sólo se menciona en uruguay (o no, pero buscar ejemplo donde sí en otro caso))
+- estudiar resultados del most\_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river) (más bien informal)
+
+- e.g. UTE, ANCAP y eso con corpus en español y corpus general; cómo se ``diluyen'' los significados (i.e. no recupera UTE o ANCAP en todo el corpus pero sí sólo en uruguay, a pesar de que ANCAP sólo se menciona en uruguay (o no, pero buscar ejemplo donde sí en otro caso))
+
 - algún ejemplo interesante
