@@ -293,9 +293,19 @@ texto en español con ciertas cualidades. Mediante la inclusión de metadatos pa
 etiquetado según el estilo del texto, y de datos de trazabilidad para cada documento, se busca
 reforzar esta idea.
 
-El hecho de exigir tantos requerimientos, sin embargo, hace que sea necesario descartar algunos de
-los corpus existentes anteriormente mencionados. [o no? Cuáles de los corpus existentes nos sirven y
-cuáles no (si están limpios, clasificados, etc.)?]
+El hecho de exigir este tipo de requerimientos, sin embargo, hace que sea necesario tener cuidado al
+momento de escoger las fuentes de documentos para la construcción del corpus. Además, estos
+requerimientos imponen restricciones al momento de utilizar alguno de los proyectos de construcción
+de corpus ya existentes mencionados en la sección anterior, ya sea en su totalidad o tomando
+subconjuntos de sus documentos o fuentes.
+
+En particular, sólo se consideraron fuentes que ofrezcan garantías mínimas de calidad, en concordancia
+con los objetivos recién planteados. Se buscó también que los documentos permitan una categorización
+básica a alto nivel, permitiendo eventualmente filtrar documentos y trabajar solamente con subconjuntos
+del corpus con ciertas características.
+
+Hecha esta aclaración, se detalla a continuación el proceso seguido para la selección de fuentes de
+palabras, aclarando cuando corresponda si se utilizaron fuentes provenientes de corpus ya existentes.
 
 
 \subsection{Relevamiento de Fuentes de Palabras}
@@ -312,7 +322,8 @@ implementación de estas técnicas en más detalle.
 mejor; que cada una de las fuentes cumplió con los requerimientos y más o menos qué enfoque se
 utilizó para scrapearla]
 
-[- comentar que se optó por sacar algo de cada tipo de fuentes, que en principio hay más info en cada área pero escapaba del alcance]
+[- comentar que se optó por sacar algo de cada tipo de fuentes, que en principio hay más info en cada
+área pero escapaba del alcance]
 
 
 \subsubsection{Portales de Noticias}
@@ -536,12 +547,9 @@ con una amplia colección de textos de carácter público, en varios idiomas. OP
 de forma libre, tanto los textos recopilados como algunas herramientas utilizadas para la limpieza y
 preprocesamiento de los mismos.
 
-Se tomaron en particular los documentos en español del EU Bookshop [cita], una colección de
-publicaciones de la Unión Europea en varios idiomas, en formato digital. La colección contiene
-documentos que datan desde el año 1952 hasta la actualidad. Las temáticas de los documentos son
-variadas, puesto que se cuenta con publicaciones realizadas por instituciones oficiales de varias
-índoles. Se tiene desde documentos que apuntan a públicos infantiles hasta tratados de economía
-o política.
+Se tomaron en particular los documentos en español del EU Bookshop [cita], mencionado en la subsección
+anterior. Como ya se comentó, la colección contiene documentos con temáticas variadas que datan desde
+el año 1952 hasta la actualidad.
 
 Se tomó también una colección de resoluciones de la Asamblea General de las Naciones Unidas [cita].
 Dicha colección cuenta con traducciones para las seis lenguas oficiales de la organización, incluyendo
@@ -571,15 +579,15 @@ especifican las distintas técnicas empleadas para la obtención del texto.
 
 Elasticsearch [cita?] es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?])
 que provee funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de
-estructura) basado en la biblioteca de este propósito Lucene [cita?]. Provee una interfaz HTTP
-RESTful [cita?] para el acceso, la consulta y el almacenamiento de los documentos con los que
-trabaja.
+estructura) basado en la biblioteca Lucene [cita?], desarrollada para de este propósito. Provee
+una interfaz HTTP RESTful [cita?] para el acceso, consulta y almacenamiento de los documentos con
+los que trabaja.
 
 Se optó utilizar Elasticsearch porque brinda varias ventajas por sobre las alternativas:
 
 \begin{itemize}
 
-\item Permite el almacenamiento grandes volúmenes de datos sin mayores problemas. Es capaz que
+\item Permite el almacenamiento grandes volúmenes de datos sin mayores problemas. Es capaz de
 manejar millones de documentos con ajustes mínimos. [algomás]
 
 \item Brinda funcionalidades de búsqueda de texto que, mientras que no son un requerimiento
@@ -602,13 +610,68 @@ de documentos [cita aphyr], aunque esto ocurre en esquemas distribuidos y bajo c
 particulares que no nada frecuentes. Además, el hecho de estar almacenando información no crítica
 (esto es, no son registros de usuarios, por ejemplo), esto no plantea mayores riesgos.
 
----
+Naturalmente, la tarea de realizar scraping selectivo pero sumamente intensivo de un gran número de
+fuentes, junto con el trabajo de almacenar la enorme cantidad de información recolectada resultan en un
+proceso sumamente exigente tanto en capacidad de cómputo, almacenamiento en disco y ancho de
+banda. Resultó claro desde un principio que utilizar una computadora personal no resultaría ser una
+opción razonable.
 
-- servidor en alemania con X características
-- ahí corre elasticsearch, el código python, la herramienta web (después se detallará),
-  postgresql (para el scraping automático y para la API (job management))
+Se decidió por tanto evaluar las distintas alternativas existentes de proveedores para la contratación de un
+servidor virtual en la nube. Desde un principio se decidió que el servidor contratado no sería utilizado
+solamente para recolectar y almacenar documentos para la creación del corpus, sino que también se lo
+utilizaría para el entrenamiento de vectores de palabras y el alojamiento de la herramienta web a construir.
+Por estos motivos, se buscó el proveedor que ofreciera el mejor equilibrio entre poder de cómputo, espacio
+en disco, ancho de banda disponible y, por supuesto, costo mensual.
 
-- backups en amazon S3 (funcionalidad integrada en elasticsearch)
+Entre las opciones consideradas se destacan \textit{Amazon EC2}, \textit{Microsoft Azure} y
+\textit{Google Cloud Platform} [citas?], todos ellos proveedores altamente prestigiosos que ofrecen
+excelentes servicios. Lamentablemente, nos resultó imposible asumir los costos mensuales de la clase
+servidores que cumplen con nuestras expectativas en todas las facetas, al menos con estos proveedores. Al
+continuar investigando encontramos \textit{Webtropia} [cita], un proveedor alemán no tan popular, pero con
+precios mucho más asequibles. Por tanto, se contrató un servidor virtual con las características presentadas
+en el cuadro \ref{table:webtropia}, en la página \pageref{table:webtropia}.
+
+\begin{table*}[t]
+    \centering
+    \begin{tabular}{p{0.70\linewidth}p{0.20\linewidth}}
+        \hline
+        Característica & Valor\\
+        \hline
+        Cantidad de núcleos virtuales & 16\\
+        Memoria RAM garantizada & 24GB\\
+        Memoria RAM dinámica & 48GB\\
+        Espacio en disco (SSD) & 500GB\\
+        Nivel de RAID (hardware) & 10\\
+        Ancho de banda & 500MBit\\
+        Sistema operativo & Ubuntu 14.04\\
+        \\
+        Costo mensual (Euros) & 39.99\\
+        \hline
+    \end{tabular}
+    \caption{Webtropia: vServer Cloud XL 4.0 (SSD).}
+    \label{table:webtropia}
+\end{table*}
+
+Es importante destacar que el servidor fue contratado en el mes de abril de 2015 y los costos mensuales
+($39.99$ EUR) fueron asumidos enteramente por nosotros.
+
+Finalmente, cabe mencionar que el servidor contratado corre el proceso de Elasticsearch y toda la
+infraestructura de almacenamiento. Ejecuta además todos los trabajos de scraping periódicos, junto con
+una instancia de PostgreSQL para almacenamiento de datos de sincronización de dichos trabajos. Ahí se
+aloja también la herramienta construida para el manejo de vectores, que se analizará en gran detalle en una
+sección particular. Esto implica que en el servidor se ejecutan todos los trabajos de entrenamiento y
+evaluación de vectores, limpieza de documentos, etcétera.
+
+Sin lugar a dudas podemos afirmar que la elección de contratar un servidor virtual fue una decisión acertada,
+pues simplificó mucho el manejo de enormes cantidades de información de forma remota. Y, sobre todo,
+permitió que tareas con enormes exigencias desde el punto de vista computacional, como son el entrenamiento
+y evaluación de vectores de palabras, pudieran realizarse en tiempos razonables.
+
+En las secciones siguientes se continúa con el análisis detallado del proceso de construcción del corpus,
+mencionando las técnicas y estructuras utilizadas para conseguirlo.
+
+- Mencionar backups en amazon S3 (funcionalidad integrada en elasticsearch)
+- Algo más?
 
 
 \subsubsection{Scraping Automático}
