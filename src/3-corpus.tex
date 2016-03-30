@@ -189,6 +189,30 @@ es necesario completar un formulario detallando el uso que se planea hacer del c
 datos. Lamentablemente, al momento de escribir este informe aún no fuimos capaces de obtener acceso
 a ESCOW14.
 
+\subsubsection{Spanish Billion Words Corpus and Embeddings}
+
+Finalmente, consideramos importante mencionar el trabajo realizado por Cristian Cardellino en el proyecto
+Spanish Billion Words Corpus and Embeddings [cita]. Dicho proyecto resulta de gran interés pues
+comparte muchos de nuestros objetivos para el presente proyecto de grado.
+
+El autor, dedicado a la investigación en el área del PLN, expone en su trabajo los desafíos de construir
+representaciones vectoriales de palabras en idioma español, dadas las enormes dificultades para encontrar
+fuentes disponibles para construir un corpus no anotado de tamaño suficiente en dicho idioma. Se propuso
+por tanto la creación de un corpus en español de aproximadamente mil quinientos millones de palabras
+utilizando recursos de libre acceso disponibles en Internet. Además, el autor ofrece libremente un
+conjunto de vectores de palabras entrenados utilizando \texttt{word2vec}.
+
+Para las conclusiones del proyecto, el autor realiza un análisis de los resultados obtenidos, mencionado
+brevemente algunos aspectos de composición y calidad del corpus generado. Se incluye también una
+traducción de los casos de prueba en inglés de \texttt{word2vec}, que resultó útil como comparación de
+nuestra propia traducción de los mismos.
+
+Lamentablemente el proyecto fue publicado en febrero de 2016, cuando nuestro propio trabajo se
+encontraba ya en su fase final. De cualquier manera, y como se explicará en secciones posteriores,
+parte de los recursos de libre acceso utilizados para la creación del corpus de Cardellino fueron
+agregados a nuestro corpus en su etapa final, aumentando la cantidad y diversidad de documentos
+utilizados.
+
 \subsection{Conclusiones}
 
 La investigación realizada demuestra la dificultad que existe actualmente para acceder a un corpus en
@@ -200,8 +224,9 @@ permita el acceso a los datos solamente a través de interfaces gráficas, útil
 que no sirven para nuestro caso de estudio.
 
 Se llegó pues a la conclusión de que para cumplir el objetivo inicial de un corpus con dos mil millones
-de palabras, resultaría necesario construirlo de forma independiente. En las próximas secciones se describe
-el proceso llevado a cabo para alcanzar este propósito.
+de palabras, resultaría necesario construirlo de forma independiente, utilizando siempre que fuera
+posible las diferentes fuentes encontradas durante nuestra investigación. En las próximas secciones
+se describe el proceso llevado a cabo para alcanzar este propósito.
 
 \section{Proceso de Construcción}
 
@@ -500,11 +525,35 @@ con algunos libros de lectura general.
 
 \subsubsection{Otros Corpus}
 
-Se realizó también una investigación de los corpus en español existentes en la comunidad, como se
-mencionó en el capítulo anterior. Algunos de ellos, como los corpus paralelos de traducción
-automática a los que se hizo referencia arriba, fueron incluso incorporados al corpus.
+Se realizó también una investigación de los corpus en español existentes en la comunidad, como se mencionó
+en el capítulo anterior. Algunos de ellos, como los corpus paralelos de traducción automática a los que se
+hizo referencia arriba, fueron incluso incorporados al corpus.
 
-[alguno más? ya se mencionaron algunos arriba pero en la sección correspondiente]
+Además, se tuvieron en cuenta fuentes de documentos que forman parte de proyectos de
+construcción de corpus de mayor envergadura. En particular, se utilizaron algunos de los recursos
+recopilados por el proyecto OPUS de la Universidad de Upsala, Suecia [cita]. Dicho proyecto cuenta
+con una amplia colección de textos de carácter público, en varios idiomas. OPUS ofrece sus recursos
+de forma libre, tanto los textos recopilados como algunas herramientas utilizadas para la limpieza y
+preprocesamiento de los mismos.
+
+Se tomaron en particular los documentos en español del EU Bookshop [cita], una colección de
+publicaciones de la Unión Europea en varios idiomas, en formato digital. La colección contiene
+documentos que datan desde el año 1952 hasta la actualidad. Las temáticas de los documentos son
+variadas, puesto que se cuenta con publicaciones realizadas por instituciones oficiales de varias
+índoles. Se tiene desde documentos que apuntan a públicos infantiles hasta tratados de economía
+o política.
+
+Se tomó también una colección de resoluciones de la Asamblea General de las Naciones Unidas [cita].
+Dicha colección cuenta con traducciones para las seis lenguas oficiales de la organización, incluyendo
+naturalmente al español. Al tratarse de documentos con relevancia jurídica se puede confiar en la
+calidad de las traducciones. Los textos abarcan diversas temáticas y formatos, desde transcripciones o
+sumarios de reuniones oficiales hasta tratados de economía o resoluciones de carácter legal. Se utiliza
+además un lenguaje técnico y formal, lo cual convierte a estos textos en un excelente complemento para
+el resto de documentos que componen el corpus.
+
+Finalmente, vale la pena comentar que tanto para las publicaciones del EU Bookshop como para las
+resoluciones de las Naciones Unidas fue necesario escribir scripts de limpieza que adaptaran los diversos
+formatos de los documentos de cada colección en un formato compatible con nuestro modelo de datos.
 
 
 \section{Implementación}
