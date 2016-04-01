@@ -849,16 +849,112 @@ mediante el método anterior, se utilizaron también técnicas de scraping conve
 En esta sección se pretende presentar un análisis de la composición y la calidad del corpus
 construido, mostrando algunas cifras por vertical de texto.
 
-
-- resultado del corpus obtenido en total de palabras (resaltar que el obj eran 2B)
-- analizar por tags (noticias, wikipedia, países, fechas, etc.)
 - análisis de calidad/composición del corpus
     - palabras más comunes, etc. (algún dato sobre el corpus más general)
     - duplicados/texto sucio (muestreo de documentos aleatorios?)
     [tweets embebidos en noticias o algo de eso]
 
-
 ----
 
 [hablar algo sobre temas legales?]
 [en el resto del cap ir contando cómo se satisface cada requerimiento]
+
+\subsection{Composición del Corpus}
+
+Luego de meses de trabajo se logró no solo alcanzar la meta de dos mil millones de palabras,
+fijada al inicio del proyecto, sino que se logró superarla ampliamente logrando construir un
+corpus con casi seis mil millones de palabras ($5.970.953.659$), Esta cantidad se encuentra
+repartida en [XX] millones de documentos, con un promedio de [XXXX] palabras por
+documento.
+
+La cantidad total de palabras alcanzada en el corpus es un logro sumamente significativo,
+consiguiendo triplicar la cantidad fijada como objetivo al comienzo del proyecto. Este hecho
+adquiere mayor relevancia considerando que los mayores tamaños conseguidos en los
+trabajos de estado del arte en materia de construcción de corpus rondan los ocho mil
+millones de palabras.
+
+Sin embargo, es importante resaltar que todos los trabajos que alcanzaron dichas cantidades
+utilizaron técnicas de crawling masivo como metodología para la construcción de sus corpus. Esto
+contrasta con el enfoque adoptado en el presente proyecto, en el cuál se realizó crawling
+selectivo logrando algunas garantías básicas de calidad y un conocimiento más detallado
+de los documentos que componen el corpus. El objetivo fue por tanto lograr un corpus de
+calidad por construcción.
+
+Como ya se mencionó, todos los documentos que componen el corpus fueron etiquetados de
+acuerdo a sus características. Las etiquetas utilizadas pueden dividirse en tres categorías:
+tipo de documento, región de origen e idioma. Naturalmente, todos los textos que componen
+el corpus contienen la etiqueta de idioma español, pero aun así se decidió incluir este tipo de
+etiqueta pensando en un posible trabajo futuro, donde las herramientas aquí construidas podrán
+ser utilizadas para trabajar con corpus en varios idiomas.
+
+En el cuadro \ref{table:corpus_country} puede verse el detalle de cantidad de palabras por
+zona geográfica de los documentos que componen el corpus, detallando además las
+cantidades por tipo de documento. En el cuadro \ref{table:corpus_doc_type} en cambio, se
+realiza un análisis complementario incluyendo datos sólo por tipo de documento.
+
+\begin{table*}[t]
+    \centering
+    \begin{tabular}{lllr}
+        \hline
+        Origen & Tipo de documento & Palabras & Proporción\\
+        \hline
+        Uruguay & Noticias & 9.667.838 & 3\%\\
+         & Foros & 9.667.838 & 3\%\\
+         & Libros & 9.667.838 & 7\%\\
+         & Escritura amateur & 9.667.838 & 3\%\\
+         \\
+         & \textit{Total} & 657.228 & 19\%\\
+        \\
+        Argentina & Noticias & 13.667.838 & 13\%\\
+         & Foros & 9.667.838 & 3\%\\
+         & Libros & 9.667.838 & 7\%\\
+         & Escritura amateur & 9.667.838 & 3\%\\
+         \\
+         & \textit{Total} & 657.228 & 16\%\\
+        \hline
+    \end{tabular}
+    \caption{Composición del corpus por zona geográfica.}
+    \label{table:corpus_country}
+\end{table*}
+
+\begin{table*}[t]
+    \centering
+    \begin{tabular}{llr}
+        \hline
+        Tipo de documento & Palabras & Proporción\\
+        \hline
+        Noticias & 9.667.838 & 3\%\\
+        Foros & 9.667.838 & 3\%\\
+        Libros & 9.667.838 & 3\%\\
+        Subtítulos & 9.667.838 & 3\%\\
+        Escritura amateur & 9.667.838 & 3\%\\
+        Documentos oficiales & 9.667.838 & 3\%\\
+        \hline
+    \end{tabular}
+    \caption{Composición del corpus por tipo de documento.}
+    \label{table:corpus_doc_type}
+\end{table*}
+
+Como se puede ver, la mayor cantidad de palabras provienen de fuentes del tipo noticias,
+aunque de todas formas se consiguió el objetivo de tener una considerable variedad de
+tipos de fuentes representadas.
+
+\subsection{Calidad del Corpus}
+
+Como ya se comentó previamente, al momento de elegir las fuentes para la composición
+del corpus se realizó un cuidadoso proceso de selección. Para las fuentes que requirieron
+crawling se escribieron reglas específicas para obtener el contenido útil de sus páginas. En
+el caso de fuentes recopiladas en formatos disponibles para descargar de forma directa, se
+escribieron scripts de limpieza especializados para cada una. De esta forma, se buscó en
+todo momento que el corpus generado tuviera atributos de calidad por construcción.
+
+De cualquier manera, aún tomando este tipo de precauciones puede suceder que se filtren
+documentos de baja calidad o con contenido ruidoso que no aporten elementos útiles al
+corpus. Es por esto que para realizar una caracterización completa del mismo no alcanza
+solamente con mirar la cantidad total de palabras, es necesario también hacer
+un análisis de calidad de los textos.
+
+[
+    - Continuar análisis de calidad: incluir tablas, Average sentence length y otras métricas de interés.
+    - Reemplazar placeholders de datos de las tablas y de composición del corpus por los valores reales.
+]
