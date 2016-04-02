@@ -818,30 +818,65 @@ puede ver en [figura: tabla de porcentajes].
 
 \subsubsection{Scraping Manual}
 
-
---- Con Scrapy
+\paragraph{Scrapy}
 
 Para las fuentes de palabras que carecen de una estructura que favorece su extracción automática
 mediante el método anterior, se utilizaron también técnicas de scraping convencionales, a través de
 \textit{Scrapy} [cita?].
 
-- qué es scrapy
-- qué diferencias tiene con lo anterior (y similitudes), y para qué casos es útil
-    - ejemplo: en El País Uruguay es necesario primero entrar al archivo, luego a la portada
-      histórica y finalmente al artículo particular
-- en qué fuentes de datos se usa: el país madrid/uruguay, clarín; fanfics? foros?
-- cómo se corre (una vez sola, aunque se puede volver a correr y actualizar los documentos)
+Scrapy es un framework escrito en Python ideado para brindar una solución integral al problema de
+realizar scraping en la web. Entre sus principales ventajas se encuentra la sencillez de su
+propuesta, basada en la construcción de web spiders (arañas web) especializadas para cada dominio
+del cual interesa extraer información. Además, Scrapy brinda una serie de herramientas y utilidades
+que simplifican de manera importante este tipo de tareas.
 
+La habilidad de recorrer el contenido de un portal iterando sobre los identificadores de sus artículos
+o noticias es una gran ventaja y facilita mucho el trabajo de extracción, pero hay multitud de fuentes
+interesantes que no permiten esta metodología. En particular los portales El País (tanto de Madrid
+como de Uruguay) son de sumo interés para la construcción del corpus del proyecto y se requirió
+construir web spiders para los mismos.
 
---- Scripts de limpieza
+Para este tipo de casos se escribieron web spiders con Scrapy que primero navegaran a las
+secciones de archivo o hemeroteca de cada portal y que luego, siguiendo diferentes pasos,
+accedieran a los artículos en sí mismos. Naturalmente, las rutas de navegación para cada sitio
+son variables y por lo tanto fue necesario escribir spiders para cada portal que requiriera
+scraping manual. Es importante mencionar que cada uno de estos spiders especializados cuenta
+con reglas específicas para extraer y limpiar el contenido útil de cada artículo extraído.
 
-- para casos como wikipedia, se puede bajar el contenido directamente a través de un dump, pero está
-  sucio (markup)
-- se utiliza un script de limpieza y se indexa directamente en Elasticsearch, con las etiquetas
-  adecuadas (decir cuál script)
+Una vez construido, cada web spider es ejecutado para agregar los artículos recopilados al corpus.
+Cada uno de ellos puede ejecutarse en varias oportunidades, permitiendo obtener nuevos artículos y
+parando cuando se detecta que ya se obtuvieron todos los nuevos resultados. Además, en todos
+los casos se buscó encontrar identificadores únicos para cada artículo de forma de no agregar
+elementos repetidos al corpus. Esto se logró utilizando identificadores propios de cada portal o usando
+fragmentos de la URL de cada artículo.
 
-- lo mismo para la página del parlamento (si lo terminamos metiendo)
-- lo mismo para los corpus ya existentes (si metemos alguno)
+\paragraph{Scripts de limpieza}
+
+Para algunas fuentes, como es el caso de Wikipedia, se puede descargar su contenido directamente
+a través de un dump (o volcado) en algún formato portable y de fácil distribución. Por ejemplo, en
+algunos casos puede descargarse un dump de una base de datos en formato SQL, o también en
+formato XML, como es el caso de Wikipedia. Otra fuentes utilizan sus propios formatos para la
+distribución de sus datos, pero en todos ellos resulta indispensable realizar una limpieza antes
+de proceder a agregarlos al corpus.
+
+En nuestro caso, para aquellas fuente que ofrecen su contenido de forma directa y sin necesidad
+de realizar scraping, decidimos utilizar scripts de limpieza escritos en Python que lidien directamente
+con los dumps obtenidos. Los mismos recorren todos los archivos que compongan un dump en
+particular, extrayendo y limpiando los datos útiles para luego indexarlos directamente en Elasticsearch.
+
+El proceso de extracción resulta más o menos complicado dependiendo del formato provisto por cada
+fuente, pero las tareas de limpieza suelen ser sencillas. El objetivo siempre es preservar el texto
+original, limitándonos simplemente a remover etiquetas o restos de código que pueden quedar al
+procesar los documentos.
+
+En particular, para Wikipedia se utilizó el popular script WikiExtractor [cita], para las tareas más
+complejas de procesamiento del dump de Wikipedia, junto con un script propio para el procesamiento
+final y posterior inserción en Elasticsearch. Dicho script se encuentra en el archivo \texttt{wiki.py},
+en el directorio \texttt{scripts} del código fuente del proyecto. Se utilizaron también scripts para la
+limpieza e inserción de las sesiones del parlamento Uruguayo (\texttt{parlamento.py}) y los documentos
+oficiales de las Naciones Unidas (\texttt{multiun.py}). Finalmente, para las fuentes EU Bookshop y el
+sitio \textit{tusubtitulo.com} se utilizaron los scripts \texttt{eubookshop.py} y \texttt{tusubtitulo.py}
+respectivamente.
 
 
 \section{Resultado}
@@ -863,7 +898,7 @@ construido, mostrando algunas cifras por vertical de texto.
 
 Luego de meses de trabajo se logró no solo alcanzar la meta de dos mil millones de palabras,
 fijada al inicio del proyecto, sino que se logró superarla ampliamente logrando construir un
-corpus con casi seis mil millones de palabras ($5.970.953.659$), Esta cantidad se encuentra
+corpus con casi seis mil millones de palabras ($5.970.953.659$). Esta cantidad se encuentra
 repartida en [XX] millones de documentos, con un promedio de [XXXX] palabras por
 documento.
 
