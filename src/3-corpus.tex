@@ -899,11 +899,11 @@ construido, mostrando algunas cifras por vertical de texto.
 Luego de meses de trabajo se logró no solo alcanzar la meta de dos mil millones de palabras,
 fijada al inicio del proyecto, sino que se logró superarla ampliamente logrando construir un
 corpus con casi seis mil millones de palabras ($5.970.953.659$). Esta cantidad se encuentra
-repartida en [XX] millones de documentos, con un promedio de [XXXX] palabras por
-documento.
+repartida en trece millones de documentos ($13.108.394$), con un promedio de 455 palabras
+por documento.
 
 La cantidad total de palabras alcanzada en el corpus es un logro sumamente significativo,
-consiguiendo triplicar la cantidad fijada como objetivo al comienzo del proyecto. Este hecho
+consiguiendo casi triplicar la cantidad fijada como objetivo al comienzo del proyecto. Este hecho
 adquiere mayor relevancia considerando que los mayores tamaños conseguidos en los
 trabajos de estado del arte en materia de construcción de corpus rondan los ocho mil
 millones de palabras.
@@ -927,25 +927,49 @@ zona geográfica de los documentos que componen el corpus, detallando además la
 cantidades por tipo de documento. En el cuadro \ref{table:corpus_doc_type} en cambio, se
 realiza un análisis complementario incluyendo datos sólo por tipo de documento.
 
+Es importante notar que no todas las fuentes lograron ser etiquetadas por su origen y que la
+proporción que se muestra en el cuadro \ref{table:corpus_country} corresponde a la comparación
+con la totalidad de palabras del corpus. Por otro lado, sí se logró etiquetar todos los documentos
+de acuerdo a su tipo de documento.
+
 \begin{table*}[t]
     \centering
-    \begin{tabular}{lllr}
+    \begin{tabular}{llccc}
         \hline
-        Origen & Tipo de documento & Palabras & Proporción\\
+        Origen & Tipo de documento & Documentos & Palabras & Proporción (palabras)\\
         \hline
-        Uruguay & Noticias & 9.667.838 & 3\%\\
-         & Foros & 9.667.838 & 3\%\\
-         & Libros & 9.667.838 & 7\%\\
-         & Escritura amateur & 9.667.838 & 3\%\\
-         \\
-         & \textit{Total} & 657.228 & 19\%\\
+        Argentina\\
+         & Noticias & 2.130.965 & 969.052.149\\
+         & Foros & 199.129 & 133.942.466\\
+         & \textit{Total} & 2.330.094 & \textbf{1.102.994.615} & 18.5\%\\
         \\
-        Argentina & Noticias & 13.667.838 & 13\%\\
-         & Foros & 9.667.838 & 3\%\\
-         & Libros & 9.667.838 & 7\%\\
-         & Escritura amateur & 9.667.838 & 3\%\\
-         \\
-         & \textit{Total} & 657.228 & 16\%\\
+        México\\
+         & Noticias & 2.489.280 & \textbf{934.356.171} & 15.6\%\\
+        \\
+        Uruguay\\
+         & Noticias & 1.961.752 & 748.998.277\\
+         & Documentos oficiales & 3.418 & 103.988.021\\
+         & \textit{Total} & 1.965.170 & \textbf{852.986.298} & 14.3\%\\
+        \\
+        España\\
+         & Noticias & 1.631.521 & \textbf{809.067.269} & 13.5\%\\
+        \\
+        \\
+        Paraguay\\
+         & Noticias & 1.919.737 & \textbf{529.593.496} & 8.9\%\\
+        \\
+        Unión Europea\\
+         & Documentos oficiales & 66.547 & 313.845.665\\
+         & Libros & 7.437 & 202.546.087\\
+         & \textit{Total} & 73.984 & \textbf{516.391.752} & 8.6\%\\
+        Chile\\
+         & Noticias & 713.541 & \textbf{228.490.971} & 3.8\%\\
+        \\
+        Perú\\
+         & Noticias & 313.081 & \textbf{100.124.272} & 1.7\%\\
+        \\
+        Bolivia\\
+         & Noticias & 158.924 & \textbf{56.640.181} & 0.9\%\\
         \hline
     \end{tabular}
     \caption{Composición del corpus por zona geográfica.}
@@ -954,16 +978,17 @@ realiza un análisis complementario incluyendo datos sólo por tipo de documento
 
 \begin{table*}[t]
     \centering
-    \begin{tabular}{llr}
+    \begin{tabular}{lccc}
         \hline
-        Tipo de documento & Palabras & Proporción\\
+        Tipo de documento & Documentos & Palabras & Proporción (palabras)\\
         \hline
-        Noticias & 9.667.838 & 3\%\\
-        Foros & 9.667.838 & 3\%\\
-        Libros & 9.667.838 & 3\%\\
-        Subtítulos & 9.667.838 & 3\%\\
-        Escritura amateur & 9.667.838 & 3\%\\
-        Documentos oficiales & 9.667.838 & 3\%\\
+        Noticias & 11.318.776 & 4.376.315.796 & 73.2\%\\
+        Wikipedia & 1.113.372 & 416.932.056 & 7.0\%\\
+        Documentos oficiales & 69.965 & 417.833.686 & 7.0\%\\
+        Escritura amateur & 372.627 & 318.811.674 & 5.3\%\\
+        Libros & 7.437 & 202.546.087 & 3.4\%\\
+        Foros & 199.129 & 133.942.466 & 2.2\%\\
+        Subtítulos & 27.105 & 106.501.897 & 1.8\%\\
         \hline
     \end{tabular}
     \caption{Composición del corpus por tipo de documento.}
