@@ -1,20 +1,51 @@
 \chapter{Conclusiones y Trabajo Futuro}
 
-[algo?]
+Como resultado final del proyecto se logró construir un corpus en idioma español de casi seis mil
+millones de palabras, el cual resultó sumamente útil para la construcción de vectores de palabras.
+Se desarrolló además una herramienta que permite, entre otras cosas, consultar el corpus generado,
+utilizar dicho corpus (o un subconjunto de sus documentos) para entrenar y evaluar vectores de
+palabras y controlar los distintos mecanismos para continuar agregando documentos al corpus de
+manera continua. Es importante resaltar que todos los objetivos planteados al comienzo del proyecto
+fueron alcanzados de forma satisfactoria.
+
+Desde el punto de vista académico se tuvo la oportunidad de realizar una investigación profunda en
+un área en pleno auge y desarrollo, como es la construcción, aplicación y evaluación de vectores
+de palabras. Además, se logró investigar y aplicar muchas herramientas y técnicas para el
+desarrollo de aplicaciones web, scraping de internet, extracción y almacenamiento de grandes
+cantidades de datos, etc. De esta manera, se logró elaborar un proyecto que requirió aplicar de
+forma integral una gran cantidad de experiencias y conocimientos adquiridos durante la carrera y
+nuestra actividad profesional.
+
+En las próximas secciones incluimos un compilado de las principales conclusiones obtenidas, junto
+con una serie de propuestas y caminos para futuros trabajos en el área.
 
 \section{Conclusiones}
 
-- dificultad de trabajar con word embeddings: cantidad de requerimientos (corpus, impl, etc.), recursos computacionales necesarios (almacenamiento, computation), etc.
-- dificultad de recopilar texto limpio de internet: hay mucho, pero es necesario tener especial cuidado con cada fuente de datos
-- alto costo computacional de los word embeddings que dificulta su utilización y evaluación: no es tan fácil conseguir la mejor combinación de hieprparámetros porque demoran hasta 5 días en entrenar
+Como era esperado, se logró comprobar la gran dificultad de trabajar con vectores de palabras. Entre
+los principales desafíos se encuentra la necesidad de contar con un corpus masivo, lo cual en sí mismo
+conlleva una serie de desafíos de implementación y almacenamiento. Cómo se pudo comprobar al
+realizar el estudio de estado del arte, la construcción de corpus de gran tamaño continúa siendo un
+problema abierto. En particular, es necesario un cuidadoso proceso de selección de fuentes y posterior
+limpieza de los datos obtenidos para obtener buenos resultados al entrenar vectores con los mismos.
 
-- mucho trabajo en el área recientemente, lo hace un buen tema para meterse; posibilidad de contribuir a algo; resultados muy interesantes y prometedores, hay mucha cosa para investigar y probar
-- está abierta la mejor forma de construirlos, pero parecen ser la mejor opción para adaptar/conectar deep learning a NLP
+Además, una vez construido el corpus, se comprobó que el entrenamiento de los vectores, así como su
+posterior evaluación, son tareas que requieren una gran capacidad de cómputo si se espera poder
+realizarlas en tiempos razonables. Por otro lado, el almacenamiento de un corpus masivo y de los
+vectores generados requiere también una considerable cantidad de espacio en disco. Ambos tipos de
+capacidades requeridas superan las de una computadora de uso general.
 
-[alguna cosa más]
+Aun con servidores que cuenten con la capacidad requerida, el entrenamiento de un vector de palabras
+puede llevar varios días. Esto dificulta la posibilidad de probar la combinación de diferentes
+hiperparámetros para encontrar el mejor resultado.
+
+A pesar de todas las dificultades mencionadas, no cabe dudad que el campo de los vectores de palabras
+es sumamente interesante. Recientemente se han escrito multitud de trabajos relacionados con resultados
+prometedores y el área continua siendo objeto de una intensa y rica investigación, por lo cuál resulta un
+tema de investigación muy atractivo con posibilidades reales para realizar contribuciones significativas.
+Encontrar la técnica óptima para la construcción de vectores de palabras sigue siendo un problema abierto,
+pero este parece ser el mejor camino para conectar el campo de \textit{deep learning} al PLN.
 
 
----
 \section{Trabajo Futuro}
 
 Se identifican dos grandes caminos para extender y continuar lo realizado en el proyecto de
