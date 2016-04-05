@@ -570,18 +570,20 @@ A continuación se detalla la implementación del proceso de extracción del tex
 describiendo la arquitectura de la solución, fundamentando las decisiones tomadas, y luego se
 especifican las distintas técnicas empleadas para la obtención del texto.
 
-[para cada una de las técnicas, a qué fuentes aplica]
 
 \subsubsection{Infraestructura}
 
-- se realiza una investigación de cuáles son las alternativas para almacenar grandes volúmenes de
-  texto, evaluando tanto soluciones SQL como NoSQL, optando finalmente por Elasticsearch [cita?]
+Uno de los principales desafíos del proyecto consiste en almacenar grandes cantidades de información
+de manera eficiente e indexar dicha información de tal forma que puedan realizarse búsquedas sobre
+la misma en tiempos razonables. Por lo tanto, se realizó una investigación de cuáles son las alternativas
+para almacenar grandes volúmenes de texto, evaluando tanto soluciones SQL como NoSQL. Finalmente,
+se optó por utilizar Elasticsearch [cita] por ofrecer excelentes cualidades para almacenar información,
+pero sobre todo por brindar excelentes funcionalidades de indexado y búsqueda sobre los datos almacenados.
 
-Elasticsearch [cita?] es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?])
-que provee funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de
-estructura) basado en la biblioteca Lucene [cita?], desarrollada para de este propósito. Provee
-una interfaz HTTP RESTful [cita?] para el acceso, consulta y almacenamiento de los documentos con
-los que trabaja.
+Elasticsearch es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?]) que provee
+funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de estructura)
+basado en la biblioteca Lucene [cita?], desarrollada para de este propósito. Provee una interfaz
+HTTP RESTful [cita?] para el acceso, consulta y almacenamiento de los documentos con los que trabaja.
 
 Se optó utilizar Elasticsearch porque brinda varias ventajas por sobre las alternativas:
 
@@ -616,20 +618,39 @@ proceso sumamente exigente tanto en capacidad de cómputo, almacenamiento en dis
 banda. Resultó claro desde un principio que utilizar una computadora personal no resultaría ser una
 opción razonable.
 
-Se decidió por tanto evaluar las distintas alternativas existentes de proveedores para la contratación de un
-servidor virtual en la nube. Desde un principio se decidió que el servidor contratado no sería utilizado
-solamente para recolectar y almacenar documentos para la creación del corpus, sino que también se lo
-utilizaría para el entrenamiento de vectores de palabras y el alojamiento de la herramienta web a construir.
-Por estos motivos, se buscó el proveedor que ofreciera el mejor equilibrio entre poder de cómputo, espacio
-en disco, ancho de banda disponible y, por supuesto, costo mensual.
+Se decidió por tanto evaluar las distintas alternativas existentes de proveedores para la contratación de
+un servidor virtual en la nube. Desde un principio se decidió que el servidor contratado no sería
+utilizado solamente para recolectar y almacenar documentos para la creación del corpus, sino que también
+se lo utilizaría para el entrenamiento de vectores de palabras y el alojamiento de la herramienta web a
+construir. Por estos motivos, se buscó el proveedor que ofreciera el mejor equilibrio entre poder de
+cómputo, espacio en disco, ancho de banda disponible y, por supuesto, costo mensual.
 
-Entre las opciones consideradas se destacan \textit{Amazon EC2}, \textit{Microsoft Azure} y
-\textit{Google Cloud Platform} [citas?], todos ellos proveedores altamente prestigiosos que ofrecen
-excelentes servicios. Lamentablemente, nos resultó imposible asumir los costos mensuales de la clase
-servidores que cumplen con nuestras expectativas en todas las facetas, al menos con estos proveedores. Al
-continuar investigando encontramos \textit{Webtropia} [cita], un proveedor alemán no tan popular, pero con
-precios mucho más asequibles. Por tanto, se contrató un servidor virtual con las características presentadas
-en el cuadro \ref{table:webtropia}, en la página \pageref{table:webtropia}.
+Inicialmente se decidió aplicar al programa de becas para la investigación y educación de
+Amazon [cita]. Dicho programa admite la presentación de proyectos en ciertas áreas de investigación,
+entre ellas PLN y aprendizaje automático, y de ser aprobados otorga crédito en una cuenta de
+\textit{Amazon Web Services} (AWS) que puede utilizarse para contratar servidores en la nube de Amazon
+durante el tiempo que dure el proyecto. Para que la beca sea aprobada es necesario presentar un resumen
+del proyecto en cuestión junto con una estimación de los recursos necesarios en AWS para su desarrollo.
+
+En nuestro caso presentamos una solicitud de beca en abril de 2015 por un valor estimado de recursos en
+AWS de 2.200 dólares, que equivale al alquiler por un año de un servidor con las características
+necesarias para la realización del proyecto. Al presentar nuestra solicitud Amazon nos informó que
+recibiríamos el resultado de la misma en aproximadamente tres meses, demasiado tiempo para los objetivos
+del proyecto.
+
+Procedimos entonces a buscar otras alternativas, como se explica a continuación. De cualquier manera,
+nuestra solicitud fue aprobada por Amazon en setiembre de 2015. A pesar de que ya era tarde para usar el
+crédito obtenido en la contratación de un servidor, pudimos utilizar la beca para contratar otros
+servicios de interés.
+
+Entre las opciones consideradas para la contratación del servidor destacan \textit{Amazon EC2},
+\textit{Microsoft Azure} y \textit{Google Cloud Platform} [citas?], todos ellos proveedores altamente
+prestigiosos que ofrecen excelentes servicios. Lamentablemente, nos resultó imposible asumir los costos
+mensuales de la clase servidores que cumplen con nuestras expectativas en todas las facetas, al menos
+con estos proveedores. Al continuar investigando encontramos \textit{Webtropia} [cita], un proveedor
+alemán no tan popular, pero con precios mucho más asequibles. Por tanto, se contrató un servidor virtual
+con las características presentadas en el cuadro \ref{table:webtropia}, en la página
+\pageref{table:webtropia}.
 
 \begin{table*}[t]
     \centering
@@ -655,23 +676,30 @@ en el cuadro \ref{table:webtropia}, en la página \pageref{table:webtropia}.
 Es importante destacar que el servidor fue contratado en el mes de abril de 2015 y los costos mensuales
 ($39.99$ EUR) fueron asumidos enteramente por nosotros.
 
-Finalmente, cabe mencionar que el servidor contratado corre el proceso de Elasticsearch y toda la
+Cabe mencionar también que el servidor contratado corre el proceso de Elasticsearch y toda la
 infraestructura de almacenamiento. Ejecuta además todos los trabajos de scraping periódicos, junto con
 una instancia de PostgreSQL para almacenamiento de datos de sincronización de dichos trabajos. Ahí se
-aloja también la herramienta construida para el manejo de vectores, que se analizará en gran detalle en una
-sección particular. Esto implica que en el servidor se ejecutan todos los trabajos de entrenamiento y
+aloja también la herramienta construida para el manejo de vectores, que se analizará en gran detalle en
+una sección particular. Esto implica que en el servidor se ejecutan todos los trabajos de entrenamiento y
 evaluación de vectores, limpieza de documentos, etcétera.
 
-Sin lugar a dudas podemos afirmar que la elección de contratar un servidor virtual fue una decisión acertada,
-pues simplificó mucho el manejo de enormes cantidades de información de forma remota. Y, sobre todo,
-permitió que tareas con enormes exigencias desde el punto de vista computacional, como son el entrenamiento
-y evaluación de vectores de palabras, pudieran realizarse en tiempos razonables.
+Sin lugar a dudas podemos afirmar que la elección de contratar un servidor virtual fue una decisión
+acertada, pues simplificó mucho el manejo de enormes cantidades de información de forma remota. Y, sobre
+todo, permitió que tareas con enormes exigencias desde el punto de vista computacional, como son el
+entrenamiento y evaluación de vectores de palabras, pudieran realizarse en tiempos razonables.
+
+Finalmente, es importante remarcar que se hicieron respaldos de todos los datos del sistema. En particular,
+se respaldó el corpus en su totalidad utilizando funcionalidades de Elasticsearch que permiten realizar
+un volcado de los datos directamente en un \textit{bucket} de Amazon S3 [cita]. Para el pago de este
+servicio se utilizó el crédito obtenido en la beca de Amazon mencionada anteriormente.
+
+Además, se respaldaron todos los vectores construidos junto con los casos de prueba y sus respectivos
+resultados para cada vector. Para esto se realizaron descargas periódicas de los respaldos a nuestras
+computadoras personales y a medios de almacenamiento externo dedicados especialmente a esta
+tarea.
 
 En las secciones siguientes se continúa con el análisis detallado del proceso de construcción del corpus,
 mencionando las técnicas y estructuras utilizadas para conseguirlo.
-
-- Mencionar backups en amazon S3 (funcionalidad integrada en elasticsearch)
-- Algo más?
 
 
 \subsubsection{Scraping Automático}
