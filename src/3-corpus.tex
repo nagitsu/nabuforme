@@ -130,7 +130,7 @@ menciona que dicho proceso no es totalmente riguroso. Los autores advierten que 
 algunos errores de redacción o de ortografía, típicos del ritmo y exigencias diarias que se dan en los
 periódicos y agencias de noticias.
 
-Como ocurre con TenTen el acceso a Gigaword no es gratuito, salvo para miembros del LDC. Los costos de
+Como ocurre con TenTen, el acceso a Gigaword no es gratuito salvo para miembros del LDC. Los costos de
 adquisición del corpus resultan prohibitivos para el alcance del presente proyecto y, como ya se mencionó,
 esta modalidad de distribución tampoco se alinea con los objetivos del mismo.
 
@@ -910,17 +910,13 @@ respectivamente.
 \section{Resultado}
 
 En esta sección se pretende presentar un análisis de la composición y la calidad del corpus
-construido, mostrando algunas cifras por vertical de texto.
+construido, mostrando algunas cifras por vertical de texto. Se incluye una caracterización del
+corpus según los tipos de fuente que lo componen y se presenta una breve discusión acerca de los
+aspectos más importantes de calidad.
 
-- análisis de calidad/composición del corpus
-    - palabras más comunes, etc. (algún dato sobre el corpus más general)
-    - duplicados/texto sucio (muestreo de documentos aleatorios?)
-    [tweets embebidos en noticias o algo de eso]
-
-----
 
 [hablar algo sobre temas legales?]
-[en el resto del cap ir contando cómo se satisface cada requerimiento]
+
 
 \subsection{Composición del Corpus}
 
@@ -1036,13 +1032,10 @@ el caso de fuentes recopiladas en formatos disponibles para descargar de forma d
 escribieron scripts de limpieza especializados para cada una. De esta forma, se buscó en
 todo momento que el corpus generado tuviera atributos de calidad por construcción.
 
-De cualquier manera, aún tomando este tipo de precauciones puede suceder que se filtren
-documentos de baja calidad o con contenido ruidoso que no aporten elementos útiles al
-corpus. Es por esto que para realizar una caracterización completa del mismo no alcanza
-solamente con mirar la cantidad total de palabras, es necesario también hacer
-un análisis de calidad de los textos.
-
-[
-    - Continuar análisis de calidad: incluir tablas, Average sentence length y otras métricas de interés.
-    - Reemplazar placeholders de datos de las tablas y de composición del corpus por los valores reales.
-]
+En casos donde se requiere un corpus etiquetado, los requerimientos de calidad del mismo
+son naturalmente más exigentes y es recomendable realizar un análisis riguroso de sus
+características de composición y calidad. Sin embargo, para nuestro caso de estudio
+consideramos como suficientes los atributos de calidad obtenidos gracias a las técnicas
+utilizadas para la construcción del mismo. Todas las reglas de extracción y scripts de
+limpieza fueron debidamente evaluados de modo de obtener una alta confianza en la calidad
+de la composición del corpus.
