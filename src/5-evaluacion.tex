@@ -540,11 +540,11 @@ conjugaciones verbales.
 
 
 Buscando estudiar la relación de los vectores con el corpus utilizado para el entrenamiento, también
-se generaron analogías utilizando conjugaciones verbales específicas de España (en particular, la
-conjugación de \textit{vosotros}), con el fin de ver la performance de los vectores en estas pruebas
-cuando se entrena con un corpus exclusivamente hispanoamericano o uno exclusivamente español. La
-construcción de dicho conjunto de pruebas fue igual al recién detallado, donde se tomaron tres
-formas verbales en lugar de doce.
+se generaron analogías utilizando conjugaciones verbales específicas al Río de la Plata (en
+particular, la conjugación de \textit{vos}, o \textit{voseo}), con el fin de ver la performance de
+los vectores en estas pruebas cuando se entrena con un corpus exclusivamente rioplatense, uno
+exclusivamente español, o uno global. La construcción de dicho conjunto de pruebas fue igual al
+recién detallado, donde se toma una única forma verbal en lugar de doce.
 
 
 El último conjunto de analogías construido estudia el género de sustantivos. Más específicamente,
@@ -628,9 +628,6 @@ colisiones de palabras al remover los tildes: \textit{apagare} y \textit{apagar�
 \textit{volaré}, o \textit{tocare} y \textit{tocaré}. Las otras conjugaciones que utilizan tildes,
 como \texttt{AV01} (condicionales), no pasan a ser otra conjugación al removerlos.
 
-[algo de ocupaciones (A02)? que falla más en ocupaciones que ve menos? plomera, carpintera, etc?]
-[o no mencionar nada, son bastante estándares los resultados fuera de eso]
-
 Es interesante ver que el aumento en los aciertos en el top 1 y el top 10 es mucho mayor para el
 caso de los verbos (pasando de $0.54$ a $0.77$ en el mejor modelo) que en el caso de las ocupaciones
 (que va de $0.63$ a $0.78$). Esto podría explicarse porque en el caso de los verbos es más posible
@@ -663,17 +660,20 @@ información en los vectores de manera más uniforme.
 que se mezclen?]
 
 
+En la tabla [tabla rp-spec] se muestran los resultados de las evaluaciones con el conjunto de
+conjugaciones verbales específicas del Río de la Plata. Es interesante ver cómo los modelos
+vectoriales que son entrenados exclusivamente con texto de foros argentinos obtienen mejores
+resultados que los entrenados con la totalidad del texto. En los modelos vectoriales grandes hay
+también muchas ocurrencias del \textit{voseo} (principlamente viniendo de los sitios de literatura
+amateur), pero proporcionalmente es mayor la cantidad en los modelos construidos a partir de foros,
+por tener un tono más informal y conversacional.
 
+Este último punto vuelve a resaltar la importancia de la composición del corpus de entrenamiento,
+además de indicar una especie de dilución de los vectores de palabras cuando la ocurrencia de las
+mismas se encuentra limitada a una sección del corpus completo (en este caso, el uso del
+\textit{voseo} a foros y sitios de literatura amateur, y no tanto en noticias).
 
-[esto no pasa, si no se consigue un mejor conjunto de pruebas sacar; sino mencionar algo de esto en
-el análisis cualitativo, con lo de UTE y ANCAP]
-En la tabla [tabla spain-spec] se muestran los resultados de las evaluaciones con los conjuntos de
-conjugaciones verbales específicas de España. Es interesante ver cómo los modelos vectoriales que
-son entrenados exclusivamente con texto de España obtienen resultados mejores que los entrenados con
-todo el texto. Este punto vuelve a resaltar la importancia de la composición del corpus de
-entrenamiento, además de indicar una especie de dilución de los vectores de las palabras cuando la
-ocurrencia de las palabras está en un subconjunto del texto muy específico del corpus completo.
-[tabla spain-spec]
+[tabla rp-spec]
 
 
 \section{Análisis Cualitativo de Resultados}
