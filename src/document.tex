@@ -1,6 +1,6 @@
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,12pt,twoside]{report}
 
-\usepackage[top=1.0in, bottom=1.0in, left=1.0in, right=1.0in]{geometry}
+\usepackage[hmarginratio=2:3]{geometry}
 \usepackage[utf8]{inputenc} % Allows using accents instead of \'.
 \usepackage[spanish]{babel} % Spanish as default language.
 \usepackage{graphicx}
@@ -13,7 +13,21 @@
 \usepackage{listings}
 \usepackage{float}
 \usepackage{paralist}
+\usepackage{fancyhdr}
 \usepackage[backend=biber,url=false,style=numeric]{biblatex}
+
+
+% Header setup.
+\pagestyle{fancy}
+
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+
+\fancyhf{}
+\fancyhead[RO,LE]{\thepage}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark}
+
 
 \addbibresource{mendeley-bib.bib}
 %% \addbibresource{bibliography.bib}
