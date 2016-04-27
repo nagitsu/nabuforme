@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside]{report}
+\documentclass[a4paper,12pt,twoside,openright]{report}
 
 \usepackage[hmarginratio=2:3]{geometry}
 \usepackage[utf8]{inputenc} % Allows using accents instead of \'.
@@ -10,10 +10,12 @@
 \usepackage{enumerate}
 \usepackage{hyperref}
 \usepackage{courier} % Use Courier New as monospace font.
+\usepackage{palatino} % Use the Palatino font.
 \usepackage{listings}
 \usepackage{float}
 \usepackage{paralist}
 \usepackage{fancyhdr}
+\usepackage{tocloft} % ToC styling.
 \usepackage[backend=biber,url=false,style=numeric]{biblatex}
 
 
@@ -44,7 +46,14 @@
   showstringspaces=false
 }
 
+\renewcommand{\abstractname}{Resumen} % Nombre de la sección del abstract.
+
 \begin{document}
+
+\include{0-portada}
+\include{0-abstract}
+
+\tableofcontents
 
 \include{1-introduccion}
 \include{2-repr-vectorial}
