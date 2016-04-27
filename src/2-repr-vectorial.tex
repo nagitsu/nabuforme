@@ -496,8 +496,26 @@ lado la RNN y el modelado de lenguaje, y se centra exclusivamente en la construc
 Ambos esquemas propuestos se basan en definir una ventana de largo fijo, simétrica alrededor de una
 palabra central, y plantear un problema de optimización basado en predecir la palabra central dado
 el contexto o vice versa. El primer caso recibe el nombre de \textit{Continuous Bag-of-words} (o
-CBOW, esquematizado en la [figura 1]), mientras que el segundo recibe el nombre de \textit{Skipgram}
-(o SG, esquematizado en la [figura 2]).
+CBOW, esquematizado en~\ref{fig:cbow}), mientras que el segundo recibe el nombre de
+\textit{Skipgram} (o SG, esquematizado en~\ref{fig:sg}).
+
+\begin{figure}[h]
+  \centering
+
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{images/fig-2-cbow}
+    \caption{Modelo Continuous Bag-of-words}
+    \label{fig:cbow}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{images/fig-2-sg}
+    \caption{Modelo Skipgram}
+    \label{fig:sg}
+  \end{subfigure}
+
+  \caption{Esquemas de word2vec}
+\end{figure}
 
 En los dos casos la probabilidad se modela utilizando exclusivamente un softmax jerárquico, como el
 propuesto por Morin y Bengio en~\cite{MorinBengio2005}, con el fin de mejorar la eficiencia. Estos
