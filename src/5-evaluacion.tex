@@ -666,8 +666,207 @@ mismas se encuentra limitada a una sección del corpus completo (en este caso, e
 
 \section{Análisis Cualitativo de Resultados}
 
-- estudiar resultados del most\_similar cualitativamente (tipo lo que hacen al final de paper de word2vec con russian river) (más bien informal)
+En las secciones anteriores se presentó un análisis formal basado en la evaluación de vectores con
+características variadas bajo una serie de conjuntos de prueba común. Se realizó además
+una comparación con la literatura existente para el caso del inglés. En esta sección se presenta
+un estudio más intuitivo de los resultados obtenidos a través de una serie de ejemplos con
+características interesantes.
 
-- e.g. UTE, ANCAP y eso con corpus en español y corpus general; cómo se ``diluyen'' los significados (i.e. no recupera UTE o ANCAP en todo el corpus pero sí sólo en uruguay, a pesar de que ANCAP sólo se menciona en uruguay (o no, pero buscar ejemplo donde sí en otro caso))
+Los ejemplos mostrados a continuación fueron generados utilizando dos modelos diferentes, ambos
+entrenados utilizando \texttt{word2vec}. En uno de los casos se entrenó utilizando un corpus
+compuesto de documentos de todas las fuentes recopiladas hasta principios de noviembre de 2015,
+totalizando aproximadamente unos cuatro mil millones de palabras (\textit{Full word2vec}). En el
+otro caso se utilizaron solamente documentos uruguayos con fecha no más reciente que octubre de
+2015, alcanzando un total de 475 millones de palabras (\textit{Reduced word2vec}).
 
-- algún ejemplo interesante
+Para el análisis cualitativo se realizaron dos tipos de ensayos: analogías y palabra que no encaja. Las
+analogías son del estilo \textit{peso es a Uruguay lo que rupia es a India}. En términos vectoriales
+se puede expresar como $rupia \approx india + (peso - uruguay)$. El segundo ensayo consiste en
+detectar que \textit{amarillo} es la palabra que no encaja en la lista \textit{saturno, marte, venus,
+amarillo, urano}.
+
+Comenzamos presentando en los cuadros \ref{table:analogies_presidents} y
+\ref{table:analogies_currencies} analogías relacionadas a presidentes y monedas de países. En ambos
+casos se utilizó el modelo \textit{Full word2vec} y como puede apreciarse el modelo se comporta de
+forma deseable.
+
+En el caso de presidentes se parte de la relación de Uruguay con el expresidente José Mujica y tanto
+para Brasil como para España se obtienen sus actuales primeros mandatarios, Dilma Rousseff y
+Mariano Rajoy, y también exmandatarios como son Luiz Inácio Lula da Silva y José Luis Rodríguez
+Zapatero. En el caso de Argentina se obtienen tanto el nombre como el apellido de la expresidenta
+Cristina Fernández de Kirchner.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (uruguay, mujica, brasil) & (uruguay, mujica, espana) & (uruguay, mujica, argentina)\\
+        \hline
+        dilma, 0.68 & zapatero, 0.54 & kirchner, 0.64\\
+        rousseff, 0.67 & rajoy, 0.54 & cristina, 0.62\\
+        lula, 0.66\\
+        \hline
+    \end{tabular}
+    \caption{Analogías para países y presidentes.}
+    \label{table:analogies_presidents}
+\end{table*}
+
+Para el caso de analogía de monedas también se obtienen resultados satisfactorios. Se parte de
+la relación entre Uruguay y peso y se obtienen las monedas actuales o recientes de España, Japón
+e India. En el caso de India, se obtiene también taka, moneda oficial de Bangladesh.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (uruguay, pesos, espana) & (uruguay, pesos, india) & (uruguay, pesos, japon)\\
+        \hline
+        pesetas, 0.59 & rupias, 0.60 & yenes, 0.58\\
+        euros, 0.50 & takas, 0.48 & yens, 0.50\\
+        \hline
+    \end{tabular}
+    \caption{Analogías para países y monedas.}
+    \label{table:analogies_currencies}
+\end{table*}
+
+En el cuadro \ref{table:analogies_football} se presenta un ejemplo relacionado al fútbol. Se
+parte de la relación entre el club español Valencia CF y su estadio Mestalla, y se obtiene tanto
+como para el club español Real Madrid y el club argentino Boca Juniors los nombres de sus
+respectivos estadios; Santiago Bernabéu y Bombonera. Se explora también cómo se
+comporta el modelo cuando se le presentan conceptos relacionados a dos clubes de gran
+rivalidad deportiva. Se parte entonces de la relación del club Real Madrid y su exentrenador
+José Mourinho y se obtiene para el FC Barcelona el nombre de su también exentrenador Pep
+Guardiola.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (valencia, mestalla, madrid) & (valencia, mestalla, boca) & (madrid, mourinho, barcelona)\\
+        \hline
+        bernabeu, 0.79 & bombonera, 0.60 & guardiola, 0.80\\
+        madridista, 0.74 & xeneize, 0.55 & cule, 0.74\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas al fútbol.}
+    \label{table:analogies_football}
+\end{table*}
+
+Se buscó también ver los resultados proporcionados por el modelo al explorar la relación
+ente compañías y sus principales productos. En el cuadro
+\ref{table:analogies_companies_products} se parte de la relación entre Volkswagen, fabricante
+alemán de automóviles, y la palabra autos y se obtienen interesantes resultados para las
+compañías Sony, Apple y Zara.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (volkswagen, autos, sony) & (volkswagen, autos, apple) & (volkswagen, autos, zara)\\
+        \hline
+        dvds, 0.67 & iphones, 0.65 & tiendas, 0.52\\
+        lcds, 0.62 & ipods, 0.64 & accesorios, 0.51\\
+        consolas, 0.62 & smartphones, 0.63 & zapaterias, 0.51\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas a marcas y sus productos.}
+    \label{table:analogies_companies_products}
+\end{table*}
+
+Se realizaron también algunas pruebas con analogías de personajes de ficción. En el cuadro
+\ref{table:analogies_fiction} se puede ver la relación entre nombres y apellidos
+(o nombre compuesto) de personajes y la relación entre el título de un libro y el apellido de su
+autor. Se puede ver como la relación entre Darth y Vader ayuda a construir el nombre Frodo
+Baggins. En el caso de Harry Potter y Ron Weasley podemos observar que el modelo se
+confunde y relaciona la palabra ron con su acepción como bebida alcohólica, sugiriendo por
+tanto la marca de ron Bacardi.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (darth, vader, frodo) & (harry, potter, ron) & (harry, potter, hermione) & (anillos, tolkien, potter)\\
+        \hline
+        baggins, 0.65 & bacardi, 0.59 & weasley, 0.60 & harry, 0.69\\
+        hobbit, 0.62 & harpper, 0.59 & granger, 0.57 & rowling, 0.63\\
+        elijah, 0.60 & dennis, 0.58 & grint, 0.55 & hallows, 0.58\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas a personajes y autores de ficción.}
+    \label{table:analogies_fiction}
+\end{table*}
+
+Como ya se comentó, se realizaron también pruebas de palabra que no encaja. Se presentan
+a continuación los resultados del modelo \textit{Full word2vec} cuando se mezcla un político
+entre escritores, un político uruguayo entre políticos europeos y un futbolista inglés entre
+futbolistas brasileños. Los resultados en estos casos fueron todos satisfactorios.
+
+\begin{lstlisting}
+  >>> full_word2vec.doesnt_match(['rowling', 'tolkien', 'cortazar', 'obama'])
+  <<< 'obama'
+\end{lstlisting}
+
+\begin{lstlisting}
+  >>> full_word2vec.doesnt_match(['cameron', 'putin', 'mujica', 'merkel', 'rajoy'])
+  <<< ‘mujica’
+\end{lstlisting}
+
+\begin{lstlisting}
+  >>> ffull_word2vec.doesnt_match(['ronaldinho', 'neymar', 'dunga', 'rooney', 'robinho'])
+  <<< ‘rooney’
+\end{lstlisting}
+
+También resultó interesante explorar analogías relacionadas estrictamente con Uruguay,
+utilizando el modelo \textit{Reduced word2vec}. Se incluyen en el cuadro
+\ref{table:analogies_uruguay_1} analogías relacionadas a entes y figuras estatales de
+Uruguay. En el cuadro \ref{table:analogies_uruguay_2} se presentan analogías referentes
+al fútbol uruguayo y algunas de sus figuras más relevantes.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (agua, ose, energia) & (ose, agua, ancap) & (interior, bonomi, ancap)\\
+        \hline
+        ute, 0.71 & petroleo, 0.57 & coya, 0.62\\
+        ruchansky, 0.67 & hidrocarburos, 0.55 & sendic, 0.58\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas a entes públicos uruguayos.}
+    \label{table:analogies_uruguay_1}
+\end{table*}
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (manya, penarol, bolso) & (pacheco, penarol, recoba) & (defensor, franzini, river)\\
+        \hline
+        tricolores, 0.51 & danubio, 0.68 & plate, 0.67\\
+        bolsos, 0.50 & tricolor, 0.68 & saroldi, 0.65\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas al fútbol uruguayo.}
+    \label{table:analogies_uruguay_2}
+\end{table*}
+
+Finalmente, se logró comprobar que, en algunos casos, las analogías referentes a
+Uruguay que funcionan muy bien en el modelo reducido se pierden cuando se
+las evalúa en el modelo completo. En el cuadro \ref{table:analogies_uruguay_3} puede observarse el
+comportamiento en el modelo \textit{Full word2vec} de algunas de las analogías evaluadas
+satisfactoriamente en el modelo \textit{Reduced word2vec}.
+
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        (manya, penarol, bolso) & (ose, agua, ancap)\\
+        \hline
+        mochila, 0.61 & cual, 0.47\\
+        maleta, 0.61 & estalactita, 0.46\\
+        bolsito, 0.60 & liquido, 0.46\\
+        \hline
+    \end{tabular}
+    \caption{Analogías relacionadas a Uruguay con modelo completo.}
+    \label{table:analogies_uruguay_3}
+\end{table*}
