@@ -12,13 +12,14 @@ paralelamente, no fue hasta la adopción masiva de Internet, junto con los inmen
 texto que consecuentemente se generaron, que los métodos de aprendizaje automático comenzaron a ser
 significativemente más exitosos.
 
-Todas las tareas en el área de PLN involucran, en algún nivel, trabajar con palabras. Puesto que los
-algoritmos de aprendizaje automático comúnmente utilizados como soluciones de dichas tareas se
-alimentan de vectores, es usual requerir de un mecanismo para traducir de unas a otros.
+Todas las tareas en el área de PLN involucran, en algún nivel, trabajar con palabras. Dado que
+muchos de los algoritmos de aprendizaje automático utilizados como soluciones de dichas tareas se
+alimentan de vectores (como lo hacen los modelos de aprendizaje profundo o las técnicas de
+regresión), es usual requerir de un mecanismo para traducir de unas a otros.
 
 La forma más simple de realizar esta traducción es posiblemente asociarle, a cada palabra, un vector
 bajo un esquema \textit{one-hot}: esto es, a cada palabra se le asigna un vector donde todas las
-componentes son cero salvo por un uno en la correspondiente a la palabra. Sin embargo, dado que
+componentes son cero salvo por un uno en la correspondiente a la palabra. Sin embargo, puesto que
 todos los vectores resultan equidistantes, esta representación no tiene la capacidad de generalizar
 bien: las palabras \textit{el} y \textit{lenguaje} están a la misma distancia que \textit{el} y
 \textit{de}, por lo que se pierde información de su función sintáctica y semántica. Por esta razón,

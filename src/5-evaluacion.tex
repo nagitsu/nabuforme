@@ -220,10 +220,11 @@ identificarlos fácilmente, mientras que en la tabla [tabla] se listan todos los
 especificando los hiperparámetros empleados para cada uno y el corpus utilizado.
 
 [tabla corpus: id, descripción específica (e.g. docs scrapeados antes de... (footnote con
-explicación de por qué cualquier cosa)), cantidad palabras, preprocessing options]
+explicación de por qué cualquier cosa)), cantidad palabras, preprocessing options][corpuses: full
+con fecha, spain, uruguay, badquality/foros]
 
 [tabla embeddings: id, descripción?, corpus utilizado, tiempo entr.; hiperparámetros; seccionar por
-embedding type así puedo poner columna por hiperparámetro?]
+embedding type así puedo poner columna por hiperparámetro? poner todos?]
 
 
 El entrenamiento de los modelos vectoriales fue realizado a través de la herramienta construida y
@@ -399,9 +400,9 @@ extracción de secciones durante el proceso de traducción.
 
 
 Curiosamente, el comportamiento en el caso de similitud de palabras es opuesto: salvo por el
-conjunto de pruebas [mturk], PPMI/SVD es consistentemente superior a las alternativas, con los
-modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también es
-similar al comportamiento obtenido en~\cite{Levy2015}.
+conjunto de pruebas [mturk], PPMI/SVD es consistentemente superior a las alternativas, con
+los modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también
+es similar al comportamiento obtenido en~\cite{Levy2015}.
 
 Algo que cabe resaltar, sin embargo, es que la diferencia entre los resultados en inglés y español
 es mayor que para el caso de las analogías: mientras que las analogías obtenían aproximadamente un
@@ -597,7 +598,7 @@ ser respondidas correctamente.
 Es de esperar, por lo tanto, que si se obtiene un corpus con una mejor distribución de conjugaciones
 verbales, el resultado de las pruebas mejore significativamente. En la tabla [tabla timeposv] se
 presenta la distribución de los distintos tiempos verbales en el corpus de entrenamiento, derivado
-en base a la ocurrencia en el texto de las palabras utiliaadas en el conjunto de analogías
+en base a la ocurrencia en el texto de las palabras utiliazadas en el conjunto de analogías
 verbales. Como es de esperar, las conjugaciones que mejores resultados obtienen son las más
 frecuentemente empleadas enel corpus.
 
