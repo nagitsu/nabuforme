@@ -61,12 +61,12 @@ conseguir un volumen incluso mayor y con más variedad: se priorizó incluir fue
 diversas con el objetivo de mostrar qué tipos de datos existen, pero para cada una de estas áreas es
 posible recolectar aún más palabras.
 
-La mayor parte del corpus generado consta de noticias, pero se podrían incluir libros de texto (en
-[cita gotoitaly] los autores obtienen dos mil millones de palabras de libros en italiano, y en el
-presente proyecto apenas se incluyeron libros), más literatura amateur, más subtítulos (incluyendo
-películas demás de series), más foros (de distintas temáticas, se tomó un único sitio), el resto de
-los portales de Wikimedia (como Wikilibros, Wikiviajes, y Wikicitas), y más documentos oficiales
-(podrían buscarse parlamentos de otros países además de Uruguay).
+La mayor parte del corpus generado consta de noticias, pero se podrían incluir libros de texto
+(en~\cite{Berardi2015} los autores obtienen dos mil millones de palabras de libros en italiano, y en
+el presente proyecto apenas se incluyeron libros), más literatura amateur, más subtítulos
+(incluyendo películas demás de series), más foros (de distintas temáticas, se tomó un único sitio),
+el resto de los portales de Wikimedia (como Wikilibros, Wikiviajes, y Wikicitas), y más documentos
+oficiales (podrían buscarse parlamentos de otros países además de Uruguay).
 
 Yendo más allá del español, se podría incluir texto en otros idiomas; todos los documentos que se
 almacenaron se etiquetaron como texto en español, por lo que no sería necesario adaptar ninguna
@@ -96,7 +96,7 @@ alta y entrenar modelos masivamente pasando una lista de hiperparámetros a util
 crearlos de a uno como se hace en la actualidad. Se podría permitir, incluso, que dada una lista de
 conjuntos de pruebas se busque el modelo que mejores resultados obtenga automáticamente, realizando
 una exploración del espacio de hiperparámetros (claro está, acotado) y empleando validación cruzada
-para evaluarlos, de manera similar al enfoque tomado por los autores en [Levy-compar].
+para evaluarlos, de manera similar al enfoque tomado por los autores en~\cite{Levy2015}.
 
 Relacionado al último punto, sería bueno también agregar más opciones de evaluación, incluyendo
 idealmente algún tipo de evaluación implícita para la cual valga la pena optimizar al máximo la
@@ -105,21 +105,8 @@ performance de los modelos vectoriales.
 Por último, con el fin de evitar tener que descargar las representaciones vectoriales para hacer
 pruebas básicas, sería bueno ofrecer más funcionalidades de introspección de las mismas permitiendo,
 por ejemplo, probar analogías desde la misma aplicación web, de manera de hacer evaluaciones
-cualitativas simples fácilmente. También se podría utilizar en algoritmo tSNE [cita] para mostrar
-una visualización de algunas palabras comunes en el espacio de vectores.
-
---
-[más:]
-[- poder agrupar y etiquetar testsets, y ver más en detalle el comportamiento de los vectores
-(wrong entries, etc.) sin tener que descargarlos y probarlos manualmente (e.g. subir mikolov por
-partes y no tener que subirlo todo junto)]
-[- agrupar embeddings y testsets en sessions o algo así, que asistan al entrenamiento de
-vectores para una tarea particular (subiendo pruebas específicas y embeddings específicos, sin que
-se mezcle todo con todo), más reportes automatizados]
-[- mejorar implementaciones: uniformizar más los hiperparámetros, utilización de GPUs o
-multicore (en el caso de SVD), etc.]
-[- monitoreo de spiders para cuando se cae un scraper]
---
+cualitativas simples fácilmente. También se podría utilizar en algoritmo tSNE~\cite{tSNE} para
+mostrar una visualización de algunas palabras comunes en el espacio de vectores.
 
 
 \paragraph{Investigación}
@@ -140,9 +127,10 @@ obtenidas.
 
 Durante el relevamiento del estado del arte también se identificaron algunas líneas de investigación
 más generales que resultarían muy interesantes de continuar. Una de ellas, planteada por los autores
-en [Levy-fact], es buscar mejoras en la factorización de la matriz PPMI de los modelos estadísticos,
-pues ya se vio cómo las palabras con pocas ocurrencias (como conjugaciones verbales menos comunes)
-obtienen representaciones inferiores, afectando la performance en las tareas de analogías.
+en~\cite{Levy2014a}, es buscar mejoras en la factorización de la matriz PPMI de los modelos
+estadísticos, pues ya se vio cómo las palabras con pocas ocurrencias (como conjugaciones verbales
+menos comunes) obtienen representaciones inferiores, afectando la performance en las tareas de
+analogías.
 
 Otro punto a investigar, planteado en el capítulo 2, es la relación entre la evaluación implícita y
 explícita de los modelos vectoriales, y ver hasta qué punto se transfiere el hecho de obtener buena
