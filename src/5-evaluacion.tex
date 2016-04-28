@@ -22,10 +22,10 @@ principales enfoques de la literatura: modelos neuronales a través del algoritm
 modelos estadísticos mediante el empleo de una matriz PPMI con SVD, y modelos híbridos mediante el
 algoritmo \texttt{GloVe}. El primero y el último utilizaron implementaciones ya existentes
 (\texttt{Gensim} y la provista por los autores, respectivamente), mientras que el segundo fue una
-implementación propia siguiendo los lineamientos de [Levy y Goldberg cita].
+implementación propia siguiendo los lineamientos de~\cite{Levy2015}.
 
 Cada uno de estos modelos tiene distintos hiperparámetros que pueden afectar significativamente su
-performance. En [Levy y Goldberg] los autores buscan unificar los hiperparámetros de estos modelos,
+performance. En~\cite{Levy2015} los autores buscan unificar los hiperparámetros de estos modelos,
 proponiendo un subconjunto de los mismos que contempla las tres variantes. El enfoque tomado en este
 proyecto no llega a tal profundidad, pues quita parte de la versatilidad de algunos algoritmos, pero
 intenta aún así presentarlos de manera unificada cuando es posible.
@@ -51,7 +51,7 @@ muy frecuentes, para evitar que sean sobrerrepresentadas en los vectores finales
 $p$\footnote{Se realiza subsampling si $\mathtt{sub} \times |V| > \#w$, donde $|V|$ es el tamaño del
 vocabulario y $\#w$ la cantidad de ocurrencias de la palabra $w \in V$. En ese caso, el subsampling
 se realiza con una probabilidad $p = 1 - \sqrt{\frac{\mathtt{sub}}{\#w}}$, siguiendo la sugerencia
-de [Levy y Goldberg cita].}.
+de~\cite{Levy2015}.}.
 
 \item \textbf{Algoritmo empleado} (\texttt{algo}): qué algoritmo de \texttt{word2vec} utilizar,
 Skipgram (\texttt{sg}) o CBOW (\texttt{cbow}) (valor por defecto: \texttt{sg}).\ Como fue mencionado
@@ -95,11 +95,11 @@ por defecto: $100$). Si la métrica asume valores superiores a $100$, se toma el
 lugar.
 
 \item \textbf{Exponente para la función de peso} (\texttt{eta}): exponente a utilizar en la función
-de peso, tal como es definido en [glove cita] (valor por defecto: $0.75$). Tanto este parámetro como
-el anterior fueron dejados en sus valores por defecto en todos los modelos generados, puesto que son
-muy particulares al algoritmo y su estudio escapa el alcance del proyecto. De todos modos, como
-comentan los propios autores, su valor no debería ser determinante en la performance de las
-representaciones resultantes.
+de peso, tal como es definido en~\cite{Pennington2014} (valor por defecto: $0.75$). Tanto este
+parámetro como el anterior fueron dejados en sus valores por defecto en todos los modelos generados,
+puesto que son muy particulares al algoritmo y su estudio escapa el alcance del proyecto. De todos
+modos, como comentan los propios autores, su valor no debería ser determinante en la performance de
+las representaciones resultantes.
 
 \end{itemize}
 
@@ -118,16 +118,16 @@ adicionales:
 
 \item \textbf{Suavizado de la distribución del contexto} (\texttt{cds}): suavizado empleado para las
 coocurrencias de las palabras en la construcción de la matriz de coocurrencia, tal como es detallado
-en [levy goldberg cita] (valor por defecto: $0.75$). Este parámetro disminuye el sesgo natural que
-la medida PMI tiene con las palabras raras, e incrementa consistentemente la performance sobre la
+en~\cite{Levy2015} (valor por defecto: $0.75$). Este parámetro disminuye el sesgo natural que la
+medida PMI tiene con las palabras raras, e incrementa consistentemente la performance sobre la
 opción sin suavizado (valor $1.0$). Por esta razón, en los modelos entrenados siempre se utilizó el
 valor por defecto.
 
 \item \textbf{Suma de vectores de contexto} (\texttt{w+c}): luego de aplicar SVD a la matriz de
 coocurrencias, se obtiene una matriz que asocia las palabras del vocabulario al espacio reducido y
 otra que asocia las palabras de los contextos al mismo espacio (valor por defecto:
-\texttt{true}). En [Levy Goldberg cita], los autores proponen utilizar la suma de ambos vectores en
-lugar de únicamente los vectores base, obteniendo en algunos casos mejores resultados.
+\texttt{true}). En~\cite{Levy2015}, los autores proponen utilizar la suma de ambos vectores en lugar
+de únicamente los vectores base, obteniendo en algunos casos mejores resultados.
 
 \end{itemize}
 
@@ -259,64 +259,61 @@ idioma español, adaptando las pruebas cuando fuera necesario (por ejemplo, cuan
 cualidades sintácticas no existentes en español). Así, es posible obtener una referencia aproximada
 de qué tanto se acercan los modelos entrenados a los obtenidos por la comunidad.
 
-Un trabajo similar se realiza en... [mencionar algún otro paper que ya lo haya hecho]
-
 Se emplean dos tipos de pruebas para realizar la comparación: pruebas basadas en analogías y pruebas
 basadas en similitud de palabras. Como ya fue mencionado en capítulos anteriores, la primera busca
 recuperar una palabra en base a otras tres palabras dadas, mientras la segunda busca asignar un
 puntaje de similitud entre pares de palabras.
 
 Para las analogías existen dos conjuntos de pruebas muy utilizados por la comunidad: el conjunto de
-analogías de Microsoft (MSR) [cita], compuesto exclusivamente por analogías que buscan regularidades
-sintácticas en los vectores, y el conjunto de Google [cita], compuesto tanto por analogías
-sintácticas como semánticas. De estos dos, se optó por utilizar únicamente el de Google, pues el
-MSR tiene demasiadas pruebas sintácticas específicas al inglés (como posesivos, comparativos, y
-superlativos) que deben ser descartadas en el proceso de traducción, haciendo que el conjunto
-resultante sea tan distinto que una comparación de los resultados sería insustancial.
+analogías de Microsoft (MSR), compuesto exclusivamente por analogías que buscan regularidades
+sintácticas en los vectores, y el conjunto de Google~\cite{Mikolov2013a}, compuesto tanto por
+analogías sintácticas como semánticas. De estos dos, se optó por utilizar únicamente el de Google,
+pues el MSR tiene demasiadas pruebas sintácticas específicas al inglés (como posesivos,
+comparativos, y superlativos) que deben ser descartadas en el proceso de traducción, haciendo que el
+conjunto resultante sea tan distinto que una comparación de los resultados sería insustancial.
 
 Debido a la antigüedad del campo, existe una gran cantidad de conjuntos de pruebas para la tarea de
 similitud de palabras, en especial en lo que respecta a la evaluación de modelos estadísticos. Se
 decidió, para limitar la cantidad de conjuntos a un número razonable, elegir las pruebas más
 recientemente utilizados por la literatura, con el fin de tener comparaciones más fiables. En
-particular, se toman los conjuntos empleados por [Levy y Goldberg], pues son evaluados con los tres
+particular, se toman los conjuntos empleados por~\cite{Levy2015}, pues son evaluados con los tres
 tipos de modelos empleados en el proyecto. Estos conjuntos son:
 
 \begin{itemize}
 
-\item WordSim [cita], un conjunto compuesto por 353 pares de palabras puntuados en base a la
-relación entre ambas palabras (si los jueces humanos consideran que las palabras están relacionadas
-de alguna manera cualquiera) y su similitud (si existe una relación más fuerte entre los pares, ya
-sea sinonimia, hiponimia, etc.). Se utiliza el conjunto partido entre los pares que miden relación y
-los que miden similitud, como se hace en [cita].
+\item WordSim~\cite{Finkelstein2002}, un conjunto compuesto por 353 pares de palabras puntuados en
+base a la relación entre ambas palabras (si los jueces humanos consideran que las palabras están
+relacionadas de alguna manera cualquiera) y su similitud (si existe una relación más fuerte entre
+los pares, ya sea sinonimia, hiponimia, etc.). Se utiliza el conjunto partido entre los pares que
+miden relación y los que miden similitud, como se hace en~\cite{Levy2015}.
 
-\item MEN [cita bruni et al], compuesto por 3000 pares de palabras elegidas al azar entre las
-palabras que aparecen al menos 700 veces en el corpus WaCky [cita]. Los autores utilizaron la
-plataforma Mechanical Turk [cita] para la construcción del conjunto, y el puntaje se asigna en base
-a comparaciones binarias entre entradas del conjunto.
+\item MEN~\cite{Bruni2012}, compuesto por 3000 pares de palabras elegidas al azar entre las palabras
+que aparecen al menos 700 veces en el corpus WaCky~\cite{Wacky2009}. Los autores utilizaron la
+plataforma Mechanical Turk~\cite{MechanicalTurk} para la construcción del conjunto, y el puntaje se
+asigna en base a comparaciones binarias entre entradas del conjunto.
 
-\item El conjunto MTurk [cita radinsky et al], compuesto de 287 pares de palabras, con puntajes
+\item El conjunto MTurk~\cite{Radinsky2011}, compuesto de 287 pares de palabras, con puntajes
 también asignados a partir de la herramienta Mechanical Turk.
 
-\item SimLex [cita hill et al], compuesto de 999 pares puntuados exclusivamente en base a la
-similitud entre las palabras. Esto implica que pares como \textit{ropa} y \textit{ropero} tienen
-asignado un puntaje bajo, por no ser estrictamente similares. Este conjunto es particularmente
-complicado de resolver por parte de los modelos vectoriales, pues éstos aprenden en base a la
-coocurrencia de pares y la coocurrencia refleja principalmente la relación que existe entre las
-palabras.
+\item SimLex~\cite{Hill2014}, compuesto de 999 pares puntuados exclusivamente en base a la similitud
+entre las palabras. Esto implica que pares como \textit{ropa} y \textit{ropero} tienen asignado un
+puntaje bajo, por no ser estrictamente similares. Este conjunto es particularmente complicado de
+resolver por parte de los modelos vectoriales, pues éstos aprenden en base a la coocurrencia de
+pares y la coocurrencia refleja principalmente la relación que existe entre las palabras.
 
 \end{itemize}
 
-Por otro lado, se descarta el conjunto de palabras raras propuesto por [Luong et al] debido a que la
-sutileza entre los pares de palabras empleados se perdería en el proceso de traducción.
+Por otro lado, se descarta el conjunto de palabras raras propuesto por~\cite{Luong2013} debido a que
+la sutileza entre los pares de palabras empleados se perdería en el proceso de traducción.
 
 
 Los cinco conjuntos de pruebas seleccionados para realizar la comparación debieron ser traducidos
 manualmente, pues no fue posible encontrar traducciones satisfactorias de los mismos.
 
-Se construyó un script que aprovecha el servicio de Google Translate [cita] para realizar una
-traducción semi-automática de las pruebas. Este script lee una lista de palabras de entrada, realiza
-un pedido HTTP al servicio y obtiene la primer traducción sugerida. Esta palabra se toma
-posteriormente como una sugerencia que es revisada manualmente, pero que no obstante ayuda a
+Se construyó un script que aprovecha el servicio de Google Translate~\cite{GoogleTranslate} para
+realizar una traducción semi-automática de las pruebas. Este script lee una lista de palabras de
+entrada, realiza un pedido HTTP al servicio y obtiene la primer traducción sugerida. Esta palabra se
+toma posteriormente como una sugerencia que es revisada manualmente, pero que no obstante ayuda a
 agilizar la tarea.
 
 El proceso de traducción para cada conjunto contó, pues, de cuatro etapas: en primer lugar, se
@@ -366,17 +363,18 @@ literatura.
 
 El primer punto a observar es que los resultados obtenidos por nuestros vectores son muy similares a
 los obtenidos en inglés, particularmente en las tareas de analogías: los resultados de estado del
-arte varían entre una exactitud de $0.61$ y $0.69$ [Levy y Goldberg, Baroni, GloVe, Mikolov],
-mientras que los vectores en español (particularmente, el modelo [modelname]), obtiene $0.63$.
+arte varían entre una exactitud de $0.61$ y $0.69$~\cite{Levy2015, Baroni2014, Pennington2014,
+Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo [modelname]),
+obtiene $0.63$.
 
 Parte de esta diferencia puede explicarse por el hecho de que las secciones que se remueven del
 conjunto de pruebas (comparativos, superlativos, y ciudad en estado) son entradas que obtienen por
-lo general buenos resultados. Este fenómeno puede observarse en [Levy 3cosmul], donde los autores
+lo general buenos resultados. Este fenómeno puede observarse en~\cite{Levy2014b}, donde los autores
 presentan los resultados desglosados por sección. Allí, el conjunto de comparativos, por ejemplo,
 obtiene una exactitud de $0.86$.
 
 En la tabla [tabla desgl] se muestran los valores obtenidos separados por sección del conjunto de
-analogías, junto a los valores obtenidos por [Levy 3cosmul]. Es interesante ver que el
+analogías, junto a los valores obtenidos por~\cite{Levy2014b}. Es interesante ver que el
 comportamiento del mejor modelo es relativamente similar al inglés, incluso con las pruebas
 sintácticas donde ambos idiomas, proveniendo de familias de lenguajes distintos, varían
 significativamente. Por ejemplo, las secciones que peor performance obtienen son las mismas en ambos
@@ -389,7 +387,7 @@ debajo del promedio. Por otro lado, también se repiten las que mejor funcionan:
 
 El modelo vectorial vectorial que más éxito obtiene en analogías es [modelname], el cual utiliza el
 algoritmo \texttt{word2vec} con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y
-finalmente por un modelo PPMI/SVD\@. Esto sigue lo observado por los autores en [Levy comparison],
+finalmente por un modelo PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015},
 aunque en ese caso la diferencia entre el modelo híbrido y el estadístico es mucho menor.
 
 De todos modos, en el conjunto de pruebas MSR (el cual cuenta con analogías exclusivamente
@@ -403,7 +401,7 @@ extracción de secciones durante el proceso de traducción.
 Curiosamente, el comportamiento en el caso de similitud de palabras es opuesto: salvo por el
 conjunto de pruebas [mturk], PPMI/SVD es consistentemente superior a las alternativas, con los
 modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también es
-similar al comportamiento obtenido en [Levy comp].
+similar al comportamiento obtenido en~\cite{Levy2015}.
 
 Algo que cabe resaltar, sin embargo, es que la diferencia entre los resultados en inglés y español
 es mayor que para el caso de las analogías: mientras que las analogías obtenían aproximadamente un
@@ -423,19 +421,18 @@ los conjuntos y buscar asignar puntajes a los traducciones de las palabras (así
 equivalente el conjunto).
 
 
-Vale la pena repetir que, como muestran los autores en [Levy comp-de-todo], la calidad de los
-vectores resultantes está fuertemente ligada a la composición del corpus con que se entrenan, por
-lo que las medidas presentadas de vectores en inglés, entrenados por otros autores, con otras
-implementaciones, y otros corpus, deben limitarse a ser solamente una referencia. Esto es particularmente
-cierto en el escenario actual por el hecho de estar además traduciendo los conjuntos de pruebas
-mediante un proceso de traducción que, como ya se mencionó anteriormente, no está ni cerca de ser
-perfecto.
+Vale la pena repetir que, como muestran los autores en~\cite{Levy2015}, la calidad de los vectores
+resultantes está fuertemente ligada a la composición del corpus con que se entrenan, por lo que las
+medidas presentadas de vectores en inglés, entrenados por otros autores, con otras implementaciones,
+y otros corpus, deben limitarse a ser solamente una referencia. Esto es particularmente cierto en el
+escenario actual por el hecho de estar además traduciendo los conjuntos de pruebas mediante un
+proceso de traducción que, como ya se mencionó anteriormente, no está ni cerca de ser perfecto.
 
 
 Otro punto interesante a comentar es que se logran reproducir los resultados obtenidos por los
-autores en [Levy], donde se propone la medida \textsc{3CosMul} para la recuperación de analogías. En
-todas las pruebas realizadas, esta medida obtiene resultados consistentemente superiores a
-\textsc{3CosAdd}.
+autores en~\cite{Levy2014b}, donde se propone la medida \textsc{3CosMul} para la recuperación de
+analogías. En todas las pruebas realizadas, esta medida obtiene resultados consistentemente
+superiores a \textsc{3CosAdd}.
 
 
 Una cuestión que no ha sido estudiado en profundidad en la literatura es, en los casos donde la
@@ -468,40 +465,33 @@ intercambiaran por un \textit{token} propio\footnote{Esta mezcla, además, estar
 qué uso de la palabra es más frecuente: cuando uno es mucho más usado que otro, se corre el riesgo
 de \textit{diluir} uno de los significados en el otro}.
 
-Esto es, de hecho, lo que hacen los autores en [abajo], donde construyen tokens de la forma
-\textit{palabra\_1}, \textit{palabra\_2} para los significados 1 y 2. Así, incluir los tildes de las
-palabras ayuda a distinguir entre las diferentes acepciones de las palabras, bajo la suposición de
-que la cantidad de faltas de ortografía en el corpus de entrenamiento no es demasiado elevada.
-
-% http://nlp.stanford.edu/pubs/HuangACL12.pdf
-% http://home.ustc.edu.cn/~tianfei/Fei%20Tian's%20Homepage_files/papers/coling14_multi_emb.pdf
-
-[hay algún otro paper?]
+Esto es, de hecho, lo que hacen los autores en~\cite{Huang2012,Tian2014}, donde construyen tokens de
+la forma \textit{palabra\_1}, \textit{palabra\_2} para los significados 1 y 2. Así, incluir los
+tildes de las palabras ayuda a distinguir entre las diferentes acepciones de las palabras, bajo la
+suposición de que la cantidad de faltas de ortografía en el corpus de entrenamiento no es demasiado
+elevada.
 
 En la literatura existen también comparaciones de los algoritmos aquí presentados en distintos
-idiomas, aunque con un nivel de profundidad menor. En [italy], los autores realizan una comparación
-de \texttt{word2vec} y \texttt{GloVe} con vectores entrenados en italiano con un corpus compuesto de
-la Wikipedia (alrededor de 300 millones de palabras) y libros (alrededor de 2200 millones de
-palabras) en dicho idioma, realizando también una traducción de las analogías de Google similar a la
-hecha en este proyecto. Consiguen, sin embargo, resultados significativamente inferiores a los aquí
-presentados: entrenando con Wikipedia obtienen un acierto de $0.40$, mientras que agregando libros
-$0.47$.
+idiomas, aunque con un nivel de profundidad menor. En~\cite{Berardi2015}, los autores realizan una
+comparación de \texttt{word2vec} y \texttt{GloVe} con vectores entrenados en italiano con un corpus
+compuesto de la Wikipedia (alrededor de 300 millones de palabras) y libros (alrededor de 2200
+millones de palabras) en dicho idioma, realizando también una traducción de las analogías de Google
+similar a la hecha en este proyecto. Consiguen, sin embargo, resultados significativamente
+inferiores a los aquí presentados: entrenando con Wikipedia obtienen un acierto de $0.40$, mientras
+que agregando libros $0.47$.
 
-Los autores también corren las pruebas con Polyglot [cita], que son un conjunto de modelos
-vectoriales en múltiples idiomas propuestos por sus autores como línea de base para distintos
-experimentos, entrenados con las Wikipedias de cada lenguaje. Consiguen, sin embargo, una exactitud
-en la recuperación de tan solo $0.04$, por lo que se decidió ni evaluar los vectores en español.
+Los autores también corren las pruebas con Polyglot~\cite{AlRfou2013}, que son un conjunto de
+modelos vectoriales en múltiples idiomas propuestos por sus autores como línea de base para
+distintos experimentos, entrenados con las Wikipedias de cada lenguaje. Consiguen, sin embargo, una
+exactitud en la recuperación de tan solo $0.04$, por lo que se decidió ni evaluar los vectores en
+español.
 
-En español se cuenta con los vectores presentados en [sbwce], donde el autor obtiene resultados
+En español se cuenta con los vectores presentados en~\cite{SBWCE}, donde el autor obtiene resultados
 levemente inferiores a los nuestros con el conjunto de pruebas de Google traducido por
 él\footnote{Dicha traducción no fue utilizada en el proyecto porque se publicó una vez que ya se
 había traducido el conjunto de pruebas. Aún así, se realizó una comparación entre ambas traducciones
 y se vio que la misma contenía algunos errores.}. No hay, sin embargo, una publicación adjunta que
 describa el proceso de evaluación, por lo que se desconoce el detalle de las pruebas realizadas.
-
-% http://ceur-ws.org/Vol-1404/paper_11.pdf
-% http://www.aclweb.org/anthology/W13-3520
-% http://crscardellino.me/SBWCE/
 
 
 \section{Comportamiento Específico al Español}
@@ -559,7 +549,7 @@ Se construyeron, por último, dos conjuntos de pruebas siguiendo el esquema \tex
 descrito en el capítulo anterior. El primero no estudia fenómenos particulares del español, sino que
 tiene un enfoque semántico: busca identificar la palabra que no encaja (desde el punto de vista de
 su significado) con un conjunto de varias palabras. Para ello, se obtuvieron listas de palabras por
-campo semántico\footnote{Obtenidas mediante [niidea].}, como colores, frutas, y vehículos, y se
+campo semántico\footnote{Obtenidas mediante [cita].}, como colores, frutas, y vehículos, y se
 generaron combinaciones con tres o cuatro palabras de un campo particular y una de otro. Se
 construyó un conjunto con un total de 529 entradas con estas características, obteniendo así una
 forma de probar la capacidad de los vectores de agrupar palabras similares sin tener que recurrir a
@@ -650,14 +640,11 @@ tareas de similitud de palabras.
 Este último punto es importante, porque parecería indicar que PPMI/SVD logra capturar únicamente
 relaciones de más alto nivel, donde las relaciones de coocurrencia son más fuertes, y no las
 sutilezas entre usos de palabras menos frecuentes, como distintas conjugaciones de verbos en las que
-cada variante aparece una menor cantidad de veces. Esto coincide con las conclusiones de [Levy
-Goldberg neural fact], en la que los autores plantean que la principal fortaleza de
-\texttt{word2vec} (específicamente, de Skipgram con negative sampling) radica en la capacidad que
-tiene este algoritmo de no sobrerrepresentar palabras demasiado comunes, distribuyendo la
-información en los vectores de manera más uniforme.
-
-[by verb conjugation? OV2-4 mejores porque son usos más específicos que el infinitivo, que lleva a
-que se mezclen?]
+cada variante aparece una menor cantidad de veces. Esto coincide con las conclusiones
+de~\cite{Levy2014a}, en la que los autores plantean que la principal fortaleza de \texttt{word2vec}
+(específicamente, de Skipgram con negative sampling) radica en la capacidad que tiene este algoritmo
+de no sobrerrepresentar palabras demasiado comunes, distribuyendo la información en los vectores de
+manera más uniforme.
 
 
 En la tabla [tabla rp-spec] se muestran los resultados de las evaluaciones con el conjunto de
