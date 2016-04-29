@@ -199,7 +199,6 @@ hiperparámetros particulares, donde se mantiene el resto de los valores fijos. 
 busca estudiar la influencia que tiene, por ejemplo, la dimensión de los vectores o la cantidad de
 recorridas por el corpus en la performance de las representaciones vectoriales.
 
-
 En cuanto al corpus de entrenamiento empleado, se entrenaron dos grandes grupos de modelos
 vectoriales: uno con un corpus de $4000$ millones de palabras de todos las fuentes (con la excepción
 del texto de baja calidad obtenido de los foros) y otro de $400$ millones de palabras entrenado
@@ -215,35 +214,119 @@ foros, con los datos anteriores pero sin los tildes removidos, y con la totalida
 obtenido finalmente ($6000$ millones de palabras). Estas variantes se pensaron con el fin de
 estudiar cómo difiere el comportamiento de los vectores según el texto con el que se alimenta.
 
-En la tabla [tabla] se listan todas las variantes de corpus entrenados, junto con un código para
-identificarlos fácilmente, mientras que en la tabla [tabla] se listan todos los modelos vectoriales,
-especificando los hiperparámetros empleados para cada uno y el corpus utilizado.
+En el cuadro \ref{table:corpus_detail} se listan las variantes de corpus utilizados más relevantes,
+junto con un código para identificarlos fácilmente. Por otra parte, en el cuadro
+\ref{table:embeddings_detail} se presenta una lista de los modelos vectoriales construidos más
+importantes y de mejor desempeño, especificando los hiperparámetros empleados para cada uno y
+el corpus utilizado en su entrenamiento.
 
-[tabla corpus: id, descripción específica (e.g. docs scrapeados antes de... (footnote con
-explicación de por qué cualquier cosa)), cantidad palabras, preprocessing options][corpuses: full
-con fecha, spain, uruguay, badquality/foros]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{cZcZ}
+        \toprule
+        \midrule
+        \multicolumn{4}{c}{Corpus}\\
+        \midrule
+        \thead{Id} & \thead{Descripción} & \thead{Palabras} &
+        \thead{Preprocesado}\\
+        \midrule
+        C01 & Todos los documentos anteriores al 03/11/2015 &
+        4,071,127,366 & Minúsculas, con tildes\\
+        \midrule
+        C02 & Todos los documentos anteriores al 03/11/2015 &
+        4,081,771,827 & Minúsculas, sin tildes\\
+        \midrule
+        C03 & Todos los documentos de Uruguay anteriores al 11/10/2015 &
+        475,785,121 & Minúsculas, sin tildes\\
+        \midrule
+        C04 &
+        Todos los documentos de \textit{gxzone.com} y \textit{lanacion.com.ar} &
+        785,446,039 & Minúsculas, sin tildes\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Detalle de los subconjuntos del corpus utilizados.}
+    \label{table:corpus_detail}
+\end{table}
 
-[tabla embeddings: id, descripción?, corpus utilizado, tiempo entr.; hiperparámetros; seccionar por
-embedding type así puedo poner columna por hiperparámetro? poner todos?]
-
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{Y*{8}{c}}
+        \toprule
+        \midrule
+        \multicolumn{9}{c}{word2vec}\\
+        \midrule
+        \thead{Descripción} & \thead{Algoritmo} & \thead{Dim} &
+        \thead{Ventana} & \thead{$\alpha$} & \thead{HS} &
+        \thead{NS} & \thead{Epochs} & \thead{Corpus}\\
+        \midrule
+        Full word2vec, more epochs, with accents &
+        skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C01\\
+        \midrule
+        Full word2vec, more epochs &
+        skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C02\\
+        \midrule
+        Full word2vec, extra dimensions &
+        skipgram & 500 & 7 & 0.025 & No & 7 & 1 & C02\\
+        \midrule
+        Reduced word2vec &
+        skipgram & 300 & 7 & 0.025 & No & 7 & 1 & C03\\
+        \midrule
+        Bad quality text &
+        skipgram & 200 & 7 & 0.025 & No & 7 & 5 & C04\\
+    \end{tabularx}
+    \begin{tabularx}{\textwidth}{Y*{5}{c}}
+        \toprule
+        \midrule
+        \multicolumn{6}{c}{GloVe}\\
+        \midrule
+        \thead{Descripción} & \thead{Dimensiones} & \thead{Ventana} &
+        \thead{$\alpha$} & \thead{Epochs} & \thead{Corpus}\\
+        \midrule
+        Full GloVe, more epochs & 300 & 7 & 0.75 & 50 & C02\\
+        \midrule
+        Full GloVe, even more epochs & 300 & 7 & 0.75 & 200 & C02\\
+        \midrule
+        Full GloVe & 300 & 7 & 0.75 & 15 & C02\\
+    \end{tabularx}
+    \begin{tabularx}{\textwidth}{Y*{5}{c}}
+        \toprule
+        \midrule
+        \multicolumn{6}{c}{PPMI/SVD}\\
+        \midrule
+        \thead{Descripción} & \thead{Dimensiones} & \thead{Ventana} &
+        \thead{Suavizado} & \thead{Contexto} & \thead{Corpus}\\
+        \midrule
+        Full SVD & 500 & 2 & 0.75 & Sí & C01\\
+        \midrule
+        Full SVD, no accents & 500 & 2 & 0.75 & Sí & C02\\
+        \midrule
+        Reduced SVD & 300 & 5 & 0.75 & No & C03\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Detalle de los modelos vectoriales.}
+    \label{table:embeddings_detail}
+\end{table}
 
 El entrenamiento de los modelos vectoriales fue realizado a través de la herramienta construida y
 detallada en el capítulo 4. Los hiperparámetros a evaluar se fijaron a priori, dando de alta los
 \textit{embeddings} en la interfaz web y mandando posteriormente a entrenar cada uno de ellos.
 
-Como se puede apreciar en la tabla [tabla embeddings], se construyeron [num] representaciones
-vectoriales distintas: [num] utilizando \texttt{word2vec}, [num] utilizando \texttt{GloVe}, y [num]
-utilizando PPMI\@. El tiempo de entrenamiento promedio de cada modelo fue de [time2], donde el más
-rápido tomó [time0] ([cualfue]) y el más lento [time1] ([cualfue]). Existe una diferencia
+Como se puede apreciar en el cuadro \ref{table:embeddings_detail}, destacamos especialmente once
+representaciones vectoriales: cinco utilizando \texttt{word2vec}, tres utilizando \texttt{GloVe}, y
+tres utilizando PPMI\@. El tiempo de entrenamiento promedio de cada modelo fue de un día y catorce
+horas, donde el más rápido tomó poco más de una hora (\textit{Reduced word2vec}) y el más lento
+tres días y diez horas (\textit{Full word2vec, more epochs, with accents}). Existe una diferencia
 significativa entre el tiempo empleado en ambos extremos, lo que resalta la importancia de la
 limitante que impone la capacidad de cómputo disponible al entrenamiento de vectores. En total, se
-invirtió [time3] entrenando modelos vectoriales.
+invirtieron \textit{diecisiete días y doce horas} entrenando los modelos vectoriales aquí analizados.
 
 Cada modelo vectorial ocupa entre 300MB y 1000MB (con algunos llegando a 1700MB), dependiendo
 principalmente de la dimensión elegida y los límites que se le establezcan al vocabulario (cantidad
 mínima de ocurrencias, o directamente el tamaño máximo del vocabulario). Esto no genera grandes
 presiones en el almacenamiento, aunque aún así no es un tema menor a la hora de descargar los
-modelos o de cargarlos en memoria, pues tiene un tiempo de arranque no despreciable.
+modelos o de cargarlos en memoria, pues se tiene un tiempo de arranque no despreciable.
 
 
 \section{Comparación con la Literatura}
