@@ -20,6 +20,17 @@
 \usepackage{tocloft} % ToC styling.
 \usepackage[backend=biber,url=false,style=numeric]{biblatex}
 
+\usepackage{fourier} % Optional, but nice.
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+% Add new column types for tabularx: X and Y.
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+\usepackage{ragged2e}  % For '\RaggedRight' macro (allows hyphenation).
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\renewcommand\theadfont{\bfseries}
+
 
 % Header setup.
 \pagestyle{fancy}
