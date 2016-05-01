@@ -430,26 +430,82 @@ no tienen traducciones al español de una única palabra. También se decidió e
 \texttt{city-in-state}, que tiene analogías de ciudades y estados de EE.UU., pues nuestro corpus de
 texto se basa en fuentes hispanas y no tendrá muchas menciones de las mismas.
 
-En la tabla [tabla testsets] se resumen los conjuntos de pruebas empleados para la evaluación, junto
-con la cantidad de entradas originales y resultantes de cada uno. Como se puede apreciar, las
-pruebas resultantes tienen un promedio de [num]\% de las entradas originales, con algunos conjuntos
-más afectados que otros.
+En la tabla \ref{table:testset_translation} se resumen los conjuntos de pruebas empleados para la
+evaluación, junto con la cantidad de entradas originales y resultantes de cada uno. Como se puede
+apreciar, las pruebas resultantes tienen un promedio de 92\% de las entradas originales,
+con algunos conjuntos más afectados que otros.
 
-[tabla de testset; con cantidad original y final de entradas]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{ZZZZ}
+        \toprule
+        \midrule
+        \thead{Conjunto\\de pruebas} & \thead{Entradas\\originales} &
+        \thead{Entradas luego\\de la traducción} &
+        \thead{Porcentaje luego\\de la traducción}\\
+        \midrule
+        Google & 19.544 & 13.906 & 71\%\\
+        \midrule
+        WordSim & 455 & 440 & 97\%\\
+        \midrule
+        MEN & 3.000 & 2.902 & 97\%\\
+        \midrule
+        MTurk & 287 & 282 & 98\%\\
+        \midrule
+        SimLex & 999 & 991 & 99\%\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Comparación entre conjuntos de pruebas antes y después de ser traducidos.}
+    \label{table:testset_translation}
+\end{table}
 
 \quad
 
-La tabla [tabla] muestra los resultados obtenidos para los mejores dos modelos vectoriales de cada
-algoritmo. También se presentan, como punto inicial de comparación, los resultados obtenidos en la
-literatura.
+La tabla \ref{table:testset_model_performance} muestra los resultados obtenidos para los mejores dos
+modelos vectoriales de cada algoritmo. También se presentan, como punto inicial de comparación, los
+resultados obtenidos en la literatura.
 
-[tabla resultados por grupos (Google total, wordsim, etc.)]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{Y*{6}{c}}
+        \toprule
+        \midrule
+        \thead{Modelo} & \thead{Google} & \thead{WordSim\\Relatedness} &
+        \thead{WordSim\\Similarity} & \thead{MEN} & \thead{MTurk} & \thead{SimLex}\\
+        \midrule
+        Full word2vec, more epochs, with accents &
+        \textbf{63\%} & 55\% & 73\% & 69\% & \textbf{57\%} & 26\%\\
+        \midrule
+        Full word2vec, more epochs &
+        60\% & 50\% & 70\% & 66\% & 55\% & 24\%\\
+        \midrule
+        Reduced word2vec &
+        31\% & 50\% & 55\% & 48\% & 52\% & 24\%\\
+        \midrule
+        Full GloVe, more epochs &
+        57\% & 48\% & 64\% & 67\% & 52\% & 29\%\\
+        \midrule
+        Full GloVe, even more epochs &
+        57\% & 49\% & 67\% & 67\% & 53\% & 29\%\\
+        \midrule
+        Full SVD, no accents &
+        46\% & \textbf{57\%} & 73\% & \textbf{72\%} & 51\% & \textbf{34\%}\\
+        \midrule
+        Full SVD &
+        45\% & 56\% & \textbf{74\%} & \textbf{72\%} & 52\% & 33\%\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Desempeño de los principales modelos en los conjuntos de prueba.}
+    \label{table:testset_model_performance}
+\end{table}
 
 El primer punto a observar es que los resultados obtenidos por nuestros vectores son muy similares a
 los obtenidos en inglés, particularmente en las tareas de analogías: los resultados de estado del
 arte varían entre una exactitud de $0.61$ y $0.69$~\cite{Levy2015, Baroni2014, Pennington2014,
-Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo [modelname]),
-obtiene $0.63$.
+Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo
+\textit{Full word2vec, more epochs, with accents}), obtiene $0.63$.
 
 Parte de esta diferencia puede explicarse por el hecho de que las secciones que se remueven del
 conjunto de pruebas (comparativos, superlativos, y ciudad en estado) son entradas que obtienen por
@@ -457,34 +513,97 @@ lo general buenos resultados. Este fenómeno puede observarse en~\cite{Levy2014b
 presentan los resultados desglosados por sección. Allí, el conjunto de comparativos, por ejemplo,
 obtiene una exactitud de $0.86$.
 
-En la tabla [tabla desgl] se muestran los valores obtenidos separados por sección del conjunto de
-analogías, junto a los valores obtenidos por~\cite{Levy2014b}. Es interesante ver que el
-comportamiento del mejor modelo es relativamente similar al inglés, incluso con las pruebas
-sintácticas donde ambos idiomas, proveniendo de familias de lenguajes distintos, varían
-significativamente. Por ejemplo, las secciones que peor performance obtienen son las mismas en ambos
-idiomas: \texttt{currency}, \texttt{gram1-adjective-to-adverb}, \texttt{gram2-opposite}, todas muy
-debajo del promedio. Por otro lado, también se repiten las que mejor funcionan:
-\texttt{capital-common-countries}, \texttt{gram6-nationality-adjective},
-\texttt{gram9-plural-verbs}, donde hay tanto categorías sintácticas como semánticas.
+En el cuadro \ref{table:analogies_model_performance} se muestran los valores obtenidos separados
+por sección del conjunto de analogías, junto a los valores obtenidos por~\cite{Levy2014b}. Es
+interesante ver que el comportamiento del mejor modelo es relativamente similar al inglés, incluso
+con las pruebas sintácticas donde ambos idiomas, proveniendo de familias de lenguajes distintos,
+varían significativamente.
 
-[tabla analogías desglosada]
+Por ejemplo, las secciones que peor performance obtienen son las mismas en ambos idiomas: Países y
+monedas (\textit{currency}), Adjetivos y adverbios (\textit{gram1-adjective-to-adverb}), Opuestos
+(\textit{gram2-opposite}), todas muy debajo del promedio. Por otro lado, también se repiten las que
+mejor funcionan: Países y capitales más comunes (\textit{capital-common-countries}), Países y
+nacionalidades (\textit{gram6-nationality-adjective}), Verbos y plurales (\textit{gram9-plural-verbs}),
+donde hay tanto categorías sintácticas como semánticas.
 
-El modelo vectorial vectorial que más éxito obtiene en analogías es [modelname], el cual utiliza el
-algoritmo \texttt{word2vec} con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y
-finalmente por un modelo PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015},
-aunque en ese caso la diferencia entre el modelo híbrido y el estadístico es mucho menor.
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{Y*{7}{c}|c}
+        \toprule
+        \midrule
+        \thead{Analogía} & \thead{Full\\w2v,\\EA} &
+        \thead{Full\\w2v,\\more\\epochs} & \thead{Reduced\\w2v} &
+        \thead{Full\\GloVe,\\more\\epochs} & \thead{Full\\GloVe,\\even\\more\\epochs} &
+        \thead{Full\\SVD,\\no\\accents} & \thead{Full\\SVD} & \thead{Levy}\\
+        \noalign{\hrule height 1pt}
+        Adjetivos y adverbios &
+        22\% & \textbf{26\%} & 10\% & 14\% & 14\% & 16\% & 16\% &
+        \textit{24\%}\\
+        \noalign{\hrule height 1pt}
+        Países y capitales (más comunes) &
+        \textbf{97\%} & 93\% & 69\% & 91\% & 92\% & 87\% & 89\% &
+        \textit{91\%}\\
+        \noalign{\hrule height 1pt}
+        Países y capitales (general) &
+        \textbf{72\%} & 71\% & 23\% & \textbf{72\%} & 71\% & 62\% & 59\% &
+        \textit{78\%}\\
+        \noalign{\hrule height 1pt}
+        Países y monedas &
+        \textbf{6\%} & 5\% & 0\% & 2\% & 2\% & 2\% & 2\% &
+        \textit{15\%}\\
+        \noalign{\hrule height 1pt}
+        Miembros de la familia &
+        \textbf{76\%} & 67\% & 31\% & 72\% & 73\% & 54\% & 68\% &
+        \textit{76\%}\\
+        \noalign{\hrule height 1pt}
+        Verbos en infinitivo y gerundios &
+        \textbf{74\%} & 72\% & 51\% & 64\% & 64\% & 60\% & 59\% &
+        \textit{63\%}\\
+        \noalign{\hrule height 1pt}
+        Verbos en pasado y gerundios &
+        \textbf{54\%} & 30\% & 13\% & 25\% & 26\% & 15\% & 20\% &
+        \textit{66\%}\\
+        \noalign{\hrule height 1pt}
+        Países y nacionalidades &
+        89\% & 90\% & 68\% & \textbf{91\%} & \textbf{91\%} & 77\% & 75\% &
+        \textit{89\%}\\
+        \noalign{\hrule height 1pt}
+        Sustantivos y plurales &
+        55\% & \textbf{61\%} & 24\% & 44\% & 45\% & 18\% & 16\% &
+        \textit{72\%}\\
+        \noalign{\hrule height 1pt}
+        Verbos y plurales &
+        82\% & \textbf{83\%} & 64\% & 76\% & 76\% & 43\% & 44\% &
+        \textit{71\%}\\
+        \noalign{\hrule height 1pt}
+        Opuestos &
+        \textbf{19\%} & 18\% & 7\% & 18\% & \textbf{19\%} & 18\% & \textbf{19\%} &
+        \textit{37\%}\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Desempeño de los principales modelos en las pruebas de analogías.\\
+    Nota: \textit{Full w2v, EA} corresponde al modelo \textit{Full word2vec, more epochs,
+    with accents}.}
+    \label{table:analogies_model_performance}
+\end{table}
+
+El modelo vectorial vectorial que más éxito obtiene en analogías es
+\textit{Full word2vec, more epochs, with accents}, el cual utiliza el algoritmo \texttt{word2vec}
+con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y finalmente por un modelo
+PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015}, aunque en ese caso la diferencia
+entre el modelo híbrido y el estadístico es mucho menor.
 
 De todos modos, en el conjunto de pruebas MSR (el cual cuenta con analogías exclusivamente
 sintácticas) los autores sí tienen una diferencia amplia entre ambos algoritmos, lo que puede
 explicar este fenómeno; en especial si se nota que la mayor diferencia de aciertos en los vectores
-en español se da en las secciones \texttt{gram8-plural-nouns} y \texttt{gram9-plural-verbs}: en
-pruebas sintácticas. La diferencia en el conjunto de Google en particular podría explicarse por la
-extracción de secciones durante el proceso de traducción.
-
+en español se da en las secciones Sustantivos y plurales (\textit{gram8-plural-nouns}) y Verbos y
+plurales (\textit{gram9-plural-verbs}): en pruebas sintácticas. La diferencia en el conjunto de Google
+en particular podría explicarse por la extracción de secciones durante el proceso de traducción.
 
 Curiosamente, el comportamiento en el caso de similitud de palabras es opuesto: salvo por el
-conjunto de pruebas [mturk], PPMI/SVD es consistentemente superior a las alternativas, con
-los modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también
+conjunto de pruebas MTurk~\cite{Radinsky2011}, PPMI/SVD es consistentemente superior a las alternativas,
+con los modelos \texttt{GloVe} y \texttt{word2vec} segundos con resultados muy parecidos. Esto también
 es similar al comportamiento obtenido en~\cite{Levy2015}.
 
 Algo que cabe resaltar, sin embargo, es que la diferencia entre los resultados en inglés y español
@@ -504,7 +623,6 @@ Para obtener resultados equivalentes, sería necesario seguir un proceso similar
 los conjuntos y buscar asignar puntajes a los traducciones de las palabras (así, por lo menos, es
 equivalente el conjunto).
 
-
 Vale la pena repetir que, como muestran los autores en~\cite{Levy2015}, la calidad de los vectores
 resultantes está fuertemente ligada a la composición del corpus con que se entrenan, por lo que las
 medidas presentadas de vectores en inglés, entrenados por otros autores, con otras implementaciones,
@@ -512,12 +630,10 @@ y otros corpus, deben limitarse a ser solamente una referencia. Esto es particul
 escenario actual por el hecho de estar además traduciendo los conjuntos de pruebas mediante un
 proceso de traducción que, como ya se mencionó anteriormente, no está ni cerca de ser perfecto.
 
-
 Otro punto interesante a comentar es que se logran reproducir los resultados obtenidos por los
 autores en~\cite{Levy2014b}, donde se propone la medida \textsc{3CosMul} para la recuperación de
 analogías. En todas las pruebas realizadas, esta medida obtiene resultados consistentemente
 superiores a \textsc{3CosAdd}.
-
 
 Una cuestión que no ha sido estudiado en profundidad en la literatura es, en los casos donde la
 recuperación de la analogía falla, qué tan cerca se queda la respuesta. Con este objetivo se
