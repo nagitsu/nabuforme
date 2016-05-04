@@ -684,8 +684,8 @@ para el mejor modelo vectorial, se pasa de un $0.63$ a un $0.76$ en el top 5 y u
 10. Esto podría sugerir que con más cantidad de texto o con una mejor forma de recuperar analogías
 se podrían obtener resultados aún mejores, porque los modelos cuentan con la información y no están
 tan alejados de las respuestas correctas como parecería a priori: la sección
-\texttt{gram1-adjective-to-adverb}, por ejemplo, pasa de un $0.22$ a un $0.48$, la mayor mejora de
-todas las categorías.
+de adjetivos y adverbios (\texttt{gram1-adjective-to-adverb}), por ejemplo, pasa de un $0.22$ a un
+$0.48$, la mayor mejora de todas las categorías.
 
 
 Por último, es llamativo ver que, en contradicción a nuestra primera intuición, eliminar los tildes
@@ -899,9 +899,9 @@ argentinos (\textit{Bad quality text}).
         \noalign{\hrule height 2pt}
         T03 & 18\% & 19\% & 9\% & 10\% & 12\% & 12\% & \textbf{29\%}\\
         \noalign{\hrule height 2pt}
-        T04 & \textbf{89\%} & 81\% & 78\% & 77\% & 86\% & 87\% & 73\%\\
+        T04 & \textbf{90\%} & 81\% & 78\% & 77\% & 86\% & 87\% & 73\%\\
         \noalign{\hrule height 2pt}
-        T05 & 79\% & 74\% & 75\% & 76\% & 67\% & 65\% & \textbf{80\%}\\
+        T05 & \textbf{80\%} & 74\% & 75\% & 76\% & 67\% & 65\% & \textbf{80\%}\\
         \noalign{\hrule height 1pt}
         T05-01 & 70\% & 70\% & \textbf{77\%} & \textbf{77\%} & 48\% & 47\% & 73\%\\
         \noalign{\hrule height 1pt}
@@ -950,10 +950,10 @@ Esto refuerza la idea de que los tildes ayudan a desambiguar palabras que de otr
 polisémicas. En el caso de esta conjugación verbal, permite distinguir entre \textit{cambió} y
 \textit{cambio}, \textit{cortó} y \textit{corto}, o \textit{sacó} y \textit{saco}. De hecho, la
 única otra conjugación verbal para la cual hay una diferencia grande entre ambas modalidades de
-preprocesamiento es en \texttt{AV11} (subjuntivo futuro, singular), pues es la otra donde hay
+preprocesamiento es en \texttt{T02-11} (subjuntivo futuro, singular), pues es la otra donde hay
 colisiones de palabras al remover los tildes: \textit{apagare} y \textit{apagaré}, \textit{volare} y
 \textit{volaré}, o \textit{tocare} y \textit{tocaré}. Las otras conjugaciones que utilizan tildes,
-como \texttt{AV01} (condicionales), no pasan a ser otra conjugación al removerlos.
+como \texttt{T02-01} (condicionales), no pasan a ser otra conjugación al removerlos.
 
 Es interesante ver que el aumento en los aciertos en el top 1 y el top 10 es mucho mayor para el
 caso de los verbos (pasando de $0.54$ a $0.77$ en el mejor modelo) que en el caso de las ocupaciones
@@ -966,9 +966,9 @@ haber dos ejes para variar: género y número).
 En cuanto a las pruebas del tipo \textit{odd-one-out}, los resultados obtenidos son muy elevados,
 con el $90\%$ y $80\%$ de las respuestas siendo correctas en las pruebas semánticas y sintácticas,
 respectivamente. El mejor algoritmo vuelve a ser \texttt{word2vec}, pero en el caso de la prueba
-semántica, \texttt{O01}, PPMI/SVD está en un cercano segundo lugar.
+semántica, \texttt{T04}, PPMI/SVD está en un cercano segundo lugar.
 
-En las prueba sintáctica (\texttt{O02}), sin embargo, PPMI/SVD consigue resultados bastante
+En las prueba sintáctica (\texttt{T05}), sin embargo, PPMI/SVD consigue resultados bastante
 inferiores a los otros modelos, con \texttt{GloVe} en un segundo lugar. Este punto sigue apoyando la
 noción de que el modelo estadístico captura mejor las relaciones semánticas entre las palabras que
 las relaciones sintácticas, pues vuelve a sobresalir en este escenario al igual que lo hizo en las
