@@ -26,14 +26,14 @@ utilizar alguno ya disponible públicamente. Como se verá, muchos de los proyec
 corpus existentes no cumplen con las condiciones más importantes requeridas por el presente proyecto.
 
 Se procedió entonces a realizar una exploración formal de las alternativas existentes. Una de las
-fuentes consultadas fue la investigación realizada en el año 2009 por el Centro Virtual Cervantes [CITA3].
-En su trabajo los autores dan cuenta de la existencia de diversos proyectos para la construcción de corpus
-en español, clasificándolos en distintas categorías, entre ellas el tamaño de los corpus construidos y la
-capacidad de acceso a los textos que forman los mismos. Estás características son, naturalmente, muy
-relevantes al momento de considerar la utilidad de un corpus para la tarea de construcción de vectores de
-palabras. A pesar de su considerable valor la investigación apunta a corpus de muy diversos tipos,
-incluyendo grabaciones de entrevistas orales, y no resultó ser una referencia definitiva para nuestra
-investigación.
+fuentes consultadas fue la investigación realizada en el año 2009 por el Centro Virtual
+Cervantes~\cite{CorpusCervantes}. En su trabajo los autores dan cuenta de la existencia de diversos
+proyectos para la construcción de corpus en español, clasificándolos en distintas categorías, entre ellas
+el tamaño de los corpus construidos y la capacidad de acceso a los textos que forman los mismos. Estás
+características son, naturalmente, muy relevantes al momento de considerar la utilidad de un corpus para la
+tarea de construcción de vectores de palabras. A pesar de su considerable valor la investigación apunta a
+corpus de muy diversos tipos, incluyendo grabaciones de entrevistas orales, y no resultó ser una referencia
+definitiva para nuestra investigación.
 
 Aún así, la investigación del Instituto Virtual Cervantes resultó un buen punto de partida para nuestro
 relevamiento. Resulta interesante destacar que los autores obtienen entre sus principales conclusiones
@@ -51,22 +51,22 @@ las principales características de cada uno.
 
 Como punto inicial es interesante considerar el corpus formado por todos los artículos de Wikipedia en
 español. En los últimos años, numerosos trabajos en el área del PLN han utilizado exitosamente los
-textos de Wikipedia para sus algoritmos [CITA1]. Entre sus principales ventajas se destaca la calidad
-de sus textos, la enorme variedad de temáticas abarcadas por los mismos y, para nada menos importante,
-la naturaleza abierta y de libre acceso que diferencia a Wikipedia de otras fuentes de datos.
+textos de Wikipedia para sus algoritmos~\cite{WikipediaNLP}. Entre sus principales ventajas se destaca
+la calidad de sus textos, la enorme variedad de temáticas abarcadas por los mismos y, para nada menos
+importante, la naturaleza abierta y de libre acceso que diferencia a Wikipedia de otras fuentes de datos.
 
 En idioma inglés, Wikipedia contiene casi tres mil millones de palabras repartidas en aproximadamente
-cinco millones de artículos [Cita2]. En idioma español la cifra es mucho menor, ubicándose en 400 millones
-de palabras. Por tanto, quedó claro desde un principio que utilizar un corpus constituido únicamente
-por artículos de Wikipedia no sería suficiente para nuestros objetivos, aunque si resultaría de gran
-utilidad para comenzar a construir un corpus de mayor tamaño.
+cinco millones de artículos~\cite{WikipediaSize}. En idioma español la cifra es mucho menor, ubicándose en
+400 millones de palabras. Por tanto, quedó claro desde un principio que utilizar un corpus constituido
+únicamente por artículos de Wikipedia no sería suficiente para nuestros objetivos, aunque si resultaría de
+gran utilidad para comenzar a construir un corpus de mayor tamaño.
 
 \subsubsection{Sketch Engine: TenTen}
 
-Se consideró también el trabajo realizado por la organización Sketch Engine [cita], dedicada a la
-construcción de corpus masivos en varios idiomas. Además, la organización elabora herramientas para
+Se consideró también el trabajo realizado por la organización Sketch Engine~\cite{SketchEngine}, dedicada
+a la construcción de corpus masivos en varios idiomas. Además, la organización elabora herramientas para
 la manipulación y consulta de los corpus generados, pensadas para profesionales de distintas áreas.
-Entre los corpus ofrecidos por Sketch Engine se destaca principalmente el proyecto TenTen [cita].
+Entre los corpus ofrecidos por Sketch Engine se destaca principalmente el proyecto TenTen~\cite{TenTen}.
 TenTen consiste en una colección de corpus repartidos en varios idiomas superando en varios de ellos
 la barrera de las mil millones de palabras. Para el caso concreto del español se tiene un corpus de
 ocho mil millones de palabras. El corpus TenTen es catalogado por sus autores como un corpus web, lo
@@ -77,10 +77,10 @@ los autores utilizaron un proceso basado en crawling masivo, limpieza de documen
 duplicados y almacenamiento. Para esto, los autores construyeron varias herramientas que posteriormente
 liberaron como código abierto.
 
-Para la tarea de crawling masivo en la construcción de TenTen se utilizó la herramienta Spiderling
-[CITA4], desarrollada especialmente para la construcción de corpus utilizando Internet. En la experiencia
-de los autores, el principal problema de los corpus web es la enorme cantidad de páginas que es necesario
-descargar para obtener una cantidad relativamente pequeña de texto útil. En su análisis definen la
+Para la tarea de crawling masivo en la construcción de TenTen se utilizó la herramienta
+Spiderling~\cite{Spiderling}, desarrollada especialmente para la construcción de corpus utilizando Internet.
+En la experiencia de los autores, el principal problema de los corpus web es la enorme cantidad de páginas que
+es necesario descargar para obtener una cantidad relativamente pequeña de texto útil. En su análisis definen la
 medida \textit{tasa de rendimiento} (\textit{yield rate}), que se aplica a cada página web descargada y
 expresa la relación entre la cantidad de bytes de la página y la cantidad de bytes de información útil
 obtenida a partir de la misma:
@@ -97,8 +97,8 @@ el tamaño final que tendrá el corpus generado.
 
 Naturalmente, luego del proceso de crawling es necesario extraer el texto útil a partir del código
 HTML descargado. En el caso de TenTen, los autores utilizaron herramientas construidas por ellos mismos
-para eliminar etiquetas HTML y texto \textit{boilerplate} [CITA5]. La definición de este último concepto
-es difícil y suele depender del contexto de su aplicación. En nuestro caso consideramos como
+para eliminar etiquetas HTML y texto \textit{boilerplate}~\cite{BoilerplateWebCorpora}. La definición de este
+último concepto es difícil y suele depender del contexto de su aplicación. En nuestro caso consideramos como
 \textit{boilerplate} aquel texto que refiere a la estructura y navegación de una página web y no a su
 contenido real. Por ejemplo, texto de enlaces de una barra de navegación, texto perteneciente a secciones
 de publicidad, metadatos de la estructura del sitio, etcétera.
@@ -111,14 +111,14 @@ uso no es compatible con el alcance de este proyecto de grado.
 \subsubsection{Linguistic Data Consortium: Gigaword en español}
 
 Otro corpus que vale la pena analizar es el corpus Gigaword en español construido por el Linguistic Data
-Consortium (LDC) [CITA]. El LDC es un consorcio de universidades, bibliotecas y laboratorios de
+Consortium (LDC)~\cite{GigawordES}. El LDC es un consorcio de universidades, bibliotecas y laboratorios de
 investigación gubernamentales creado para enfrentar el problema de escasez de datos en las áreas de
 investigación vinculadas al lenguaje.
 
 El corpus Gigaword, en su tercera edición, cuenta con más de mil millones da palabras repartidas en casi
-cuatro millones de documentos almacenados en formato SGML/XML [CITA6]. Los documentos utilizados para
-construir el corpus son en su totalidad cables de noticias provistos por las agencias internacionales
-Agence France-Presse, Associated Press (AP) y Xinhua News Agency.
+cuatro millones de documentos almacenados en formato SGML/XML. Los documentos utilizados para construir el
+corpus son en su totalidad cables de noticias provistos por las agencias internacionales Agence France-Presse,
+Associated Press (AP) y Xinhua News Agency.
 
 Los documentos del corpus fueron catalogados por los autores, aunque estos advierten que las categorías
 asignadas son simplemente aproximaciones. Dichas categorías no son de mucha utilidad pues apenas
@@ -138,10 +138,10 @@ esta modalidad de distribución tampoco se alinea con los objetivos del mismo.
 
 El Corpus del Español es un proyecto elaborado por Mark Davies del departamento de lingüística de
 la Universidad de Brigham Young y financiado a través de una subvención del fondo nacional
-estadounidense \textit{US National Endowment for the Humanities} [CITA7]. Este corpus está compuesto
-por cien millones de palabras, la cual es una cantidad relativamente pequeña si la comparamos con las
-cantidades de los proyectos ya analizados. Sin embargo,  este corpus cuenta con la particularidad de
-contener documentos de bastante antigüedad, abarcando el período desde el siglo XIII al siglo XX.
+estadounidense \textit{US National Endowment for the Humanities}~\cite{CorpusDelEsp}. Este corpus está
+compuesto por cien millones de palabras, la cual es una cantidad relativamente pequeña si la comparamos
+con las cantidades de los proyectos ya analizados. Sin embargo,  este corpus cuenta con la particularidad
+de contener documentos de bastante antigüedad, abarcando el período desde el siglo XIII al siglo XX.
 Recientemente, el proyecto recibió una beca para extender el tamaño del corpus a dos mil millones de
 palabras. Dicha extensión comenzó a realizarse en 2015 y continuará durante el año 2016.
 
@@ -192,7 +192,7 @@ a ESCOW14.
 \subsubsection{Spanish Billion Words Corpus and Embeddings}
 
 Finalmente, consideramos importante mencionar el trabajo realizado por Cristian Cardellino en el proyecto
-Spanish Billion Words Corpus and Embeddings [cita]. Dicho proyecto resulta de gran interés pues
+Spanish Billion Words Corpus and Embeddings~\cite{SBWCE}. Dicho proyecto resulta de gran interés pues
 comparte muchos de nuestros objetivos para el presente proyecto de grado.
 
 El autor, dedicado a la investigación en el área del PLN, expone en su trabajo los desafíos de construir
@@ -356,7 +356,7 @@ noticia. Además, la generación de estos números es secuencia: esto es, el pri
 tiene el identificador $1$, mientras que el último el $1871018$. Este hallazgo fue de suma
 importancia, pues permitió realizar \textit{scraping} del portal de forma más directa.
 
-Aprovechando esta característica, se construyó un script en Python [cita?] para recorrer la lista de
+Aprovechando esta característica, se construyó un script en Python~\cite{Python} para recorrer la lista de
 identificadores (desde el $1$ hasta el último presente en la portada) y descargar el contenido de
 los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaronn una serie de
 reglas XPath [cita?] para obtener los datos estructurados (título de la noticia, contenido, fecha de
@@ -386,7 +386,7 @@ Cabe resaltar que el método anterior depende de que los artículos de noticias 
 identificador secuencial. Lamentablemente, esto no es el caso con muchos sitios de noticias
 importantes y de gran tamaño, como El País de Madrid, El País de Uruguay, o Clarín de Argentina. Por
 esta razón, se decidió también emplear un mecanismo de scraping estándar mediante la herramienta
-Scrapy [cita?] para estos portales, implementación que se detalla más adelante.
+Scrapy~\cite{Scrapy} para estos portales, implementación que se detalla más adelante.
 
 
 \subsubsection{Escritura Amateur}
@@ -420,9 +420,9 @@ que se escriban.
 
 \subsubsection{Wikimedia}
 
-Los distintos proyectos de Wikimedia [cita], como Wikipedia, Wikilibros, Wikicitas, y Wikiviajes,
-son una fuente de palabras particularmente interesante, pues tiene todas las cualidades que se
-espera del corpus:
+Los distintos proyectos de Wikimedia~\cite{Wikimedia}, como Wikipedia, Wikilibros, Wikicitas, y
+Wikiviajes, son una fuente de palabras particularmente interesante, pues tiene todas las cualidades
+que se espera del corpus:
 
 \begin{itemize}
 
@@ -501,9 +501,10 @@ Se incorporaron dos fuentes de documentos oficiales al corpus: los diarios de se
 parlamento Uruguayo del año 1985 a la fecha y los comunicados emitidos por la ONU entre los años
 1999 a 2009.
 
-El primero fue descargado a través de un script de la página del Poder Legislativo Uruguayo [cita] y
-luego procesado para eliminar el markup. Contiene las sesiones de la Cámara de Diputados, la Cámara
-de Senadores, y de la Asamblea General. El mecanismo para su descarga se detalla más adelante.
+El primero fue descargado a través de un script de la página del Poder Legislativo
+Uruguayo~\cite{ParlamentoUruguay} y luego procesado para eliminar el markup. Contiene las sesiones
+de la Cámara de Diputados, la Cámara de Senadores, y de la Asamblea General. El mecanismo para su
+descarga se detalla más adelante.
 
 El segundo fue tomado de un corpus paralelo generado por [cita] como insumo para tareas de
 traducción automática. Fue descargado de [cita http://opus.lingfil.uu.se/MultiUN.php], procesado y
@@ -577,8 +578,9 @@ Uno de los principales desafíos del proyecto consiste en almacenar grandes cant
 de manera eficiente e indexar dicha información de tal forma que puedan realizarse búsquedas sobre
 la misma en tiempos razonables. Por lo tanto, se realizó una investigación de cuáles son las alternativas
 para almacenar grandes volúmenes de texto, evaluando tanto soluciones SQL como NoSQL. Finalmente,
-se optó por utilizar Elasticsearch [cita] por ofrecer excelentes cualidades para almacenar información,
-pero sobre todo por brindar excelentes funcionalidades de indexado y búsqueda sobre los datos almacenados.
+se optó por utilizar Elasticsearch~\cite{Elasitcsearch} por ofrecer excelentes cualidades para almacenar
+información, pero sobre todo por brindar excelentes funcionalidades de indexado y búsqueda sobre los datos
+almacenados.
 
 Elasticsearch es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?]) que provee
 funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de estructura)
@@ -626,9 +628,9 @@ construir. Por estos motivos, se buscó el proveedor que ofreciera el mejor equi
 cómputo, espacio en disco, ancho de banda disponible y, por supuesto, costo mensual.
 
 Inicialmente se decidió aplicar al programa de becas para la investigación y educación de
-Amazon [cita]. Dicho programa admite la presentación de proyectos en ciertas áreas de investigación,
-entre ellas PLN y aprendizaje automático, y de ser aprobados otorga crédito en una cuenta de
-\textit{Amazon Web Services} (AWS) que puede utilizarse para contratar servidores en la nube de Amazon
+Amazon~\cite{AmazonGrants}. Dicho programa admite la presentación de proyectos en ciertas áreas de
+investigación, entre ellas PLN y aprendizaje automático, y de ser aprobados otorga crédito en una cuenta
+de \textit{Amazon Web Services} (AWS) que puede utilizarse para contratar servidores en la nube de Amazon
 durante el tiempo que dure el proyecto. Para que la beca sea aprobada es necesario presentar un resumen
 del proyecto en cuestión junto con una estimación de los recursos necesarios en AWS para su desarrollo.
 
@@ -647,9 +649,9 @@ Entre las opciones consideradas para la contratación del servidor destacan \tex
 \textit{Microsoft Azure} y \textit{Google Cloud Platform} [citas?], todos ellos proveedores altamente
 prestigiosos que ofrecen excelentes servicios. Lamentablemente, nos resultó imposible asumir los costos
 mensuales de la clase servidores que cumplen con nuestras expectativas en todas las facetas, al menos
-con estos proveedores. Al continuar investigando encontramos \textit{Webtropia} [cita], un proveedor
-alemán no tan popular, pero con precios mucho más asequibles. Por tanto, se contrató un servidor virtual
-con las características presentadas en el cuadro \ref{table:webtropia}, en la página
+con estos proveedores. Al continuar investigando encontramos \textit{Webtropia}~\cite{Webtropia}, un
+proveedor alemán no tan popular, pero con precios mucho más asequibles. Por tanto, se contrató un servidor
+virtual con las características presentadas en el cuadro \ref{table:webtropia}, en la página
 \pageref{table:webtropia}.
 
 \begin{table*}[t]
@@ -690,8 +692,8 @@ entrenamiento y evaluación de vectores de palabras, pudieran realizarse en tiem
 
 Finalmente, es importante remarcar que se hicieron respaldos de todos los datos del sistema. En particular,
 se respaldó el corpus en su totalidad utilizando funcionalidades de Elasticsearch que permiten realizar
-un volcado de los datos directamente en un \textit{bucket} de Amazon S3 [cita]. Para el pago de este
-servicio se utilizó el crédito obtenido en la beca de Amazon mencionada anteriormente.
+un volcado de los datos directamente en un \textit{bucket} de Amazon S3~\cite{AmazonS3}. Para el pago de
+este servicio se utilizó el crédito obtenido en la beca de Amazon mencionada anteriormente.
 
 Además, se respaldaron todos los vectores construidos junto con los casos de prueba y sus respectivos
 resultados para cada vector. Para esto se realizaron descargas periódicas de los respaldos a nuestras
@@ -720,7 +722,7 @@ A continuación detallaremos cada uno de estos componentes.
 \paragraph{Modelo de Datos}
 
 El modelo de datos consiste de fuentes de datos (\texttt{DataSource}) y de entradas
-(\texttt{Entry}), almacenados en una base de datos \textit{PostgreSQL} [cita?]. Los
+(\texttt{Entry}), almacenados en una base de datos \textit{PostgreSQL}~\cite{PostgreSQL}. Los
 \texttt{DataSource} son un modelo simple que describe las fuentes de palabras registradas en el
 sistema y cuenta básicamente del dominio del sitio (e.g. \texttt{lanacion.com.ar}), con el que se
 identifica a la fuente. Además mantiene dos atributos adicionales: si está activo (esto es, si se
@@ -850,7 +852,7 @@ puede ver en [figura: tabla de porcentajes].
 
 Para las fuentes de palabras que carecen de una estructura que favorece su extracción automática
 mediante el método anterior, se utilizaron también técnicas de scraping convencionales, a través de
-\textit{Scrapy} [cita?].
+\textit{Scrapy}~\cite{Scrapy}.
 
 Scrapy es un framework escrito en Python ideado para brindar una solución integral al problema de
 realizar scraping en la web. Entre sus principales ventajas se encuentra la sencillez de su
@@ -897,8 +899,8 @@ fuente, pero las tareas de limpieza suelen ser sencillas. El objetivo siempre es
 original, limitándonos simplemente a remover etiquetas o restos de código que pueden quedar al
 procesar los documentos.
 
-En particular, para Wikipedia se utilizó el popular script WikiExtractor [cita], para las tareas más
-complejas de procesamiento del dump de Wikipedia, junto con un script propio para el procesamiento
+En particular, para Wikipedia se utilizó el popular script WikiExtractor~\cite{WikiExtractor}, para las
+tareas más complejas de procesamiento del dump de Wikipedia, junto con un script propio para el procesamiento
 final y posterior inserción en Elasticsearch. Dicho script se encuentra en el archivo \texttt{wiki.py},
 en el directorio \texttt{scripts} del código fuente del proyecto. Se utilizaron también scripts para la
 limpieza e inserción de las sesiones del parlamento Uruguayo (\texttt{parlamento.py}) y los documentos
