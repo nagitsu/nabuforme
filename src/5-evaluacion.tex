@@ -639,10 +639,45 @@ Una cuestión que no ha sido estudiado en profundidad en la literatura es, en lo
 recuperación de la analogía falla, qué tan cerca se queda la respuesta. Con este objetivo se
 calcula, además del porcentaje de aciertos en la primer posición (esto es, la palabra que maximiza
 \textsc{3CosMul}), el porcentaje de entradas para las cuales la respuesta está entre las cinco o
-diez palabras con mejor puntaje. En la tabla [tabla top1-5-10] se presenta esta información para los
-modelos de antes.
+diez palabras con mejor puntaje. En la tabla~\ref{table:top_1_5_10} se presenta esta información
+para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}):
 
-[tabla top1-5-10]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{Y*{3}{c}}
+        \toprule
+        \midrule
+        \thead{Analogía} & \thead{Top 1} & \thead{Top 5} & \thead{Top 10}\\
+        \noalign{\hrule height 1pt}
+        Adjetivos y adverbios & 22\% & 41\% & 48\%\\
+        \noalign{\hrule height 1pt}
+        Países y capitales (más comunes) & 97\% & 100\% & 100\%\\
+        \noalign{\hrule height 1pt}
+        Países y capitales (general) & 72\% & 86\% & 89\%\\
+        \noalign{\hrule height 1pt}
+        Países y monedas & 6\% & 11\% & 13\%\\
+        \noalign{\hrule height 1pt}
+        Miembros de la familia & 76\% & 93\% & 98\%\\
+        \noalign{\hrule height 1pt}
+        Verbos en infinitivo y gerundios & 74\% & 87\% & 89\%\\
+        \noalign{\hrule height 1pt}
+        Verbos en pasado y gerundios & 54\% & 78\% & 82\%\\
+        \noalign{\hrule height 1pt}
+        Países y nacionalidades & 89\% & 96\% & 97\%\\
+        \noalign{\hrule height 1pt}
+        Sustantivos y plurales & 55\% & 69\% & 73\%\\
+        \noalign{\hrule height 1pt}
+        Verbos y plurales & 82\% & 90\% & 92\%\\
+        \noalign{\hrule height 1pt}
+        Opuestos & 19\% & 30\% & 35\%\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Desempeño del modelo \textit{Full word2vec, more epochs, with accents} en las
+             posiciones del top 1, top 5 y top 10}
+    \label{table:top_1_5_10}
+\end{table}
+
 
 Es interesante ver que los valores mejoran significativamente al considerar el top 5 y el top 10:
 para el mejor modelo vectorial, se pasa de un $0.63$ a un $0.76$ en el top 5 y un $0.79$ en el top
@@ -762,18 +797,149 @@ sintácticas en lugar de semánticas. Para ello, se generaron entradas utilizand
 generaron así cinco subconjuntos de pruebas con 294 entradas cada una, obteniendo un total de 1470
 entradas.
 
-En la tabla [tabla testsets] se listan todos los conjuntos de pruebas construidos en esta sección,
-junto a la cantidad de entradas de cada uno y cuál es su propósito (i.e.\ qué área buscan evaluar).
+En la tabla~\ref{table:testset_spanish} se listan todos los conjuntos de pruebas construidos en esta
+sección, junto a la cantidad de entradas de cada uno y cuál es su propósito (i.e.\ qué área buscan
+evaluar).
 
-[tabla de testsets con cantidad de entradas y qué busca evaluar (e.g. presente 3era persona singular, etc.)]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{ccYc}
+        \toprule
+        \midrule
+        \thead{Conjunto} & \thead{Tipo} & \thead{Descripción} & \thead{Cantidad de\\entradas}\\
+        \midrule
+        T01 & Ana. & Géneros de ocupaciones & 468\\
+        \midrule
+        T02-01 & Ana. & Conj. verb. (infinitivo y condicional) & 1470\\
+        \midrule
+        T02-02 & Ana. & Conj. verb. (infinitivo y pret. subj. singular) & 1470\\
+        \midrule
+        T02-03 & Ana. & Conj. verb. (infinitivo y futuro plural) & 1470\\
+        \midrule
+        T02-04 & Ana. & Conj. verb. (infinitivo y gerundio) & 1470\\
+        \midrule
+        T02-05 & Ana. & Conj. verb. (infinitivo y pretérito) & 1470\\
+        \midrule
+        T02-06 & Ana. & Conj. verb. (infinitivo y participio) & 1470\\
+        \midrule
+        T02-07 & Ana. & Conj. verb. (infinitivo y pretérito simple) & 1470\\
+        \midrule
+        T02-08 & Ana. & Conj. verb. (infinitivo y presente plural) & 1470\\
+        \midrule
+        T02-09 & Ana. & Conj. verb. (infinitivo y presente singular) & 1470\\
+        \midrule
+        T02-10 & Ana. & Conj. verb. (infinitivo y pretérito imperfecto) & 1470\\
+        \midrule
+        T02-11 & Ana. & Conj. verb. (infinitivo y futuro subjuntivo) & 1470\\
+        \midrule
+        T02-12 & Ana. & Conj. verb. (infinitivo y pret. subj. plural) & 1470\\
+        \midrule
+        T03 & Ana. & Conj. verb. con voseo & 1470\\
+        \midrule
+        T04 & OOO & Tuplas por campo semántico & 529\\
+        \midrule
+        T05-01 & OOO & Conj. verb. (condicional en infinitivos) & 294\\
+        \midrule
+        T05-02 & OOO & Conj. verb. (futuro en infinitivos) & 294\\
+        \midrule
+        T05-03 & OOO & Conj. verb. (pretérito en infinitivos) & 294\\
+        \midrule
+        T05-04 & OOO & Conj. verb. (futuro en presentes) & 294\\
+        \midrule
+        T05-05 & OOO & Conj. verb. (futuro en futuro subjuntivo) & 294\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Listado de conjuntos de pruebas utilizados para el español.}
+    \label{table:testset_spanish}
+\end{table}
 
-\quad
-
-En la tabla [tabla resultados] se muestran los resultados a los que llegan las mejores dos
+En la tabla~\ref{table:spanish_results} se muestran los resultados a los que llegan las mejores dos
 representaciones vectoriales de cada algoritmo. En el caso de los conjuntos sintácticos, se dividen
 también por conjugación verbal.
 
-[tabla resultados]
+\begin{table}[!h]
+    \setlength\tabcolsep{4pt}
+    \begin{tabularx}{\textwidth}{Y*{7}{c}}
+        \toprule
+        \midrule
+        \thead{Conjunto} & \thead{Full\\w2v,\\EA} &
+        \thead{Full\\w2v,\\more\\epochs} & \thead{Reduced\\w2v} &
+        \thead{Full\\GloVe,\\more\\epochs} & \thead{Full\\GloVe,\\even\\more\\epochs} &
+        \thead{Full\\SVD,\\no\\accents} & \thead{Full\\SVD}\\
+        \noalign{\hrule height 1pt}
+        T01 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 2pt}
+        T02 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-01 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-02 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-03 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-04 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-05 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-06 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-07 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-08 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-09 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-10 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-11 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T02-12 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 2pt}
+        T03 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 2pt}
+        T04 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 2pt}
+        T05 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T05-01 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T05-02 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T05-03 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T05-04 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \noalign{\hrule height 1pt}
+        T05-05 &
+        \% & \% & \% & \% & \% & \% & \%\\
+        \midrule
+        \bottomrule
+    \end{tabularx}
+    \caption{Desempeño de los principales modelos en las pruebas del español.\\
+    Nota: T02 y T05 son los promedios de los resultados en los subconjuntos que los componen.}
+    \label{table:spanish_results}
+\end{table}
 
 El primer punto a notar es que en el caso de las analogías los mejores resultados son similares a
 los obtenidos en la sección anterior, con las pruebas de ocupaciones levemente superiores y las de
@@ -781,31 +947,23 @@ verbos algunos puntos por debajo. El algoritmo que mejor funciona en la tarea de
 nuevamente \texttt{word2vec}, con \texttt{GloVe} en segundo lugar y PPMI/SVD en tercero.
 
 Observando los valores, es posible ver que los resultados de las pruebas varían significativamente
-entre una conjugación y otra: mientras los gerundios (\texttt{AV04}) llegan a un acierto de $0.84$,
-el futuro subjuntivo singular (\texttt{AV11}) obtiene sólo $0.08$. Esto parece razonable, pues una
+entre una conjugación y otra: mientras los gerundios (\texttt{T02-04}) llegan a un acierto de
+$0.84$, el futuro subjuntivo (\texttt{T02-11}) obtiene sólo $0.08$. Esto parece razonable, pues una
 conjugación es mucho más usada que la otra, y los algoritmos aprenden mejores representaciones para
 palabras más comunes\footnote{Esto es especialmente cierto en el lenguaje empleado en las noticias,
 que abarcan la mayor parte del corpus.}.
 
-De hecho, uno de los principales problemas con el conjunto \texttt{AV11} es que muchas de las
-palabras que lo componen no se encuentran ni siquiera en el vocabulario del mejor modelo vectorial
-(ver tabla [tabla missingwords]), lo que hace que casi la tercera parte de las entradas no puedan
-ser respondidas correctamente.
-
-[tabla missing words: para mejor algoritmo, missing words per verbtest; count; missing entries]
-
-Es de esperar, por lo tanto, que si se obtiene un corpus con una mejor distribución de conjugaciones
-verbales, el resultado de las pruebas mejore significativamente. En la tabla [tabla timeposv] se
-presenta la distribución de los distintos tiempos verbales en el corpus de entrenamiento, derivado
-en base a la ocurrencia en el texto de las palabras utiliazadas en el conjunto de analogías
-verbales. Como es de esperar, las conjugaciones que mejores resultados obtienen son las más
-frecuentemente empleadas enel corpus.
-
-[tabla cantidad de ocurrencias de palabras por tiempo verbal (count de las palabras de las analogías
-en el corpus)]
+De hecho, uno de los principales problemas con el conjunto \texttt{T02-11} es que muchas de las
+palabras que lo componen no se encuentran ni siquiera en el vocabulario del mejor modelo
+vectorial\footnote{Los datos completos de la cantidad de palabras faltantes no se exponen por
+brevedad, pero por referencia, en el mejor modelo vectorial se tienen veinte palabras faltantes en
+el conjunto \texttt{T02-11}, lo que provoca 365 entradas faltantes o un $25\%$ del total.}, lo que
+hace que casi la tercera parte de las entradas no puedan ser respondidas correctamente. Es de
+esperar, por lo tanto, que si se obtiene un corpus con una mejor distribución de conjugaciones
+verbales, el resultado de las pruebas mejore significativamente.
 
 Siguiendo la discusión de la sección anterior respecto al uso de tildes en el corpus, es interesante
-ver que en el conjunto \texttt{AV07} (conjugaciones en pretérito simple, tercera persona del
+ver que en el conjunto \texttt{T02-07} (conjugaciones en pretérito simple, tercera persona del
 singular) el resultado obtenido por el modelo vectorial que mantiene los tildes es
 significativamente superior al que no usa, presentando una mejora de un $32\%$.
 
@@ -847,20 +1005,19 @@ de no sobrerrepresentar palabras demasiado comunes, distribuyendo la informació
 manera más uniforme.
 
 
-En la tabla [tabla rp-spec] se muestran los resultados de las evaluaciones con el conjunto de
-conjugaciones verbales específicas del Río de la Plata. Es interesante ver cómo los modelos
-vectoriales que son entrenados exclusivamente con texto de foros argentinos obtienen mejores
-resultados que los entrenados con la totalidad del texto. En los modelos vectoriales grandes hay
-también muchas ocurrencias del \textit{voseo} (principlamente viniendo de los sitios de literatura
-amateur), pero proporcionalmente es mayor la cantidad en los modelos construidos a partir de foros,
-por tener un tono más informal y conversacional.
+En la tabla~\ref{table:spanish_results} también se muestran los resultados de las evaluaciones con
+el conjunto de conjugaciones verbales específicas del Río de la Plata (\texttt{T03}). Es interesante
+ver cómo los modelos vectoriales que son entrenados exclusivamente con texto de foros argentinos (en
+este caso \textit{Reduced w2v}) obtienen mejores resultados que los entrenados con la totalidad del
+texto. En los modelos vectoriales grandes hay también muchas ocurrencias del \textit{voseo}
+(principlamente viniendo de los sitios de literatura amateur), pero proporcionalmente es mayor la
+cantidad en los modelos construidos a partir de foros, por tener un tono más informal y
+conversacional.
 
 Este último punto vuelve a resaltar la importancia de la composición del corpus de entrenamiento,
 además de indicar una especie de dilución de los vectores de palabras cuando la ocurrencia de las
 mismas se encuentra limitada a una sección del corpus completo (en este caso, el uso del
 \textit{voseo} a foros y sitios de literatura amateur, y no tanto en noticias).
-
-[tabla rp-spec]
 
 
 \section{Análisis Cualitativo de Resultados}
@@ -1007,12 +1164,12 @@ futbolistas brasileños. Los resultados en estos casos fueron todos satisfactori
 
 \begin{lstlisting}
   >>> full_word2vec.doesnt_match(['cameron', 'putin', 'mujica', 'merkel', 'rajoy'])
-  <<< ‘mujica’
+  <<< 'mujica'
 \end{lstlisting}
 
 \begin{lstlisting}
   >>> ffull_word2vec.doesnt_match(['ronaldinho', 'neymar', 'dunga', 'rooney', 'robinho'])
-  <<< ‘rooney’
+  <<< 'rooney'
 \end{lstlisting}
 
 También resultó interesante explorar analogías relacionadas estrictamente con Uruguay,
