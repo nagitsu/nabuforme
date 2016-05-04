@@ -251,57 +251,57 @@ el corpus utilizado en su entrenamiento.
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
-    \begin{tabularx}{\textwidth}{Y*{8}{c}}
+    \begin{tabularx}{\textwidth}{cY*{9}{c}}
         \toprule
         \midrule
-        \multicolumn{9}{c}{word2vec}\\
+        \multicolumn{10}{c}{word2vec}\\
         \midrule
-        \thead{Descripción} & \thead{Algoritmo} & \thead{Dim} &
-        \thead{Ventana} & \thead{$\alpha$} & \thead{HS} &
+        \thead{Id} & \thead{Descripción} & \thead{Algoritmo} & \thead{Dim} &
+        \thead{Ven} & \thead{$\alpha$} & \thead{HS} &
         \thead{NS} & \thead{Epochs} & \thead{Corpus}\\
         \midrule
-        Full word2vec, more epochs, with accents &
+        W01 & Full word2vec, more epochs, with accents &
         skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C01\\
         \midrule
-        Full word2vec, more epochs &
+        W02 & Full word2vec, more epochs &
         skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C02\\
         \midrule
-        Full word2vec, extra dimensions &
+        W03 & Full word2vec, extra dimensions &
         skipgram & 500 & 7 & 0.025 & No & 7 & 1 & C02\\
         \midrule
-        Reduced word2vec &
+        W04 & Reduced word2vec &
         skipgram & 300 & 7 & 0.025 & No & 7 & 1 & C03\\
         \midrule
-        Bad quality text &
+        W05 & Bad quality text &
         skipgram & 200 & 7 & 0.025 & No & 7 & 5 & C04\\
     \end{tabularx}
-    \begin{tabularx}{\textwidth}{Y*{5}{c}}
+    \begin{tabularx}{\textwidth}{cY*{5}{c}}
         \toprule
         \midrule
-        \multicolumn{6}{c}{GloVe}\\
+        \multicolumn{7}{c}{GloVe}\\
         \midrule
-        \thead{Descripción} & \thead{Dimensiones} & \thead{Ventana} &
-        \thead{$\alpha$} & \thead{Epochs} & \thead{Corpus}\\
+        \thead{Id} & \thead{Descripción} & \thead{Dimensiones} &
+        \thead{Ventana} & \thead{$\alpha$} & \thead{Epochs} & \thead{Corpus}\\
         \midrule
-        Full GloVe, more epochs & 300 & 7 & 0.75 & 50 & C02\\
+        G01 & Full GloVe, more epochs & 300 & 7 & 0.75 & 50 & C02\\
         \midrule
-        Full GloVe, even more epochs & 300 & 7 & 0.75 & 200 & C02\\
+        G02 & Full GloVe, even more epochs & 300 & 7 & 0.75 & 200 & C02\\
         \midrule
-        Full GloVe & 300 & 7 & 0.75 & 15 & C02\\
+        G03 & Full GloVe & 300 & 7 & 0.75 & 15 & C02\\
     \end{tabularx}
-    \begin{tabularx}{\textwidth}{Y*{5}{c}}
+    \begin{tabularx}{\textwidth}{cY*{5}{c}}
         \toprule
         \midrule
-        \multicolumn{6}{c}{PPMI/SVD}\\
+        \multicolumn{7}{c}{PPMI/SVD}\\
         \midrule
-        \thead{Descripción} & \thead{Dimensiones} & \thead{Ventana} &
-        \thead{Suavizado} & \thead{Contexto} & \thead{Corpus}\\
+        \thead{id} & \thead{Descripción} & \thead{Dimensiones} &
+        \thead{Ventana} & \thead{Suavizado} & \thead{Contexto} & \thead{Corpus}\\
         \midrule
-        Full SVD & 500 & 2 & 0.75 & Sí & C01\\
+        S01 & Full SVD & 500 & 2 & 0.75 & Sí & C01\\
         \midrule
-        Full SVD, no accents & 500 & 2 & 0.75 & Sí & C02\\
+        S02 & Full SVD, no accents & 500 & 2 & 0.75 & Sí & C02\\
         \midrule
-        Reduced SVD & 300 & 5 & 0.75 & No & C03\\
+        S03 & Reduced SVD & 300 & 5 & 0.75 & No & C03\\
         \midrule
         \bottomrule
     \end{tabularx}
@@ -317,7 +317,7 @@ Como se puede apreciar en el cuadro \ref{table:embeddings_detail}, destacamos es
 representaciones vectoriales: cinco utilizando \texttt{word2vec}, tres utilizando \texttt{GloVe}, y
 tres utilizando PPMI\@. El tiempo de entrenamiento promedio de cada modelo fue de un día y catorce
 horas, donde el más rápido tomó poco más de una hora (\textit{Reduced word2vec}) y el más lento
-tres días y diez horas (\textit{Full word2vec, more epochs, with accents}). Existe una diferencia
+tres días y diez horas (\textit{Full word2vec, more epochs, with accents}, W01). Existe una diferencia
 significativa entre el tiempo empleado en ambos extremos, lo que resalta la importancia de la
 limitante que impone la capacidad de cómputo disponible al entrenamiento de vectores. En total, se
 invirtieron \textit{diecisiete días y doce horas} entrenando los modelos vectoriales aquí analizados.
@@ -468,32 +468,25 @@ resultados obtenidos en la literatura.
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
-    \begin{tabularx}{\textwidth}{Y*{6}{c}}
+    \begin{tabularx}{\textwidth}{*{7}{Z}}
         \toprule
         \midrule
-        \thead{Modelo} & \thead{Google} & \thead{WordSim\\Relatedness} &
+        \thead{Modelo} & \thead{Google} & \thead{WordSim\\Related} &
         \thead{WordSim\\Similarity} & \thead{MEN} & \thead{MTurk} & \thead{SimLex}\\
         \midrule
-        Full word2vec, more epochs, with accents &
-        \textbf{63\%} & 55\% & 73\% & 69\% & \textbf{57\%} & 26\%\\
+        W01 & \textbf{63\%} & 55\% & 73\% & 69\% & \textbf{57\%} & 26\%\\
         \midrule
-        Full word2vec, more epochs &
-        60\% & 50\% & 70\% & 66\% & 55\% & 24\%\\
+        W02 & 60\% & 50\% & 70\% & 66\% & 55\% & 24\%\\
         \midrule
-        Reduced word2vec &
-        31\% & 50\% & 55\% & 48\% & 52\% & 24\%\\
+        W04 & 31\% & 50\% & 55\% & 48\% & 52\% & 24\%\\
         \midrule
-        Full GloVe, more epochs &
-        57\% & 48\% & 64\% & 67\% & 52\% & 29\%\\
+        G01 & 57\% & 48\% & 64\% & 67\% & 52\% & 29\%\\
         \midrule
-        Full GloVe, even more epochs &
-        57\% & 49\% & 67\% & 67\% & 53\% & 29\%\\
+        G02 & 57\% & 49\% & 67\% & 67\% & 53\% & 29\%\\
         \midrule
-        Full SVD, no accents &
-        46\% & \textbf{57\%} & 73\% & \textbf{72\%} & 51\% & \textbf{34\%}\\
+        S01 & 45\% & 56\% & \textbf{74\%} & \textbf{72\%} & 52\% & 33\%\\
         \midrule
-        Full SVD &
-        45\% & 56\% & \textbf{74\%} & \textbf{72\%} & 52\% & 33\%\\
+        S02 & 46\% & \textbf{57\%} & 73\% & \textbf{72\%} & 51\% & \textbf{34\%}\\
         \midrule
         \bottomrule
     \end{tabularx}
@@ -504,7 +497,7 @@ resultados obtenidos en la literatura.
 El primer punto a observar es que los resultados obtenidos por nuestros vectores son muy similares a
 los obtenidos en inglés, particularmente en las tareas de analogías: los resultados de estado del
 arte varían entre una exactitud de $0.61$ y $0.69$~\cite{Levy2015, Baroni2014, Pennington2014,
-Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo
+Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo W01,
 \textit{Full word2vec, more epochs, with accents}), obtiene $0.63$.
 
 Parte de esta diferencia puede explicarse por el hecho de que las secciones que se remueven del
@@ -531,21 +524,19 @@ donde hay tanto categorías sintácticas como semánticas.
     \begin{tabularx}{\textwidth}{Y*{7}{c}|c}
         \toprule
         \midrule
-        \thead{Analogía} & \thead{Full\\w2v,\\EA} &
-        \thead{Full\\w2v,\\more\\epochs} & \thead{Reduced\\w2v} &
-        \thead{Full\\GloVe,\\more\\epochs} & \thead{Full\\GloVe,\\even\\more\\epochs} &
-        \thead{Full\\SVD,\\no\\accents} & \thead{Full\\SVD} & \thead{Levy}\\
+        \thead{Analogía} & \thead{W01} & \thead{W02} & \thead{W04} &
+        \thead{G01} & \thead{G02} & \thead{S01} & \thead{S02} & \thead{Levy}\\
         \noalign{\hrule height 1pt}
         Adjetivos y adverbios &
         22\% & \textbf{26\%} & 10\% & 14\% & 14\% & 16\% & 16\% &
         \textit{24\%}\\
         \noalign{\hrule height 1pt}
         Países y capitales (más comunes) &
-        \textbf{97\%} & 93\% & 69\% & 91\% & 92\% & 87\% & 89\% &
+        \textbf{97\%} & 93\% & 69\% & 91\% & 92\% & 89\% & 87\% &
         \textit{91\%}\\
         \noalign{\hrule height 1pt}
         Países y capitales (general) &
-        \textbf{72\%} & 71\% & 23\% & \textbf{72\%} & 71\% & 62\% & 59\% &
+        \textbf{72\%} & 71\% & 23\% & \textbf{72\%} & 71\% & 59\% & 62\% &
         \textit{78\%}\\
         \noalign{\hrule height 1pt}
         Países y monedas &
@@ -553,43 +544,41 @@ donde hay tanto categorías sintácticas como semánticas.
         \textit{15\%}\\
         \noalign{\hrule height 1pt}
         Miembros de la familia &
-        \textbf{76\%} & 67\% & 31\% & 72\% & 73\% & 54\% & 68\% &
+        \textbf{76\%} & 67\% & 31\% & 72\% & 73\% & 68\% & 54\% &
         \textit{76\%}\\
         \noalign{\hrule height 1pt}
         Verbos en infinitivo y gerundios &
-        \textbf{74\%} & 72\% & 51\% & 64\% & 64\% & 60\% & 59\% &
+        \textbf{74\%} & 72\% & 51\% & 64\% & 64\% & 59\% & 60\% &
         \textit{63\%}\\
         \noalign{\hrule height 1pt}
         Verbos en pasado y gerundios &
-        \textbf{54\%} & 30\% & 13\% & 25\% & 26\% & 15\% & 20\% &
+        \textbf{54\%} & 30\% & 13\% & 25\% & 26\% & 20\% & 15\% &
         \textit{66\%}\\
         \noalign{\hrule height 1pt}
         Países y nacionalidades &
-        89\% & 90\% & 68\% & \textbf{91\%} & \textbf{91\%} & 77\% & 75\% &
+        89\% & 90\% & 68\% & \textbf{91\%} & \textbf{91\%} & 75\% & 77\% &
         \textit{89\%}\\
         \noalign{\hrule height 1pt}
         Sustantivos y plurales &
-        55\% & \textbf{61\%} & 24\% & 44\% & 45\% & 18\% & 16\% &
+        55\% & \textbf{61\%} & 24\% & 44\% & 45\% & 16\% & 18\% &
         \textit{72\%}\\
         \noalign{\hrule height 1pt}
         Verbos y plurales &
-        82\% & \textbf{83\%} & 64\% & 76\% & 76\% & 43\% & 44\% &
+        82\% & \textbf{83\%} & 64\% & 76\% & 76\% & 44\% & 43\% &
         \textit{71\%}\\
         \noalign{\hrule height 1pt}
         Opuestos &
-        \textbf{19\%} & 18\% & 7\% & 18\% & \textbf{19\%} & 18\% & \textbf{19\%} &
+        \textbf{19\%} & 18\% & 7\% & 18\% & \textbf{19\%} & \textbf{19\%} & 18\% &
         \textit{37\%}\\
         \midrule
         \bottomrule
     \end{tabularx}
-    \caption{Desempeño de los principales modelos en las pruebas de analogías.\\
-    Nota: \textit{Full w2v, EA} corresponde al modelo \textit{Full word2vec, more epochs,
-    with accents}.}
+    \caption{Desempeño de los principales modelos en las pruebas de analogías.}
     \label{table:analogies_model_performance}
 \end{table}
 
 El modelo vectorial vectorial que más éxito obtiene en analogías es
-\textit{Full word2vec, more epochs, with accents}, el cual utiliza el algoritmo \texttt{word2vec}
+\textit{Full word2vec, more epochs, with accents} (W01), el cual utiliza el algoritmo \texttt{word2vec}
 con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y finalmente por un modelo
 PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015}, aunque en ese caso la diferencia
 entre el modelo híbrido y el estadístico es mucho menor.
@@ -640,11 +629,11 @@ recuperación de la analogía falla, qué tan cerca se queda la respuesta. Con e
 calcula, además del porcentaje de aciertos en la primer posición (esto es, la palabra que maximiza
 \textsc{3CosMul}), el porcentaje de entradas para las cuales la respuesta está entre las cinco o
 diez palabras con mejor puntaje. En la tabla~\ref{table:top_1_5_10} se presenta esta información
-para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}):
+para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}, W01):
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
-    \begin{tabularx}{\textwidth}{Y*{3}{c}}
+    \begin{tabularx}{\textwidth}{l*{3}{Z}}
         \toprule
         \midrule
         \thead{Analogía} & \thead{Top 1} & \thead{Top 5} & \thead{Top 10}\\
@@ -673,11 +662,10 @@ para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}
         \midrule
         \bottomrule
     \end{tabularx}
-    \caption{Desempeño del modelo \textit{Full word2vec, more epochs, with accents} en las
+    \caption{Desempeño del modelo \textit{Full word2vec, more epochs, with accents} (W01) en las
              posiciones del top 1, top 5 y top 10}
     \label{table:top_1_5_10}
 \end{table}
-
 
 Es interesante ver que los valores mejoran significativamente al considerar el top 5 y el top 10:
 para el mejor modelo vectorial, se pasa de un $0.63$ a un $0.76$ en el top 5 y un $0.79$ en el top
@@ -686,7 +674,6 @@ se podrían obtener resultados aún mejores, porque los modelos cuentan con la i
 tan alejados de las respuestas correctas como parecería a priori: la sección
 de adjetivos y adverbios (\texttt{gram1-adjective-to-adverb}), por ejemplo, pasa de un $0.22$ a un
 $0.48$, la mayor mejora de todas las categorías.
-
 
 Por último, es llamativo ver que, en contradicción a nuestra primera intuición, eliminar los tildes
 tiene un efecto negativo sobre los resultados del corpus: en todos los casos donde se entrenaron
@@ -857,17 +844,15 @@ evaluar).
 En la tabla~\ref{table:spanish_results} se muestran los resultados a los que llegan las mejores dos
 representaciones vectoriales de cada algoritmo. En el caso de los conjuntos sintácticos, se dividen
 también por conjugación verbal. También se incluye el modelo vectorial entrenado con texto de foros
-argentinos (\textit{Bad quality text}).
+argentinos (\textit{Bad quality text}, W05).
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
-    \begin{tabularx}{\textwidth}{Y*{7}{c}}
+    \begin{tabularx}{\textwidth}{c*{7}{Z}}
         \toprule
         \midrule
-        \thead{Conjunto} & \thead{Full\\w2v,\\EA} &
-        \thead{Full\\w2v,\\more\\epochs} & \thead{Full\\SVD} &
-        \thead{Full\\GloVe,\\more\\epochs} & \thead{Full\\GloVe,\\even\\more\\epochs} &
-        \thead{Full\\SVD,\\no\\accents} & \thead{Bad\\quality\\text}\\
+        \thead{Conjunto} & \thead{W01} & \thead{W02} & \thead{S01} &
+        \thead{G01} & \thead{G02} & \thead{S02} & \thead{W05}\\
         \noalign{\hrule height 1pt}
         T01 & \textbf{64\%} & 63\% & 45\% & 46\% & 46\% & 46\% & 45\%\\
         \noalign{\hrule height 2pt}
