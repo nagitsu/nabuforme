@@ -1010,13 +1010,14 @@ Cristina Fernández de Kirchner.
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (uruguay, mujica, brasil) & (uruguay, mujica, espana) & (uruguay, mujica, argentina)\\
+        uruguay $\implies$ mujica & uruguay $\implies$ mujica & uruguay $\implies$ mujica\\
+        brasil $\implies$ \textbf{?} & espana $\implies$ \textbf{?} & argentina $\implies$ \textbf{?}\\
         \hline
         dilma, 0.68 & zapatero, 0.54 & kirchner, 0.64\\
         rousseff, 0.67 & rajoy, 0.54 & cristina, 0.62\\
-        lula, 0.66\\
+        lula, 0.66 & & \\
         \hline
     \end{tabular}
     \caption{Analogías para países y presidentes.}
@@ -1029,9 +1030,10 @@ e India. En el caso de India, se obtiene también taka, moneda oficial de Bangla
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (uruguay, pesos, espana) & (uruguay, pesos, india) & (uruguay, pesos, japon)\\
+        uruguay $\implies$ pesos & (uruguay, pesos & uruguay $\implies$ pesos\\
+        espana $\implies$ \textbf{?} & india $\implies$ \textbf{?} & japon $\implies$ \textbf{?}\\
         \hline
         pesetas, 0.59 & rupias, 0.60 & yenes, 0.58\\
         euros, 0.50 & takas, 0.48 & yens, 0.50\\
@@ -1052,9 +1054,10 @@ Guardiola.
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (valencia, mestalla, madrid) & (valencia, mestalla, boca) & (madrid, mourinho, barcelona)\\
+        valencia $\implies$ mestalla & valencia $\implies$ mestalla & madrid $\implies$ mourinho\\
+        madrid $\implies$ \textbf{?} & boca $\implies$ \textbf{?} & barcelona $\implies$ \textbf{?}\\
         \hline
         bernabeu, 0.79 & bombonera, 0.60 & guardiola, 0.80\\
         madridista, 0.74 & xeneize, 0.55 & cule, 0.74\\
@@ -1072,9 +1075,10 @@ compañías Sony, Apple y Zara.
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (volkswagen, autos, sony) & (volkswagen, autos, apple) & (volkswagen, autos, zara)\\
+        volkswagen $\implies$ autos & volkswagen $\implies$ autos & volkswagen $\implies$ autos\\
+        sony $\implies$ \textbf{?} & apple $\implies$ \textbf{?} & zara $\implies$ \textbf{?}\\
         \hline
         dvds, 0.67 & iphones, 0.65 & tiendas, 0.52\\
         lcds, 0.62 & ipods, 0.64 & accesorios, 0.51\\
@@ -1095,9 +1099,10 @@ tanto la marca de ron Bacardi.
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|c|}
         \hline
-        (darth, vader, frodo) & (harry, potter, ron) & (harry, potter, hermione) & (anillos, tolkien, potter)\\
+        darth $\implies$ vader & harry $\implies$ potter & harry $\implies$ potter & anillos $\implies$ tolkien\\
+        frodo $\implies$ \textbf{?} & ron $\implies$ \textbf{?} & hermione $\implies$ \textbf{?} & potter $\implies$ \textbf{?}\\
         \hline
         baggins, 0.65 & bacardi, 0.59 & weasley, 0.60 & harry, 0.69\\
         hobbit, 0.62 & harpper, 0.59 & granger, 0.57 & rowling, 0.63\\
@@ -1114,19 +1119,22 @@ político uruguayo entre políticos europeos y un futbolista inglés entre futbo
 resultados en estos casos fueron todos satisfactorios.
 
 \begin{lstlisting}
-  >>> w01.doesnt_match(['rowling', 'tolkien', 'cortazar', 'obama'])
+  >>> w01.doesnt_match(['rowling', 'tolkien', 'cortazar',
+                        'obama'])
   <<< 'obama'
 \end{lstlisting}
 
 \begin{lstlisting}
-  >>> w01.doesnt_match(['cameron', 'putin', 'mujica', 'merkel', 'rajoy'])
+  >>> w01.doesnt_match(['cameron', 'putin', 'mujica',
+                        'merkel', 'rajoy'])
   <<< 'mujica'
 \end{lstlisting}
 
-\begin{lstlisting}
-  >>> w01.doesnt_match(['ronaldinho', 'neymar', 'dunga', 'rooney', 'robinho'])
-  <<< 'rooney'
-\end{lstlisting}
+% \begin{lstlisting}
+%   >>> w01.doesnt_match(['ronaldinho', 'neymar', 'dunga',
+%                         'rooney', 'robinho'])
+%   <<< 'rooney'
+% \end{lstlisting}
 
 También resultó interesante explorar analogías relacionadas estrictamente con Uruguay,
 utilizando el modelo W04. Se incluyen en el cuadro \ref{table:analogies_uruguay_1} analogías
@@ -1135,9 +1143,10 @@ presentan analogías referentes al fútbol uruguayo y algunas de sus figuras má
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (agua, ose, energia) & (ose, agua, ancap) & (interior, bonomi, ancap)\\
+        agua $\implies$ ose & ose $\implies$ agua & interior $\implies$ bonomi\\
+        energia $\implies$ \textbf{?} & ancap $\implies$ \textbf{?} & ancap $\implies$ \textbf{?}\\
         \hline
         ute, 0.71 & petroleo, 0.57 & coya, 0.62\\
         ruchansky, 0.67 & hidrocarburos, 0.55 & sendic, 0.58\\
@@ -1149,9 +1158,10 @@ presentan analogías referentes al fútbol uruguayo y algunas de sus figuras má
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|c|}
         \hline
-        (manya, penarol, bolso) & (pacheco, penarol, recoba) & (defensor, franzini, river)\\
+        manya $\implies$ penarol & pacheco $\implies$ penarol & defensor $\implies$ franzini\\
+        bolso $\implies$ \textbf{?} & recoba $\implies$ \textbf{?} & river $\implies$ \textbf{?}\\
         \hline
         tricolores, 0.51 & danubio, 0.68 & plate, 0.67\\
         bolsos, 0.50 & tricolor, 0.68 & saroldi, 0.65\\
@@ -1168,9 +1178,10 @@ algunas de las analogías evaluadas satisfactoriamente en el modelo W04.
 
 \begin{table*}[ht]
     \centering
-    \begin{tabular}{lccc}
+    \begin{tabular}{|c|c|}
         \hline
-        (manya, penarol, bolso) & (ose, agua, ancap)\\
+        manya $\implies$ penarol & ose $\implies$ agua\\
+        bolso $\implies$ \textbf{?} & ancap $\implies$ \textbf{?}\\
         \hline
         mochila, 0.61 & cual, 0.47\\
         maleta, 0.61 & estalactita, 0.46\\
