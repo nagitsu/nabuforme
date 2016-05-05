@@ -251,57 +251,53 @@ el corpus utilizado en su entrenamiento.
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
-    \begin{tabularx}{\textwidth}{cY*{9}{c}}
+    \begin{tabularx}{\textwidth}{Z*{8}{c}}
         \toprule
         \midrule
-        \multicolumn{10}{c}{word2vec}\\
+        \multicolumn{9}{c}{word2vec}\\
         \midrule
-        \thead{Id} & \thead{Descripción} & \thead{Algoritmo} & \thead{Dim} &
+        \thead{Id} & \thead{Algoritmo} & \thead{Dim} &
         \thead{Ven} & \thead{$\alpha$} & \thead{HS} &
         \thead{NS} & \thead{Epochs} & \thead{Corpus}\\
         \midrule
-        W01 & Full word2vec, more epochs, with accents &
-        skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C01\\
+        W01 & skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C01\\
         \midrule
-        W02 & Full word2vec, more epochs &
-        skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C02\\
+        W02\footnote{Idéntico a \texttt{W01}, pero eliminando los tildes.}
+            & skipgram & 300 & 7 & 0.025 & No & 7 & 5 & C02\\
         \midrule
-        W03 & Full word2vec, extra dimensions &
-        skipgram & 500 & 7 & 0.025 & No & 7 & 1 & C02\\
+        W03 & skipgram & 500 & 7 & 0.025 & No & 7 & 1 & C02\\
         \midrule
-        W04 & Reduced word2vec &
-        skipgram & 300 & 7 & 0.025 & No & 7 & 1 & C03\\
+        W04 & skipgram & 300 & 7 & 0.025 & No & 7 & 1 & C03\\
         \midrule
-        W05 & Bad quality text &
-        skipgram & 200 & 7 & 0.025 & No & 7 & 5 & C04\\
+        W05 & skipgram & 200 & 7 & 0.025 & No & 7 & 5 & C04\\
     \end{tabularx}
-    \begin{tabularx}{\textwidth}{cY*{5}{c}}
+    \begin{tabularx}{\textwidth}{Z*{5}{c}}
         \toprule
         \midrule
-        \multicolumn{7}{c}{GloVe}\\
+        \multicolumn{6}{c}{GloVe}\\
         \midrule
-        \thead{Id} & \thead{Descripción} & \thead{Dimensiones} &
+        \thead{Id} & \thead{Dimensiones} &
         \thead{Ventana} & \thead{$\alpha$} & \thead{Epochs} & \thead{Corpus}\\
         \midrule
-        G01 & Full GloVe, more epochs & 300 & 7 & 0.75 & 50 & C02\\
+        G01 & 300 & 7 & 0.75 & 50 & C02\\
         \midrule
-        G02 & Full GloVe, even more epochs & 300 & 7 & 0.75 & 200 & C02\\
+        G02 & 300 & 7 & 0.75 & 200 & C02\\
         \midrule
-        G03 & Full GloVe & 300 & 7 & 0.75 & 15 & C02\\
+        G03 & 300 & 7 & 0.75 & 15 & C02\\
     \end{tabularx}
-    \begin{tabularx}{\textwidth}{cY*{5}{c}}
+    \begin{tabularx}{\textwidth}{Z*{5}{c}}
         \toprule
         \midrule
-        \multicolumn{7}{c}{PPMI/SVD}\\
+        \multicolumn{6}{c}{PPMI/SVD}\\
         \midrule
-        \thead{id} & \thead{Descripción} & \thead{Dimensiones} &
+        \thead{Id} & \thead{Dimensiones} &
         \thead{Ventana} & \thead{Suavizado} & \thead{Contexto} & \thead{Corpus}\\
         \midrule
-        S01 & Full SVD & 500 & 2 & 0.75 & Sí & C01\\
+        S01 & 500 & 2 & 0.75 & Sí & C01\\
         \midrule
-        S02 & Full SVD, no accents & 500 & 2 & 0.75 & Sí & C02\\
+        S02 & 500 & 2 & 0.75 & Sí & C02\\
         \midrule
-        S03 & Reduced SVD & 300 & 5 & 0.75 & No & C03\\
+        S03 & 300 & 5 & 0.75 & No & C03\\
         \midrule
         \bottomrule
     \end{tabularx}
@@ -316,11 +312,11 @@ detallada en el capítulo 4. Los hiperparámetros a evaluar se fijaron a priori,
 Como se puede apreciar en el cuadro \ref{table:embeddings_detail}, destacamos especialmente once
 representaciones vectoriales: cinco utilizando \texttt{word2vec}, tres utilizando \texttt{GloVe}, y
 tres utilizando PPMI\@. El tiempo de entrenamiento promedio de cada modelo fue de un día y catorce
-horas, donde el más rápido tomó poco más de una hora (\textit{Reduced word2vec}) y el más lento
-tres días y diez horas (\textit{Full word2vec, more epochs, with accents}, W01). Existe una diferencia
-significativa entre el tiempo empleado en ambos extremos, lo que resalta la importancia de la
-limitante que impone la capacidad de cómputo disponible al entrenamiento de vectores. En total, se
-invirtieron \textit{diecisiete días y doce horas} entrenando los modelos vectoriales aquí analizados.
+horas, donde el más rápido tomó poco más de una hora (W04) y el más lento tres días y diez horas
+(W01). Existe una diferencia significativa entre el tiempo empleado en ambos extremos, lo que
+resalta la importancia de la limitante que impone la capacidad de cómputo disponible al
+entrenamiento de vectores. En total, se invirtieron \textit{diecisiete días y doce horas} entrenando
+los modelos vectoriales aquí analizados.
 
 Cada modelo vectorial ocupa entre 300MB y 1000MB (con algunos llegando a 1700MB), dependiendo
 principalmente de la dimensión elegida y los límites que se le establezcan al vocabulario (cantidad
@@ -497,8 +493,8 @@ resultados obtenidos en la literatura.
 El primer punto a observar es que los resultados obtenidos por nuestros vectores son muy similares a
 los obtenidos en inglés, particularmente en las tareas de analogías: los resultados de estado del
 arte varían entre una exactitud de $0.61$ y $0.69$~\cite{Levy2015, Baroni2014, Pennington2014,
-Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo W01,
-\textit{Full word2vec, more epochs, with accents}), obtiene $0.63$.
+Mikolov2013c}, mientras que los vectores en español (particularmente, el modelo W01), obtiene
+$0.63$.
 
 Parte de esta diferencia puede explicarse por el hecho de que las secciones que se remueven del
 conjunto de pruebas (comparativos, superlativos, y ciudad en estado) son entradas que obtienen por
@@ -577,11 +573,10 @@ donde hay tanto categorías sintácticas como semánticas.
     \label{table:analogies_model_performance}
 \end{table}
 
-El modelo vectorial vectorial que más éxito obtiene en analogías es
-\textit{Full word2vec, more epochs, with accents} (W01), el cual utiliza el algoritmo \texttt{word2vec}
-con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y finalmente por un modelo
-PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015}, aunque en ese caso la diferencia
-entre el modelo híbrido y el estadístico es mucho menor.
+El modelo vectorial vectorial que más éxito obtiene en analogías es W01, el cual utiliza el
+algoritmo \texttt{word2vec} con Skipgram y \textit{negative sampling}, seguido de un modelo GloVe y
+finalmente por un modelo PPMI/SVD\@. Esto sigue lo observado por los autores en~\cite{Levy2015},
+aunque en ese caso la diferencia entre el modelo híbrido y el estadístico es mucho menor.
 
 De todos modos, en el conjunto de pruebas MSR (el cual cuenta con analogías exclusivamente
 sintácticas) los autores sí tienen una diferencia amplia entre ambos algoritmos, lo que puede
@@ -629,7 +624,7 @@ recuperación de la analogía falla, qué tan cerca se queda la respuesta. Con e
 calcula, además del porcentaje de aciertos en la primer posición (esto es, la palabra que maximiza
 \textsc{3CosMul}), el porcentaje de entradas para las cuales la respuesta está entre las cinco o
 diez palabras con mejor puntaje. En la tabla~\ref{table:top_1_5_10} se presenta esta información
-para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}, W01):
+para el mejor modelo de antes (W01):
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
@@ -662,8 +657,7 @@ para el mejor modelo de antes (\textit{Full word2vec, more epochs, with accents}
         \midrule
         \bottomrule
     \end{tabularx}
-    \caption{Desempeño del modelo \textit{Full word2vec, more epochs, with accents} (W01) en las
-             posiciones del top 1, top 5 y top 10}
+    \caption{Desempeño del modelo W01 en las posiciones del top 1, top 5 y top 10}
     \label{table:top_1_5_10}
 \end{table}
 
@@ -972,11 +966,10 @@ manera más uniforme.
 En la tabla~\ref{table:spanish_results} también se muestran los resultados de las evaluaciones con
 el conjunto de conjugaciones verbales específicas del Río de la Plata (\texttt{T03}). Es interesante
 ver cómo los modelos vectoriales que son entrenados exclusivamente con texto de foros argentinos (en
-este caso \textit{Reduced w2v}) obtienen mejores resultados que los entrenados con la totalidad del
-texto. En los modelos vectoriales grandes hay también muchas ocurrencias del \textit{voseo}
-(principlamente viniendo de los sitios de literatura amateur), pero proporcionalmente es mayor la
-cantidad en los modelos construidos a partir de foros, por tener un tono más informal y
-conversacional.
+este caso W05) obtienen mejores resultados que los entrenados con la totalidad del texto. En los
+modelos vectoriales grandes hay también muchas ocurrencias del \textit{voseo} (principlamente
+viniendo de los sitios de literatura amateur), pero proporcionalmente es mayor la cantidad en los
+modelos construidos a partir de foros, por tener un tono más informal y conversacional.
 
 Este último punto vuelve a resaltar la importancia de la composición del corpus de entrenamiento,
 además de indicar una especie de dilución de los vectores de palabras cuando la ocurrencia de las
@@ -995,9 +988,9 @@ características interesantes.
 Los ejemplos mostrados a continuación fueron generados utilizando dos modelos diferentes, ambos
 entrenados utilizando \texttt{word2vec}. En uno de los casos se entrenó utilizando un corpus
 compuesto de documentos de todas las fuentes recopiladas hasta principios de noviembre de 2015,
-totalizando aproximadamente unos cuatro mil millones de palabras (\textit{Full word2vec}). En el
-otro caso se utilizaron solamente documentos uruguayos con fecha no más reciente que octubre de
-2015, alcanzando un total de 475 millones de palabras (\textit{Reduced word2vec}).
+totalizando aproximadamente unos cuatro mil millones de palabras (W01). En el otro caso se
+utilizaron solamente documentos uruguayos con fecha no más reciente que octubre de 2015, alcanzando
+un total de 475 millones de palabras (W04).
 
 Para el análisis cualitativo se realizaron dos tipos de ensayos: analogías y palabra que no encaja. Las
 analogías son del estilo \textit{peso es a Uruguay lo que rupia es a India}. En términos vectoriales
@@ -1007,8 +1000,7 @@ amarillo, urano}.
 
 Comenzamos presentando en los cuadros \ref{table:analogies_presidents} y
 \ref{table:analogies_currencies} analogías relacionadas a presidentes y monedas de países. En ambos
-casos se utilizó el modelo \textit{Full word2vec} y como puede apreciarse el modelo se comporta de
-forma deseable.
+casos se utilizó el modelo W01 y como puede apreciarse el modelo se comporta de forma deseable.
 
 En el caso de presidentes se parte de la relación de Uruguay con el expresidente José Mujica y tanto
 para Brasil como para España se obtienen sus actuales primeros mandatarios, Dilma Rousseff y
@@ -1117,30 +1109,29 @@ tanto la marca de ron Bacardi.
 \end{table*}
 
 Como ya se comentó, se realizaron también pruebas de palabra que no encaja. Se presentan
-a continuación los resultados del modelo \textit{Full word2vec} cuando se mezcla un político
-entre escritores, un político uruguayo entre políticos europeos y un futbolista inglés entre
-futbolistas brasileños. Los resultados en estos casos fueron todos satisfactorios.
+a continuación los resultados del modelo W01 cuando se mezcla un político entre escritores, un
+político uruguayo entre políticos europeos y un futbolista inglés entre futbolistas brasileños. Los
+resultados en estos casos fueron todos satisfactorios.
 
 \begin{lstlisting}
-  >>> full_word2vec.doesnt_match(['rowling', 'tolkien', 'cortazar', 'obama'])
+  >>> w01.doesnt_match(['rowling', 'tolkien', 'cortazar', 'obama'])
   <<< 'obama'
 \end{lstlisting}
 
 \begin{lstlisting}
-  >>> full_word2vec.doesnt_match(['cameron', 'putin', 'mujica', 'merkel', 'rajoy'])
+  >>> w01.doesnt_match(['cameron', 'putin', 'mujica', 'merkel', 'rajoy'])
   <<< 'mujica'
 \end{lstlisting}
 
 \begin{lstlisting}
-  >>> ffull_word2vec.doesnt_match(['ronaldinho', 'neymar', 'dunga', 'rooney', 'robinho'])
+  >>> w01.doesnt_match(['ronaldinho', 'neymar', 'dunga', 'rooney', 'robinho'])
   <<< 'rooney'
 \end{lstlisting}
 
 También resultó interesante explorar analogías relacionadas estrictamente con Uruguay,
-utilizando el modelo \textit{Reduced word2vec}. Se incluyen en el cuadro
-\ref{table:analogies_uruguay_1} analogías relacionadas a entes y figuras estatales de
-Uruguay. En el cuadro \ref{table:analogies_uruguay_2} se presentan analogías referentes
-al fútbol uruguayo y algunas de sus figuras más relevantes.
+utilizando el modelo W04. Se incluyen en el cuadro \ref{table:analogies_uruguay_1} analogías
+relacionadas a entes y figuras estatales de Uruguay. En el cuadro \ref{table:analogies_uruguay_2} se
+presentan analogías referentes al fútbol uruguayo y algunas de sus figuras más relevantes.
 
 \begin{table*}[ht]
     \centering
@@ -1170,11 +1161,10 @@ al fútbol uruguayo y algunas de sus figuras más relevantes.
     \label{table:analogies_uruguay_2}
 \end{table*}
 
-Finalmente, se logró comprobar que, en algunos casos, las analogías referentes a
-Uruguay que funcionan muy bien en el modelo reducido se pierden cuando se
-las evalúa en el modelo completo. En el cuadro \ref{table:analogies_uruguay_3} puede observarse el
-comportamiento en el modelo \textit{Full word2vec} de algunas de las analogías evaluadas
-satisfactoriamente en el modelo \textit{Reduced word2vec}.
+Finalmente, se logró comprobar que, en algunos casos, las analogías referentes a Uruguay que
+funcionan muy bien en el modelo reducido se pierden cuando se las evalúa en el modelo completo. En
+el cuadro \ref{table:analogies_uruguay_3} puede observarse el comportamiento en el modelo W01 de
+algunas de las analogías evaluadas satisfactoriamente en el modelo W04.
 
 \begin{table*}[ht]
     \centering
