@@ -166,11 +166,11 @@ de gran utilidad para el presente proyecto.
 \subsubsection{Corpora from the Web: ESCOW14}
 
 El proyecto Corpora from the Web (COW) es una iniciativa del grupo de gramática y lingüísticas
-generales de la Universidad Libre de Berlín (Freie Universität Berlin) [CITA]. El proyecto consta
-de una colección de corpus web en varios idiomas, entre los que se encuentra el español. Para este
-caso se cuenta con ESCOW14, un corpus en español de más de siete mil millones de palabras repartidas
-en cinco millones de documentos. El corpus fue generado realizando crawling masivo en Internet y en
-su versión actual cuenta con documentos del período comprendido entre 2012 y 2014, abarcando además
+generales de la Universidad Libre de Berlín (Freie Universität Berlin). El proyecto consta de una
+colección de corpus web en varios idiomas, entre los que se encuentra el español. Para este caso se
+cuenta con ESCOW14, un corpus en español de más de siete mil millones de palabras repartidas en
+cinco millones de documentos. El corpus fue generado realizando crawling masivo en Internet y en su
+versión actual cuenta con documentos del período comprendido entre 2012 y 2014, abarcando además
 documentos de una gran cantidad de países de habla hispana.
 
 Para la limpieza de documentos obtenidos de la web y posterior extracción de texto útil se utilizó
@@ -316,15 +316,6 @@ distintos tipos de sitios de donde se recopiló el texto, junto a las caracterí
 breve descripción de cómo se realizó la extracción. En la siguiente sección se entrará en la
 implementación de estas técnicas en más detalle.
 
-[- comentar el tipo de texto que se saca de cada fuente]
-[- comentar cómo se saca el texto limpio para cada fuente comentada]
-[el objetivo de esta sección es mostrar que buscamos *muchas* fuentes de datos y nos quedamos con lo
-mejor; que cada una de las fuentes cumplió con los requerimientos y más o menos qué enfoque se
-utilizó para scrapearla]
-
-[- comentar que se optó por sacar algo de cada tipo de fuentes, que en principio hay más info en cada
-área pero escapaba del alcance]
-
 
 \subsubsection{Portales de Noticias}
 
@@ -344,11 +335,11 @@ particulares de tiempo. Este punto es importante, y es una de las principales ra
 guardar esta fecha de como metadato del artículo.
 
 
-La investigación de portales de noticias comenzó por el diario La Nación de Argentina [cita?], por
-ser uno de los primeros diarios grandes en tener presencia digital, desde el año 2000. Realizando
-algunos cálculos preliminares en base a un muestreo de artículos, se vio que el diario contaba con
-al menos un millón de artículos, cada uno con un promedio de 500 palabras, llegando a un a masa total
-de palabras muy importante.
+La investigación de portales de noticias comenzó por el diario La Nación de
+Argentina~\cite{LaNacion}, por ser uno de los primeros diarios grandes en tener presencia digital,
+desde el año 2000. Realizando algunos cálculos preliminares en base a un muestreo de artículos, se
+vio que el diario contaba con al menos un millón de artículos, cada uno con un promedio de 500
+palabras, llegando a un a masa total de palabras muy importante.
 
 Uno de los primeros puntos que se notó es que la URL de todos los artículos del portal estaban
 identificadas por un número, y que cambiando este número por uno distinto, se podía acceder a otra
@@ -356,12 +347,12 @@ noticia. Además, la generación de estos números es secuencia: esto es, el pri
 tiene el identificador $1$, mientras que el último el $1871018$. Este hallazgo fue de suma
 importancia, pues permitió realizar \textit{scraping} del portal de forma más directa.
 
-Aprovechando esta característica, se construyó un script en Python~\cite{Python} para recorrer la lista de
-identificadores (desde el $1$ hasta el último presente en la portada) y descargar el contenido de
-los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaronn una serie de
-reglas XPath [cita?] para obtener los datos estructurados (título de la noticia, contenido, fecha de
-publicación). Corriendo este script en la totalidad de La Nación, se llegó a la cifra de 600
-millones de palabras exclusivamente con sus artículos.
+Aprovechando esta característica, se construyó un script en Python~\cite{Python} para recorrer la
+lista de identificadores (desde el $1$ hasta el último presente en la portada) y descargar el
+contenido de los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaronn
+una serie de reglas XPath~\cite{XPath} para obtener los datos estructurados (título de la noticia,
+contenido, fecha de publicación). Corriendo este script en la totalidad de La Nación, se llegó a la
+cifra de 600 millones de palabras exclusivamente con sus artículos.
 
 Los resultados obtenidos demostraron el alto potencial que tienen los portales de noticias como
 fuentes de palabras, por lo que se procedió a recopilar una lista de los principales diarios de
@@ -395,11 +386,11 @@ Existen diversos sitios en Internet dedicados a la escritura amateur, donde los 
 registran y publican historias propias. Puesto que muchos de estos sitios acumulan una gran cantidad
 de historias, se decidió investigar esta área en mayor profundidad.
 
-Algunos de estos sitios, como Los Cuentos [cita], son de carácter más bien general, donde los
-usuarios publican narraciones, ensayos, cuentos o poemas. La calidad y el contenido de estos textos
-varía drásticamente entre uno y otro, pudiendo encontrar piezas con una gran cantidad de faltas de
-ortografía y carentes de sentido, o piezas por autores renombrados que fueron republicados en el
-sitio.
+Algunos de estos sitios, como Los Cuentos~\cite{LosCuentos}, son de carácter más bien general, donde
+los usuarios publican narraciones, ensayos, cuentos o poemas. La calidad y el contenido de estos
+textos varía drásticamente entre uno y otro, pudiendo encontrar piezas con una gran cantidad de
+faltas de ortografía y carentes de sentido, o piezas por autores renombrados que fueron republicados
+en el sitio.
 
 La otra gran categoría de escritura amateur presente en Internet es el \textit{fanfiction}
 (\textit{ficción de fans}, en inglés). Estos textos suelen ser escritos principalmente por jóvenes,
@@ -446,15 +437,16 @@ corpus.
 
 
 El contenido de los proyectos de Wikimedia puede ser descargado en línea a través de \textit{dumps}
-provistos por la fundación misma [cita]. La principal complejidad de incorporar esta fuente es, sin
-embargo, su limpieza, pues los artículos vienen con un \textit{markup} denominado \textit{wikitexto}
-[cita] que dificulta la extracción del texto. De todos modos, existen una gran variedad de
-herramientas para la limpieza del mismo, cuestión que se detallará más adelante.
+provistos por la fundación misma~\cite{WikiDump}. La principal complejidad de incorporar esta fuente
+es, sin embargo, su limpieza, pues los artículos vienen con un \textit{markup} denominado
+\textit{wikitexto}~\cite{Wikitext} que dificulta la extracción del texto. De todos modos, existen
+una gran variedad de herramientas para la limpieza del mismo, cuestión que se detallará más
+adelante.
 
 
 \subsubsection{Foros}
 
-Los foros de discusión de Internet [cita] son otra gran fuente de palabras, en cuanto al volumen de
+Los foros de discusión de Internet son otra gran fuente de palabras, en cuanto al volumen de
 datos. Dado que muchos poseen miles de usuarios registrados, llegan a manejar cantidades de texto
 muy elevadas. Como contrapartida, sin embargo, el texto publicado suele ser de muy baja calidad,
 donde algunos mensajes no son más que imágenes o emotíconos y por lo tanto carentes de contenido
@@ -482,9 +474,9 @@ exclusivamente de diálogos. Esto también provee otro tipo de vocabulario disti
 anteriores pues, por ejemplo, hay un mayor uso de la segunda persona.
 
 La descarga de los subtítulos se realizó con un script manual, bajando todo el contenido disponible
-en Tu Subtítulo [cita]. Luego fue necesario extraer el texto de los mismos, eliminando las
-indicaciones de tiempo (cuándo debe aparecer cada línea en pantalla) y el markup que pueden contener
-(tags HTML por lo general).
+en Tu Subtítulo~\cite{TuSubtitulo}. Luego fue necesario extraer el texto de los mismos, eliminando
+las indicaciones de tiempo (cuándo debe aparecer cada línea en pantalla) y el markup que pueden
+contener (tags HTML por lo general).
 
 
 \subsubsection{Documentos Oficiales}
@@ -506,9 +498,9 @@ Uruguayo~\cite{ParlamentoUruguay} y luego procesado para eliminar el markup. Con
 de la Cámara de Diputados, la Cámara de Senadores, y de la Asamblea General. El mecanismo para su
 descarga se detalla más adelante.
 
-El segundo fue tomado de un corpus paralelo generado por [cita] como insumo para tareas de
-traducción automática. Fue descargado de [cita http://opus.lingfil.uu.se/MultiUN.php], procesado y
-finalmente agregado al corpus construido.
+El segundo fue tomado de un corpus paralelo generado por~\cite{Eisele2010} como insumo para tareas
+de traducción automática. Fue descargado de~\cite{MultiUNDownload}, procesado y finalmente agregado
+al corpus construido.
 
 
 \subsubsection{Libros}
@@ -526,9 +518,9 @@ digitalmente, suelen estar en formatos que hacen la extracción de texto muy com
 PDFs con escaneos del texto).
 
 Se optó por utilizar un corpus ya existente que recopila textos relacionados a la Unión Europea (en
-particular a su librería, \textit{EU Bookshop} [cita]), provista por el proyecto \textit{LetsMT!}
-[cita letsmt.eu]. Este es un corpus paralelo para la traducción automática, pero es posible utilizar
-únicamente los textos en español para incorporar al corpus.
+particular a su librería, \textit{EU Bookshop}~\cite{EUBookshop}), provista por el proyecto
+\textit{LetsMT!}~\cite{LetsMT}.eu. Este es un corpus paralelo para la traducción automática, pero
+es posible utilizar únicamente los textos en español para incorporar al corpus.
 
 Está compuesto principalmente por publicaciones escritas por instituciones de la UE, por lo que
 suelen ser de carácter más bien oficial (esto es, tratados, informes, y similares). Aún así, cuenta
@@ -537,28 +529,29 @@ con algunos libros de lectura general.
 
 \subsubsection{Otros Corpus}
 
-Se realizó también una investigación de los corpus en español existentes en la comunidad, como se mencionó
-en el capítulo anterior. Algunos de ellos, como los corpus paralelos de traducción automática a los que se
-hizo referencia arriba, fueron incluso incorporados al corpus.
+Se realizó también una investigación de los corpus en español existentes en la comunidad, como se
+mencionó en el capítulo anterior. Algunos de ellos, como los corpus paralelos de traducción
+automática a los que se hizo referencia arriba, fueron incluso incorporados al corpus.
 
-Además, se tuvieron en cuenta fuentes de documentos que forman parte de proyectos de
-construcción de corpus de mayor envergadura. En particular, se utilizaron algunos de los recursos
-recopilados por el proyecto OPUS de la Universidad de Upsala, Suecia [cita]. Dicho proyecto cuenta
-con una amplia colección de textos de carácter público, en varios idiomas. OPUS ofrece sus recursos
-de forma libre, tanto los textos recopilados como algunas herramientas utilizadas para la limpieza y
+Además, se tuvieron en cuenta fuentes de documentos que forman parte de proyectos de construcción de
+corpus de mayor envergadura. En particular, se utilizaron algunos de los recursos recopilados por el
+proyecto OPUS de la Universidad de Upsala, Suecia~\cite{OPUS}. Dicho proyecto cuenta con una amplia
+colección de textos de carácter público, en varios idiomas. OPUS ofrece sus recursos de forma libre,
+tanto los textos recopilados como algunas herramientas utilizadas para la limpieza y
 preprocesamiento de los mismos.
 
-Se tomaron en particular los documentos en español del EU Bookshop [cita], mencionado en la subsección
-anterior. Como ya se comentó, la colección contiene documentos con temáticas variadas que datan desde
-el año 1952 hasta la actualidad.
+Se tomaron en particular los documentos en español del EU Bookshop~\cite{EUBookshop}, mencionado en
+la subsección anterior. Como ya se comentó, la colección contiene documentos con temáticas variadas
+que datan desde el año 1952 hasta la actualidad.
 
-Se tomó también una colección de resoluciones de la Asamblea General de las Naciones Unidas [cita].
-Dicha colección cuenta con traducciones para las seis lenguas oficiales de la organización, incluyendo
-naturalmente al español. Al tratarse de documentos con relevancia jurídica se puede confiar en la
-calidad de las traducciones. Los textos abarcan diversas temáticas y formatos, desde transcripciones o
-sumarios de reuniones oficiales hasta tratados de economía o resoluciones de carácter legal. Se utiliza
-además un lenguaje técnico y formal, lo cual convierte a estos textos en un excelente complemento para
-el resto de documentos que componen el corpus.
+Se tomó también una colección de resoluciones de la Asamblea General de las Naciones
+Unidas~\cite{MultiUNDownload}.  Dicha colección cuenta con traducciones para las seis lenguas
+oficiales de la organización, incluyendo naturalmente al español. Al tratarse de documentos con
+relevancia jurídica se puede confiar en la calidad de las traducciones. Los textos abarcan diversas
+temáticas y formatos, desde transcripciones o sumarios de reuniones oficiales hasta tratados de
+economía o resoluciones de carácter legal. Se utiliza además un lenguaje técnico y formal, lo cual
+convierte a estos textos en un excelente complemento para el resto de documentos que componen el
+corpus.
 
 Finalmente, vale la pena comentar que tanto para las publicaciones del EU Bookshop como para las
 resoluciones de las Naciones Unidas fue necesario escribir scripts de limpieza que adaptaran los diversos
@@ -576,41 +569,47 @@ especifican las distintas técnicas empleadas para la obtención del texto.
 
 Uno de los principales desafíos del proyecto consiste en almacenar grandes cantidades de información
 de manera eficiente e indexar dicha información de tal forma que puedan realizarse búsquedas sobre
-la misma en tiempos razonables. Por lo tanto, se realizó una investigación de cuáles son las alternativas
-para almacenar grandes volúmenes de texto, evaluando tanto soluciones SQL como NoSQL. Finalmente,
-se optó por utilizar Elasticsearch~\cite{Elasitcsearch} por ofrecer excelentes cualidades para almacenar
-información, pero sobre todo por brindar excelentes funcionalidades de indexado y búsqueda sobre los datos
-almacenados.
+la misma en tiempos razonables. Por lo tanto, se realizó una investigación de cuáles son las
+alternativas para almacenar grandes volúmenes de texto, evaluando tanto soluciones SQL como
+NoSQL.\@Finalmente, se optó por utilizar Elasticsearch~\cite{Elasitcsearch} por ofrecer excelentes
+cualidades para almacenar información, pero sobre todo por brindar excelentes funcionalidades de
+indexado y búsqueda sobre los datos almacenados.
 
-Elasticsearch es un almacén de documentos JSON (similar a una base de datos NoSQL [cita?]) que provee
+Elasticsearch es un almacén de documentos JSON (similar a una base de datos NoSQL) que provee
 funcionalidades de búsqueda \textit{full-text} (esto es, texto libre sin ningún tipo de estructura)
-basado en la biblioteca Lucene [cita?], desarrollada para de este propósito. Provee una interfaz
-HTTP RESTful [cita?] para el acceso, consulta y almacenamiento de los documentos con los que trabaja.
+basado en la biblioteca Lucene~\cite{Lucene}, desarrollada para de este propósito. Provee una
+interfaz HTTP RESTful para el acceso, consulta y almacenamiento de los documentos con los que
+trabaja.
 
 Se optó utilizar Elasticsearch porque brinda varias ventajas por sobre las alternativas:
 
 \begin{itemize}
 
 \item Permite el almacenamiento grandes volúmenes de datos sin mayores problemas. Es capaz de
-manejar millones de documentos con ajustes mínimos. [algomás]
+manejar millones de documentos con ajustes mínimos a su configuración inicial. Esto será de crucial
+en el presente escenario, pues es el mayor punto de presión en la infraestructura.
 
 \item Brinda funcionalidades de búsqueda de texto que, mientras que no son un requerimiento
-\textit{a priori}, son de gran utilidad a la hora de explorar el corpus. [algomás] [qué implica
-full-text search, búsqueda más inteligente (stemming, etc.)]
+\textit{a priori}, son de gran utilidad a la hora de explorar el corpus. Utilizando la biblioteca
+Lucene, es capaz de realizar búsquedas \textit{full-text}, aplicando técnicas de \textit{stemming} y
+similares para mejorar la recuperación de documentos. Esto es de gran utilidad para estudiar la
+composición de los corpus de texto que se arman para entrenar modelos vectoriales.
 
-\item schemaless, por lo que no todos los documentos tienen que tener el mismo formato
+\item Posee mayor flexibilidad a la hora de diseñar el modelo de datos, permitiendo almacenar
+diferentes documentos con sólo algunos campos en común (e.g.\ que todos los documentos tengan un
+campo de texto, y que el resto dependa de la fuente de datos).
 
-\item permite mezclar datos estructurados y texto libre, pudiendo realizar consultas avanzadas, como
-cantidad de palabras por fuente de datos, etc.
+\item Permite mezclar datos estructurados y texto libre, permitiendo así realizar consultas
+avanzadas (como, por ejemplo, cantidad de palabras por fuente de datos).
 
-\item puede, en caso de ser necesario, adaptarse fácilmente a una infraestructura distribuida, con
-replicación y balanceo de carga para poder manejar incluso mayor cantidad de documentos
+\item Puede, en caso de ser necesario, adaptarse fácilmente a una infraestructura distribuida, con
+replicación y balanceo de carga para poder manejar incluso mayor cantidad de documentos.
 
 \end{itemize}
 
 Es importante mencionar que, comparado con un RDBMS más establecido como PostgreSQL, Elasticsearch
 no carece de problemas. Es sabido que bajo ciertas circunstancias, es posible que ocurra una pérdida
-de documentos [cita aphyr], aunque esto ocurre en esquemas distribuidos y bajo casos muy
+de documentos~\cite{AphyrES}, aunque esto ocurre en esquemas distribuidos y bajo casos muy
 particulares que no nada frecuentes. Además, el hecho de estar almacenando información no crítica
 (esto es, no son registros de usuarios, por ejemplo), esto no plantea mayores riesgos.
 
@@ -645,16 +644,16 @@ nuestra solicitud fue aprobada por Amazon en setiembre de 2015. A pesar de que y
 crédito obtenido en la contratación de un servidor, pudimos utilizar la beca para contratar otros
 servicios de interés.
 
-Entre las opciones consideradas para la contratación del servidor destacan \textit{Amazon EC2},
-\textit{Microsoft Azure} y \textit{Google Cloud Platform} [citas?], todos ellos proveedores altamente
-prestigiosos que ofrecen excelentes servicios. Lamentablemente, nos resultó imposible asumir los costos
-mensuales de la clase servidores que cumplen con nuestras expectativas en todas las facetas, al menos
-con estos proveedores. Al continuar investigando encontramos \textit{Webtropia}~\cite{Webtropia}, un
-proveedor alemán no tan popular, pero con precios mucho más asequibles. Por tanto, se contrató un servidor
-virtual con las características presentadas en el cuadro \ref{table:webtropia}, en la página
-\pageref{table:webtropia}.
+Entre las opciones consideradas para la contratación del servidor destacan \textit{Amazon
+EC2}~\cite{AmazonEC2}, \textit{Microsoft Azure}~\cite{Azure} y \textit{Google Cloud
+Platform}~\cite{GCP}, todos ellos proveedores altamente prestigiosos que ofrecen excelentes
+servicios. Lamentablemente, nos resultó imposible asumir los costos mensuales de la clase servidores
+que cumplen con nuestras expectativas en todas las facetas, al menos con estos proveedores. Al
+continuar investigando encontramos \textit{Webtropia}~\cite{Webtropia}, un proveedor alemán no tan
+popular, pero con precios mucho más asequibles. Por tanto, se contrató un servidor virtual con las
+características presentadas en el cuadro \ref{table:webtropia}.
 
-\begin{table*}[t]
+\begin{table*}[h]
     \centering
     \begin{tabular}{p{0.70\linewidth}p{0.20\linewidth}}
         \hline
@@ -710,11 +709,20 @@ Como se mencionó en la sección anterior, para el \textit{scraping} de los port
 referencian a sus artículos con un identificador secuencial, se construyó un sistema especializado
 para la tarea de extracción de los mismos.
 
-Este sistema se compone de una base de datos con información de las fuentes de datos y los
-artículos que son necesarios descargar; un módulo de scraping que se encarga de descargar, procesar
-y almacenar en Elasticsearch cada uno de estos artículos; y un conjunto de módulos de extracción que
+Este sistema se compone de una base de datos con información de las fuentes de datos y los artículos
+que son necesarios descargar; un módulo de scraping que se encarga de descargar, procesar y
+almacenar en Elasticsearch cada uno de estos artículos; y un conjunto de módulos de extracción que
 especifican, para cada sitio, cómo realizar el procesamiento de sus artículos. La arquitectura se
-puede visualizar en el diagrama [diagrama].
+puede visualizar en el diagrama~\ref{fig:autoscraper-arq}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{images/diag-corpus-autoscraper}
+  \caption{\textit{Arquitectura general del sistema construido.} El módulo de scraping toma los datos de la
+base de datos (PostgreSQL), descarga la página web de Internet y se lo envía al módulo de extracción
+adecuado, guardándolo finalmente ya procesado en Elasticsearch.}
+  \label{fig:autoscraper-arq}
+\end{figure}
 
 A continuación detallaremos cada uno de estos componentes.
 
@@ -768,7 +776,7 @@ entrar a la página inicial del portal y obtener el identificador asociado a la 
 particular. Esta función deberá revisar el código de respuesta para asegurarse que efectivamente se
 haya encontrado un artículo. Aquí se encapsula la lógica de extracción del texto limpio, ya sea
 mediante la utilización de reglas XPath o selectores CSS, mediante la ayuda de la biblioteca
-\texttt{lxml} [cita?]. En caso de tener éxito, devolverá el contenido del artículo y un valor de
+\texttt{lxml}~\cite{LXML}. En caso de tener éxito, devolverá el contenido del artículo y un valor de
 salida \texttt{success}; en caso de haber un error, devolverá \texttt{notfound}, \texttt{failure}, o
 \texttt{unparseable}. El objetivo de esta distinción es saber si es necesario reintentar porque el
 fallo fue por un error circunstancial (caso \texttt{failure}), si no existe un artículo (caso
@@ -784,7 +792,7 @@ título, etc.).
 Así, es posible incorporar una nueva fuente de palabras simplemente agregando un archivo Python que
 siga la anterior interfaz. El módulo de scraping se encargará así de dar de alta la nueva fuente en
 la base de datos y empezar a descargar el contenido. Esto brinda un diseño flexible y fácil de
-extender en un futuro [más énfasis en esto?].
+extender en un futuro.
 
 
 \paragraph{Módulo de Scraping}
@@ -823,13 +831,14 @@ esperando, de manera similar a como hace un sistema operativo de tiempo comparti
 cuales se suspenderán cuando sean bloqueadas esperando un evento externo y continuarán su ejecución
 cuando el bucle principal se lo indique. Para esto, el bucle debe emplear técnicas de
 \textit{polling} (o la funcionalidad equivalente que provea el sistema operativo) para saber cuándo
-un evento está listo para ser atendido. [figura? cita?]
+un evento está listo para ser atendido.
 
 Se utilizó la implementación de la biblioteca estándar de Python de esta construcción, denominada
-\texttt{asyncio} [cita?]. De esta forma, es posible descargar cientos de artículos concurrentemente,
-sin demorarse por un sitio particularmente lento. Para ello, cuando se recorren las entradas
-pendientes y se realiza un pedido HTTP para obtener el artículo, la función que procesa los
-artículos se suspende hasta que la descarga finalice, continuando con otro artículo mientras tanto.
+\texttt{asyncio}~\cite{Asyncio}. De esta forma, es posible descargar cientos de artículos
+concurrentemente, sin demorarse por un sitio particularmente lento. Para ello, cuando se recorren
+las entradas pendientes y se realiza un pedido HTTP para obtener el artículo, la función que procesa
+los artículos se suspende hasta que la descarga finalice, continuando con otro artículo mientras
+tanto.
 
 De todos modos, es necesario limitar la cantidad máxima de concurrencia por dos razones: primero,
 porque se corre el riesgo de iniciar miles o hasta millones de pedidos en simultáneo, lo cuál es
@@ -840,10 +849,10 @@ lo que se decidió que el nivel de concurrencia sea configurable a nivel de cada
 
 
 Para concluir esta sección, presentamos algunos números del proceso. Mediante este sistema se
-extrajeron [X] documentos de 20 portales de noticias, obteniendo así un total de [Y] mil millones de
-palabras. Se dieron de alta un total de [W] entradas, de las cuales un $[Z]\%$ llevó a la extracción
-exitosa de un documento, donde algunas fuentes de noticias fueron más rentables que otras, como se
-puede ver en [figura: tabla de porcentajes].
+extrajeron $11.363.251$ documentos de 20 portales de noticias, obteniendo así un total de
+$4.391.944.678$ mil millones de palabras. Se dieron de alta un total de $17.053.703$ entradas, de
+las cuales un $58,6\%$ llevó a la extracción exitosa de un documento, donde algunas fuentes de
+noticias fueron más rentables que otras.
 
 
 \subsubsection{Scraping Manual}
@@ -917,9 +926,6 @@ corpus según los tipos de fuente que lo componen y se presenta una breve discus
 aspectos más importantes de calidad.
 
 
-[hablar algo sobre temas legales?]
-
-
 \subsection{Composición del Corpus}
 
 Luego de meses de trabajo se logró no solo alcanzar la meta de dos mil millones de palabras,
@@ -953,56 +959,7 @@ zona geográfica de los documentos que componen el corpus, detallando además la
 cantidades por tipo de documento. En el cuadro \ref{table:corpus_doc_type} en cambio, se
 realiza un análisis complementario incluyendo datos sólo por tipo de documento.
 
-Es importante notar que no todas las fuentes lograron ser etiquetadas por su origen y que la
-proporción que se muestra en el cuadro \ref{table:corpus_country} corresponde a la comparación
-con la totalidad de palabras del corpus. Por otro lado, sí se logró etiquetar todos los documentos
-de acuerdo a su tipo de documento.
-
-\begin{table*}[t]
-    \centering
-    \begin{tabular}{llccc}
-        \hline
-        Origen & Tipo de documento & Documentos & Palabras & Proporción (palabras)\\
-        \hline
-        Argentina\\
-         & Noticias & 2.130.965 & 969.052.149\\
-         & Foros & 199.129 & 133.942.466\\
-         & \textit{Total} & 2.330.094 & \textbf{1.102.994.615} & 18.5\%\\
-        \\
-        México\\
-         & Noticias & 2.489.280 & \textbf{934.356.171} & 15.6\%\\
-        \\
-        Uruguay\\
-         & Noticias & 1.961.752 & 748.998.277\\
-         & Documentos oficiales & 3.418 & 103.988.021\\
-         & \textit{Total} & 1.965.170 & \textbf{852.986.298} & 14.3\%\\
-        \\
-        España\\
-         & Noticias & 1.631.521 & \textbf{809.067.269} & 13.5\%\\
-        \\
-        \\
-        Paraguay\\
-         & Noticias & 1.919.737 & \textbf{529.593.496} & 8.9\%\\
-        \\
-        Unión Europea\\
-         & Documentos oficiales & 66.547 & 313.845.665\\
-         & Libros & 7.437 & 202.546.087\\
-         & \textit{Total} & 73.984 & \textbf{516.391.752} & 8.6\%\\
-        Chile\\
-         & Noticias & 713.541 & \textbf{228.490.971} & 3.8\%\\
-        \\
-        Perú\\
-         & Noticias & 313.081 & \textbf{100.124.272} & 1.7\%\\
-        \\
-        Bolivia\\
-         & Noticias & 158.924 & \textbf{56.640.181} & 0.9\%\\
-        \hline
-    \end{tabular}
-    \caption{Composición del corpus por zona geográfica.}
-    \label{table:corpus_country}
-\end{table*}
-
-\begin{table*}[t]
+\begin{table*}[h]
     \centering
     \begin{tabular}{lccc}
         \hline
@@ -1021,9 +978,59 @@ de acuerdo a su tipo de documento.
     \label{table:corpus_doc_type}
 \end{table*}
 
+Es importante notar que no todas las fuentes lograron ser etiquetadas por su origen y que la
+proporción que se muestra en el cuadro \ref{table:corpus_country} corresponde a la comparación
+con la totalidad de palabras del corpus. Por otro lado, sí se logró etiquetar todos los documentos
+de acuerdo a su tipo de documento.
+
+\begin{table*}[h]
+    \centering
+    \begin{tabular}{llccc}
+        \hline
+        Origen & Tipo & Documentos & Palabras & Porcentaje\footnote{Proporción de palabras sobre el total del corpus.}\\
+        \hline
+        Argentina
+         & Noticias & 2.130.965 & 969.052.149\\
+         & Foros & 199.129 & 133.942.466\\
+         & \textit{Total} & 2.330.094 & \textbf{1.102.994.615} & 18.5\%\\
+        \\
+        México
+         & Noticias & 2.489.280 & \textbf{934.356.171} & 15.6\%\\
+        \\
+        Uruguay
+         & Noticias & 1.961.752 & 748.998.277\\
+         & Docs. oficiales & 3.418 & 103.988.021\\
+         & \textit{Total} & 1.965.170 & \textbf{852.986.298} & 14.3\%\\
+        \\
+        España
+         & Noticias & 1.631.521 & \textbf{809.067.269} & 13.5\%\\
+        \\
+        Paraguay
+         & Noticias & 1.919.737 & \textbf{529.593.496} & 8.9\%\\
+        \\
+        Unión Europea
+         & Docs. oficiales & 66.547 & 313.845.665\\
+         & Libros & 7.437 & 202.546.087\\
+         & \textit{Total} & 73.984 & \textbf{516.391.752} & 8.6\%\\
+        \\
+        Chile
+         & Noticias & 713.541 & \textbf{228.490.971} & 3.8\%\\
+        \\
+        Perú
+         & Noticias & 313.081 & \textbf{100.124.272} & 1.7\%\\
+        \\
+        Bolivia
+         & Noticias & 158.924 & \textbf{56.640.181} & 0.9\%\\
+        \hline
+    \end{tabular}
+    \caption{Composición del corpus por zona geográfica.}
+    \label{table:corpus_country}
+\end{table*}
+
 Como se puede ver, la mayor cantidad de palabras provienen de fuentes del tipo noticias,
 aunque de todas formas se consiguió el objetivo de tener una considerable variedad de
 tipos de fuentes representadas.
+
 
 \subsection{Calidad del Corpus}
 
