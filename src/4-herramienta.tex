@@ -123,7 +123,12 @@ Finalmente, en esta sección se incluye la cantidad total de palabras que forman
 actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
 nuevas palabras de alguna de las fuentes.
 
-[imagen ilustrativa de esta sección]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-dashboard}
+    \caption{\textit{Pantalla Dashboard en la aplicación web.}}
+    \label{fig:ui-nabu-dashboard}
+\end{figure}
 
 \subsection{Corpus}
 
@@ -157,7 +162,12 @@ importante mencionar aquí que es recomendable especificar rangos de fechas de e
 al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
 obtenidos.
 
-[imagen ilustrativa de esta sección]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-corpus}
+    \caption{\textit{Pantalla Corpus en la aplicación web.}}
+    \label{fig:ui-nabu-corpus}
+\end{figure}
 
 \subsection{Embeddings}
 
@@ -208,7 +218,12 @@ representaciones vectoriales de palabras poder entrenar sus propios vectores y l
 uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
 bajo nivel de las representaciones.
 
-[imagen ilustrativa de esta sección]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-embeddings}
+    \caption{\textit{Pantalla Embeddings en la aplicación web.}}
+    \label{fig:ui-nabu-embeddings}
+\end{figure}
 
 \subsection{Tests}
 
@@ -248,7 +263,12 @@ resultado esperado. El formato recién descrito es el mismo para las tres catego
 actualmente, pero la semántica de cada columna depende de cada categoría, como bien se explicó en
 secciones anteriores.
 
-[imagen ilustrativa de esta sección]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-tests}
+    \caption{\textit{Pantalla Tests en la aplicación web.}}
+    \label{fig:ui-nabu-tests}
+\end{figure}
 
 
 \section{Implementación}
@@ -281,9 +301,9 @@ consumir pedidos de una cola de tareas que indica qué algoritmo se debe entrena
 devolver el resultado.
 
 \item Un nodo donde corre el servidor de aplicación que coordina los distintos componentes de la
-arquitectura y ofrece una interfaz RESTful [cita?] para interacción con el sistema. Sus funciones
-incluyen la administración de la cola de tareas, la realización de consultas en Elasticsearch, y la
-actualización del modelo de datos, entre otros.
+arquitectura y ofrece una interfaz RESTful~\cite{Fielding2000} para interacción con el sistema. Sus
+funciones incluyen la administración de la cola de tareas, la realización de consultas en Elasticsearch,
+y la actualización del modelo de datos, entre otros.
 
 \item Un nodo que sirve una aplicación web encargada de ofrecer una interfaz web sobre el servidor
 de aplicaciones que pueda ser utilizada por un usuario no especializado.
@@ -371,7 +391,7 @@ computacionales para correr los algoritmos. Esto es necesario ya que los algorit
 horas e incluso días en finalizar, por lo que es imposible correrlos en el tiempo en que se debe
 atender un pedido HTTP\@.
 
-Se utilizó la biblioteca Celery [cita?] para la comunicación y la administración de dicha
+Se utilizó la biblioteca Celery~\cite{Celery} para la comunicación y la administración de dicha
 cola. Celery ofrece un mecanismo para producir y consumir mensajes en una cola de tareas en tiempo
 real, a través de un sistema distribuido, flexible, y confiable, lo que lo hace una buena opción
 para la herramienta a construir. A través de esta biblioteca, es posible definir tipos de tareas
@@ -441,9 +461,9 @@ vectoriales, se buscó, donde fue posible, aprovechar bibliotecas ya existentes 
 
 Debido a su popularidad, existen varias implementaciones de \texttt{word2vec} en la comunidad. En
 primer lugar se encuentra, claro está, la implementación de los algoritmos CBOW y SGNS hechas por
-Mikolov [cita]. También existen implementaciones en diversos lenguajes de programación, como la
-provista por \texttt{Gensim} (escrita en Python [cita]), o la provista por \texttt{mllib} (escrita
-en Java [cita]), entre otras.
+Mikolov~\cite{Word2vecGoogle}. También existen implementaciones en diversos lenguajes de programación,
+como la provista por \texttt{Gensim} (escrita en Python~\cite{RehurekLrec}), o la provista por
+\texttt{mllib} (escrita en Java~\cite{Word2vecMLlib}), entre otras.
 
 Se optó por utilizar la implementación de la biblioteca \texttt{Gensim} pues el hecho de estar
 escrita en Python facilita mucho su integración con el resto del sistema. Además, como muestran los
@@ -453,8 +473,8 @@ incluso a ser más eficiente computacionalmente que la original, a pesar de esta
 
 \paragraph{GloVe}
 
-Para el caso de GloVe se decidió utilizar la implementación provista por los autores [cita], pues no
-existen bibliotecas satisfactorias escritas en Python. Por esta razón la tarea de integración fue
+Para el caso de GloVe se decidió utilizar la implementación provista por los autores~\cite{Pennington2014},
+pues no existen bibliotecas satisfactorias escritas en Python. Por esta razón la tarea de integración fue
 más compleja, pues fue necesario utilizar el módulo Python \texttt{subprocess} para comunicarse con
 un proceso hijo que corre los algoritmos, trasmitiendo el texto del corpus a través de la entrada
 estándar del mismo.
@@ -464,14 +484,14 @@ estándar del mismo.
 
 Para el cuarto algortimo, el modelo estadístico basado en la matriz PPMI con SVD, fue necesario
 realizar una implementación propia, pues no fue posible encontrar ninguna que cumpliera con los
-requerimientos necesarios. Partiendo del artículo de Levy y Goldberg [cita], y aprovechando parte
-del código provisto por los autores en [cita hyperwords], se elaboró un módulo Python para la
-construcción de representaciones con dicho modelo.
+requerimientos necesarios. Partiendo del artículo de Levy y Goldberg~\cite{Levy2015}, y aprovechando
+parte del código provisto por los autores en ~\cite{LevyHyperwords}, se elaboró un módulo Python para
+la construcción de representaciones con dicho modelo.
 
-Se utilizaron las bibliotecas \texttt{numpy} [cita] y \texttt{scipy} [cita] para la manipulación
-numérica de matrices (matrices dispersas, en particular, como lo es la matriz de coocurrencias con
-medida PPMI), y el \textit{wrapper} \texttt{sparsesvd} [cita] de la biblioteca \texttt{SVDLIBC}
-[cita] para la aplicación de SVD a matrices dispersas.
+Se utilizaron las bibliotecas \texttt{numpy}~\cite{NumPy} y \texttt{scipy}~\cite{SciPy} para la
+manipulación numérica de matrices (matrices dispersas, en particular, como lo es la matriz de coocurrencias
+con medida PPMI), y el \textit{wrapper} \texttt{sparsesvd}~\cite{sparsesvd} de la biblioteca
+\texttt{SVDLIBC}~\cite{SVDLIBC} para la aplicación de SVD a matrices dispersas.
 
 Teniendo en cuenta algunas sugerencias de los autores en cuanto al tratamiento efectivo de matrices
 dispersas (en lo que respecta al uso de memoria principalmente), se logró a una implementación
@@ -480,12 +500,10 @@ artículo original. Se implementan también las heurísticas que los autores enc
 la performance del algoritmo, como el \textit{subsampling} de palabras comunes y la eliminación de
 palabras poco frecuentes.
 
-[mencionar sobre cómo se guardan los vectores en el filesystem?]
-
 
 \subsubsection{Evaluación}
 
-Se implementaron [tres] mecanismos de evaluación para las representaciones vectoriales, a
+Se implementaron tres mecanismos de evaluación para las representaciones vectoriales, a
 continuación se describe el proceso de implementación para cada uno.
 
 
@@ -566,7 +584,7 @@ usuario, los modelos vectoriales estarán siendo entrenados por una caja negra q
 de vectores con determinadas características al finalizar.
 
 Con este fin, la API se maneja exclusivamente a nivel del modelo de datos: esto es, el usuario
-interactúa con recursos REST [cita rest resource] que representan al dominio del sistema que se
+interactúa con recursos REST~\cite{Fielding2000} que representan al dominio del sistema que se
 describió antes, junto con un recurso especial para la búsqueda de documentos en el corpus.
 
 El principal objetivo de esta interfaz es ser consumida por el frontend de la herramienta, aunque
@@ -579,9 +597,9 @@ Se exponen tres \textit{endpoints} (URLs que referencian a un recurso particular
 el corpus de texto, todos bajo el prefijo \texttt{/corpus/}. El primero de ellos,
 \texttt{/corpus/search/} permite realizar una búsqueda en el texto, filtrando por la aparición de
 uno o más términos determinados o por campos de los metadatos asociados a cada documento. La
-consulta se especifica a través de un JSON [cita], siguiendo el formato empleado por Elasticsearch
-[cita], por lo que ofrece toda las funcionalidades que este motor de búsqueda brinda. Para cada
-documento recuperado, se devuelve fragmento de su contenido, con el texto que coincide con el
+consulta se especifica a través de un documento JSON~\cite{JSON}, siguiendo el formato empleado por
+Elasticsearch, por lo que ofrece toda las funcionalidades que este motor de búsqueda brinda. Para
+cada documento recuperado, se devuelve fragmento de su contenido, con el texto que coincide con el
 término de búsqueda resaltado. También se provee funcionalidades de paginado para no tener problemas
 con consultas demasiado grandes.
 
@@ -593,23 +611,22 @@ Puesto que recorrer todo el corpus documento a documento a través de los anteri
 extremadamente ineficiente, se provee un endpoint adicional, \texttt{/corpus/download/}, que, a
 partir de una consulta con el mismo formato de las búsquedas, devuelve un archivo con el contenido
 de todos los documentos que coinciden con la misma. Para ello, se recuperan los documentos y se
-construye un archivo comprimido en formato ZIP [cita] compuesto por un archivo de texto plano por
-documento.
+construye un archivo comprimido en formato ZIP~\cite{ZIPFormat} compuesto por un archivo de texto
+plano por documento.
 
 Dado que los contenidos asociados al resultado de una consulta podrían ocupar un gran tamaño (en el
 orden de \textit{gigabytes}), es imprescindible este archivo no se genere por completo en el
 servidor y que luego se envíe al usuario. Con este fin, se utilizó la biblioteca de Python
-\texttt{zipstream} [cita], que permite ir construyendo y sirviendo el contenido de un archivo ZIP
-mientras el usuario lo va descargando, agregándole los archivos con el contenido de los documentos
+\texttt{zipstream}~\cite{zipstream}, que permite ir construyendo y sirviendo el contenido de un archivo
+ZIP mientras el usuario lo va descargando, agregándole los archivos con el contenido de los documentos
 uno a uno, logrando así que el archivo final nunca se almacene por completo en el servidor.
-
 
 Por otro lado, cabe notar que permitir al usuario ingresar una consulta genérica a través de la API
 plantea ciertas consideraciones de seguridad. Dado que la entrada del usuairo se restringe a una
 consulta sobre el corpus, no podrá modificar el contenido almacenado. Sin embargo, fue necesario
 tomar precauciones adicionales y bloquear la funcionalidad de consultas con scripts de Elasticsearch
-[cita] para evitar inconvenientes\footnote{De hecho, las nuevas versiones de Elasticsearch vienen
-con esta funcionalidad deshabilitadas por este mismo motivo.}.
+~\cite{ElasticsearchScripting} para evitar inconvenientes\footnote{De hecho, las nuevas versiones de
+Elasticsearch vienen con esta funcionalidad deshabilitadas por este mismo motivo.}.
 
 
 \paragraph{Vectores y Pruebas}
@@ -729,30 +746,31 @@ luego describir la solución finalmente implementada.
 
 \subsubsection{Herramientas}
 
-Como herramienta principal se decidió utilizar AngularJS [cita], un popular framework JavaScript de
-código abierto mantenido por Google. AngularJS brinda importantes ventajas en comparación con otras
-alternativas populares como puede ser jQuery [cita?]. Entre sus principales características se encuentra
-el hecho de implementar el patrón de diseño MVC (modelo, vista, controlador) [cita] el cual permite una
-organización de la aplicación que fomenta la reutilización de código y la separación de conceptos.
-Además, abstrae las operaciones de modificación del modelo de objetos del documento (DOM) del navegador,
-lo que simplifica el desarrollo de la aplicación.
+Como herramienta principal se decidió utilizar AngularJS~\cite{AngularJS}, un popular framework JavaScript
+de código abierto mantenido por Google. AngularJS brinda importantes ventajas en comparación con otras
+alternativas populares como puede ser jQuery~\cite{jQuery}. Entre sus principales características se
+encuentra el hecho de implementar el patrón de diseño MVC (modelo, vista, controlador)~\cite{Leff2001} el
+cual permite una organización de la aplicación que fomenta la reutilización de código y la separación de
+conceptos. Además, abstrae las operaciones de modificación del modelo de objetos del documento (DOM) del
+navegador, lo que simplifica el desarrollo de la aplicación.
 
 Para lograr un estilo visual elegante y consistente de forma sencilla se decidió aprovechar el proyecto
-Angular Material [cita]. Dicho proyecto provee una implementación de la especificación del Diseño Material
-de Google [cita], de forma totalmente compatible con AngularJS. Dicha especificación de diseño es la que
-actualmente puede encontrarse en dispositivos móviles ejecutando el sistema operativo Android.
+Angular Material~\cite{AngularMaterial}. Dicho proyecto provee una implementación de la especificación del
+Diseño Material de Google~\cite{MaterialDesign}, de forma totalmente compatible con AngularJS. Dicha
+especificación de diseño es la que actualmente puede encontrarse en dispositivos móviles ejecutando el
+sistema operativo Android.
 
-También se utilizó Yeoman [cita], un generador de proyectos usualmente utilizado como andamiaje para la
-construcción inicial de una aplicación web. Su objetivo principal es sentar los fundamentos básicos de
-una aplicación tales como estructura de directorios, archivos de configuración iniciales e instalación
+También se utilizó Yeoman~\cite{Yeoman}, un generador de proyectos usualmente utilizado como andamiaje
+para la construcción inicial de una aplicación web. Su objetivo principal es sentar los fundamentos básicos
+de una aplicación tales como estructura de directorios, archivos de configuración iniciales e instalación
 de herramientas recomendadas.
 
-Se decidió a su vez la adopción de una herramienta de ejecución de tareas, Grunt [cita] en este caso,
+Se decidió a su vez la adopción de una herramienta de ejecución de tareas, Grunt~\cite{Grunt} en este caso,
 para simplificar y automatizar labores como minimización de código JavaScript y CSS o empaquetado de
 dependencias. Estas tareas ayudan reducir la cantidad y el tamaño de los archivos requeridos desde el
 navegador y por tanto mejoran el tiempo de respuesta de la aplicación.
 
-Para el manejo de estilos de la aplicación se optó por utilizar Sass [cita], una extensión del lenguaje
+Para el manejo de estilos de la aplicación se optó por utilizar Sass~\cite{Sass}, una extensión del lenguaje
 de hojas de estilos CSS. Sass provee un conjunto de funcionalidades que simplifican la definición de
 estilos para las aplicaciones del lado de usuario. Naturalmente los navegadores no pueden interpretar
 hojas de estilos escritas en Sass, pero para resolver ese problema se automatizó una tarea en Grunt para
@@ -779,7 +797,7 @@ Desde el punto de vista lógico, esta sección cuenta con una sola vista princip
 información ya especificada de cada fuente que compone el corpus. Esta vista se implementa en el archivo
 \texttt{dashboard.html} en el directorio \texttt{views} de la aplicación. Para la elaboración de las
 gráficas se utilizó angular-chart.js, una colección de directivas nativas para la popular biblioteca
-Chart.js [cita].
+Chart.js~\cite{Chartjs}.
 
 Se utilizó un sólo controlador ubicado, como todos los controladores de la aplicación, en el directorio
 \texttt{scripts/controllers}. Dicho controlador, \texttt{dashboard.js}, se encarga simplemente de dibujar
@@ -797,7 +815,7 @@ de un documento particular.
 
 Se utilizaron además dos controladores para la lógica de la sección. En \texttt{corpus.js} se maneja la
 creación de las consultas en formato JSON, el control de la tabla de resultados y la utilización de la
-biblioteca ace.js [cita] para dibujar el cuadro de texto para las consultas avanzadas. También se cuenta
+biblioteca Ace~\cite{AceJS} para dibujar el cuadro de texto para las consultas avanzadas. También se cuenta
 con el controlador \texttt{document-detail-dialog.js} que se encarga de controlar el cuadro de diálogo
 para los detalles de los documentos. Esta sección utiliza también el servicio \texttt{corpus.js}, que ya fue
 descrito en la sección anterior.
