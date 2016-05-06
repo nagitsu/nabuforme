@@ -107,6 +107,13 @@ Principalmente se incluye un apartado por cada fuente utilizada para construir e
 apartados se detalla el nombre de la fuente, la cantidad de palabras que la misma aporta al corpus y una
 pequeña gráfica que muestra la cantidad de palabras que han sido obtenidas recientemente de dicha fuente.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-dashboard}
+    \caption{\textit{Pantalla Dashboard en la aplicación web.}}
+    \label{fig:ui-nabu-dashboard}
+\end{figure}
+
 Estás gráficas cumplen la doble función de presentar la cantidad de palabras obtenidas de cada fuente de
 forma diaria y además alertar de un posible defecto en el correspondiente script de extracción cuando la
 cantidad extraída presenta una caída muy pronunciada con respecto a registros inmediatamente anteriores.
@@ -122,13 +129,6 @@ estos problemas rápidamente.
 Finalmente, en esta sección se incluye la cantidad total de palabras que forman el corpus. Dicho número se
 actualiza de forma automática en intervalos regulares y se despliega un mensaje cada vez que se obtienen
 nuevas palabras de alguna de las fuentes.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/ui-nabu-dashboard}
-    \caption{\textit{Pantalla Dashboard en la aplicación web.}}
-    \label{fig:ui-nabu-dashboard}
-\end{figure}
 
 \subsection{Corpus}
 
@@ -147,6 +147,13 @@ correspondiente paginación. En la tabla se incluye la fecha de extracción del 
 del texto que lo compone, resaltando los términos que lo hacen relevante a la consulta, y la fuente de la
 que fue extraído.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-corpus}
+    \caption{\textit{Pantalla Corpus en la aplicación web.}}
+    \label{fig:ui-nabu-corpus}
+\end{figure}
+
 Al hacer click en un documento de la tabla se presenta un cuadro de diálogo con información más detallada
 del mismo. Se incluye cantidad de total de palabras, etiquetas, la fecha de creación en la fuente (si está
 disponible) y el cuerpo completo del texto que lo compone. Se ofrece además un botón para abrir en una
@@ -162,13 +169,6 @@ importante mencionar aquí que es recomendable especificar rangos de fechas de e
 al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
 obtenidos.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/ui-nabu-corpus}
-    \caption{\textit{Pantalla Corpus en la aplicación web.}}
-    \label{fig:ui-nabu-corpus}
-\end{figure}
-
 \subsection{Embeddings}
 
 En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalidades vinculadas a las
@@ -177,6 +177,13 @@ De cada uno se detalla su descripción, el tipo de representación vectorial uti
 \texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y su estado de
 entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
 \textit{en entrenamiento} y \textit{sin entrenar}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-embeddings}
+    \caption{\textit{Pantalla Embeddings en la aplicación web.}}
+    \label{fig:ui-nabu-embeddings}
+\end{figure}
 
 Esta vista ofrece un botón para crear y poner a entrenar un nuevo vector. Al momento de crear vectores se
 debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además especificar
@@ -192,6 +199,13 @@ los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar 
 entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando el vector se
 encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
 entrenamiento.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-embeddings-new}
+    \caption{\textit{Pantalla para crear un nuevo Embedding en la aplicación web.}}
+    \label{fig:ui-nabu-embeddings-new}
+\end{figure}
 
 De forma conveniente, junto al cuadro de la consulta en formato JSON se incluye un botón para ejecutar la
 misma en la sección de \textit{Corpus}. Esto facilita la posibilidad de explorar el conjunto de documentos
@@ -218,13 +232,6 @@ representaciones vectoriales de palabras poder entrenar sus propios vectores y l
 uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
 bajo nivel de las representaciones.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/ui-nabu-embeddings}
-    \caption{\textit{Pantalla Embeddings en la aplicación web.}}
-    \label{fig:ui-nabu-embeddings}
-\end{figure}
-
 \subsection{Tests}
 
 En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de los vectores
@@ -233,6 +240,13 @@ disponibles, indicando para cada uno su nombre, descripción y categoría. Las c
 \textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De forma
 conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad
 de vectores que están siendo evaluados actualmente, junto con un indicador de progreso de la tarea actual.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-tests}
+    \caption{\textit{Pantalla Tests en la aplicación web.}}
+    \label{fig:ui-nabu-tests}
+\end{figure}
 
 Los usuarios pueden hacer click en un caso de prueba para acceder a la vista de detalles, donde se
 presenta información adicional. Además de los datos mostrados en la vista principal, se presenta un
@@ -246,6 +260,13 @@ un botón para ver los detalles en profundidad de la evaluación. En los detalle
 encuentra, cuando corresponde, el desempeño en las métricas \textsc{3CosAdd} y \textsc{3CosMul}
 (porcentaje de aciertos exactos, y entre las primeras cinco y diez sugerencias), palabras no encontradas,
 entradas faltantes, entradas equivocadas y cantidad total de entradas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-tests-detail}
+    \caption{\textit{Pantalla de vista en detalle de Tests en la aplicación web.}}
+    \label{fig:ui-nabu-tests-detail}
+\end{figure}
 
 Desde la vista de detalles también es posible agendar nuevos trabajos de evaluación. Al momento de
 crearlos se puede optar por elegir todos los vectores que aun no fueron evaluados con el caso de prueba
@@ -262,13 +283,6 @@ espacio por línea, donde las primeras tres columnas se utilizarán en la evalua
 resultado esperado. El formato recién descrito es el mismo para las tres categorías existentes
 actualmente, pero la semántica de cada columna depende de cada categoría, como bien se explicó en
 secciones anteriores.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/ui-nabu-tests}
-    \caption{\textit{Pantalla Tests en la aplicación web.}}
-    \label{fig:ui-nabu-tests}
-\end{figure}
 
 
 \section{Implementación}
@@ -315,11 +329,11 @@ recursos (mencionado en el capítulo anterior), por no tener la herramienta dema
 embargo, es posible dividirlo en distintos servidores simplemente cambiando la configuración de los
 nodos, permitiendo así escalar a un mayor número de usuarios de ser necesario.
 
-La comunicación entre las distintas partes puede observarse en la figura [figura]. En el centro de
-la arquitectura se encuentra el servidor de aplicación, que se encarga de coordinar el resto de los
-nodos. Éste ofrece una API (o \textit{Application Programming Interface}) RESTful que permite
-realizar consultas sobre el corpus, crear nuevos modelos vectoriales, enviarlos a entrenar y
-evaluar, y todo el resto de las funcionaldiades que ofrece la herramienta. Tiene, por lo tanto, que
+La comunicación entre las distintas partes puede observarse en la figura~\ref{fig:diag-tool-arch}.
+En el centro de la arquitectura se encuentra el servidor de aplicación, que se encarga de coordinar
+el resto de los nodos. Éste ofrece una API (o \textit{Application Programming Interface}) RESTful
+que permite realizar consultas sobre el corpus, crear nuevos modelos vectoriales, enviarlos a entrenar
+y evaluar, y todo el resto de las funcionaldiades que ofrece la herramienta. Tiene, por lo tanto, que
 comunicarse con el nodo de Elasticsearch, con el nodo de PostgreSQL, y mantener la cola de tareas
 que los \textit{workers} posteriormente consumirán.
 
@@ -333,7 +347,12 @@ razón, denominamos la aplicación web como la parte delantera de la aplicación
 y al resto de los nodos (el servidor de aplicación y los otros nodos) la parte trasera (o
 \textit{backend}).
 
-[diagrama ES + PSQL + BACKEND + FRONTEND + JOBQUEUE]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/diag-tool-arch}
+    \caption{\textit{Arquitectura a alto nivel de la herramienta.}}
+    \label{fig:diag-tool-arch}
+\end{figure}
 
 
 \subsection{Backend}
@@ -445,11 +464,16 @@ una tarea si la misma está actualmente en ejecución o ya ha terminado: para el
 vector, se devolverá un error, mientras que para la evaluación se borrarán primero los resultados
 existentes.
 
-En la figura [figura] se diagrama el funcionamiento del procedimiento completo. Se muestra además
-cómo interactúan los distintos componentes de la cola de tareas entre sí y cómo se comunican con el
-resto de los nodos del sistema.
+En la figura~\ref{fig:diag-tool-flow} se diagrama el funcionamiento del procedimiento completo. Se
+muestra además cómo interactúan los distintos componentes de la cola de tareas entre sí y cómo se
+comunican con el resto de los nodos del sistema.
 
-[diagrama (API -> celery -> redis -> worker -> redis; API -> celery -> redis)]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/diag-tool-flow}
+    \caption{\textit{Diagrama del proceso empleado para el entrenamiento y la evaluación de vectores.}}
+    \label{fig:diag-tool-flow}
+\end{figure}
 
 
 \subsubsection{Entrenamiento}
@@ -467,8 +491,9 @@ como la provista por \texttt{Gensim} (escrita en Python~\cite{RehurekLrec}), o l
 
 Se optó por utilizar la implementación de la biblioteca \texttt{Gensim} pues el hecho de estar
 escrita en Python facilita mucho su integración con el resto del sistema. Además, como muestran los
-contactos que tuvo el autor de la misma con Mikolov [citas], es una implementación probada que llega
-incluso a ser más eficiente computacionalmente que la original, a pesar de estar escrita en Python.
+contactos que tuvo el autor de la misma con Mikolov~\cite{MikolovGoogleGroups}, es una implementación
+probada que llega incluso a ser más eficiente computacionalmente que la original, a pesar de estar
+escrita en Python.
 
 
 \paragraph{GloVe}
@@ -516,8 +541,8 @@ $w_3$ es a $w_4$''.
 Los conjuntos de pruebas para esta tarea se componen de una lista de 4-uplas con las palabras que
 forman la analogía, donde la última es que se debe recuperar. El \textit{job} encargado de correr la
 evaluación leerá el archivo con los datos (una analogía por línea) y utilizará las métricas
-\textsc{3CosAdd} y \textsc{3CosMul} para obtener el resultado (como se especifica en el [capítulo
-2]).
+\textsc{3CosAdd} y \textsc{3CosMul} para obtener el resultado, como se especifica en el capítulo
+2.
 
 Se almacena el porcentaje de aciertos exactos, el procentaje de aciertos entre las cinco primeras
 sugerencias, y el porcentaje de aciertos entre las diez primeras sugerencias. De esta forma se puede
@@ -539,7 +564,7 @@ La prueba en sí consiste en cargar la lista de pares de palabras, asignar un pu
 palabras (utilizando la distancia coseno entre sus representaciones vectoriales) y calcular la
 correlación entre los puntajes obtenidos y los del conjunto de pruebas (que son asignados por jueces
 humanos). Esta es la técnica estándar en la literatura para evaluar la capacidad de capturar
-relaciones de similitud por parte de los vectores de palabras, como se vio en el [capítulo 2].
+relaciones de similitud por parte de los vectores de palabras, como se vio en el capítulo 2.
 
 Los archivos con los datos de prueba consisten en una lista de dos palabras y su puntaje de
 similitud asociado. Por otro lado, y al igual que en las analogías, se guarda también la cantidad de
@@ -789,8 +814,6 @@ Para el análisis de la implementación de los distintos componentes realizaremo
 división conceptual, pero prestando atención a los detalles de implementación de cada uno, en
 particular haciendo referencia a los componentes MVC que hacen a cada sección.
 
-[diagrama de la arquitectura de la aplicación (lógico y conceptual)]
-
 \paragraph{Dashboard}
 
 Desde el punto de vista lógico, esta sección cuenta con una sola vista principal, donde se muestra la
@@ -806,6 +829,13 @@ API del backend se utiliza el servicio \texttt{corpus.js}, ubicado en el directo
 servicio es utilizado en diferentes lugares de la aplicación y funciona como interfaz con los endpoints
 de Corpus ya descritos en la sección 4.3.2.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-mvc-dashboard}
+    \caption{\textit{Componentes MVC de la sección Dashboard.}}
+    \label{fig:ui-nabu-mvc-dashboard}
+\end{figure}
+
 \paragraph{Corpus}
 
 En la implementación de esta sección se utilizaron dos vistas. La vista principal implementada en el
@@ -819,6 +849,13 @@ biblioteca Ace~\cite{AceJS} para dibujar el cuadro de texto para las consultas a
 con el controlador \texttt{document-detail-dialog.js} que se encarga de controlar el cuadro de diálogo
 para los detalles de los documentos. Esta sección utiliza también el servicio \texttt{corpus.js}, que ya fue
 descrito en la sección anterior.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-mvc-corpus}
+    \caption{\textit{Componentes MVC de la sección Corpus.}}
+    \label{fig:ui-nabu-mvc-corpus}
+\end{figure}
 
 \paragraph{Embeddings}
 
@@ -842,6 +879,13 @@ Conviene destacar también el controlador \texttt{embedding-new-dialog.js} que s
 datos para la creación de un nuevo vector de forma eficiente y mutando los parámetros presentados en función
 del algoritmo de entrenamiento seleccionado. Este controlador y su vista acompañante pueden ser invocados
 desde la vista de resultados de consultas al corpus, como ya se explico en la sección anterior.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-mvc-embeddings}
+    \caption{\textit{Componentes MVC de la sección Embeddings.}}
+    \label{fig:ui-nabu-mvc-embeddings}
+\end{figure}
 
 \paragraph{Tests}
 
@@ -869,6 +913,13 @@ Los servicios más importantes para esta sección son \texttt{testsets.js} para 
 CRUD (crear, recuperar, actualizar y destruir) sobre los casos de prueba, \texttt{results.js} para
 consultar los resultados de la evaluación de vectores y \texttt{jobstesting.js}, para la creación de nuevos
 trabajos de evaluación en el sistema.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/ui-nabu-mvc-tests}
+    \caption{\textit{Componentes MVC de la sección Tests.}}
+    \label{fig:ui-nabu-mvc-tests}
+\end{figure}
 
 \subsubsection{Consideraciones de diseño}
 
