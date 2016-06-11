@@ -610,7 +610,7 @@ replicación y balanceo de carga para poder manejar incluso mayor cantidad de do
 Es importante mencionar que, comparado con un RDBMS más establecido como PostgreSQL, Elasticsearch
 no carece de problemas. Es sabido que bajo ciertas circunstancias, es posible que ocurra una pérdida
 de documentos~\cite{AphyrES}, aunque esto ocurre en esquemas distribuidos y bajo casos muy
-particulares que no nada frecuentes. Además, el hecho de estar almacenando información no crítica
+particulares y muy poco frecuentes. Además, el hecho de estar almacenando información no crítica
 (esto es, no son registros de usuarios, por ejemplo), esto no plantea mayores riesgos.
 
 Naturalmente, la tarea de realizar scraping selectivo pero sumamente intensivo de un gran número de
@@ -847,12 +847,11 @@ de noticias con demasiados pedidos activos, ya que se correría el riesgo de que
 acceso a nuestro sistema. Algunos sitios son particularmente susceptibles a este último punto, por
 lo que se decidió que el nivel de concurrencia sea configurable a nivel de cada fuente de datos.
 
-
 Para concluir esta sección, presentamos algunos números del proceso. Mediante este sistema se
 extrajeron $11.363.251$ documentos de 20 portales de noticias, obteniendo así un total de
-$4.391.944.678$ mil millones de palabras. Se dieron de alta un total de $17.053.703$ entradas, de
-las cuales un $58,6\%$ llevó a la extracción exitosa de un documento, donde algunas fuentes de
-noticias fueron más rentables que otras.
+$4.391.944.678$ palabras. Se dieron de alta un total de $17.053.703$ entradas, de las cuales
+un $58,6\%$ llevó a la extracción exitosa de un documento, donde algunas fuentes de noticias
+fueron más rentables que otras.
 
 
 \subsubsection{Scraping Manual}
