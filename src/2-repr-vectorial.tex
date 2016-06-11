@@ -14,13 +14,13 @@ En los últimos años ha habido un importante cambio de paradigma en PLN, donde 
 investigación, y el mayor éxito, se ha obtenido con la aplicación de métodos de aprendizaje
 automático para el tratamiento del lenguaje, en oposición a métodos basados en reglas.
 
-Los métodos de aprendizaje automático son técnicas principalmente estadísticas que manipulan
-vectores, por lo general reales. Dado que la unidad semántica básica del lenguaje natural, las
-palabras\footnote{Se podrían considerar entidades más pequeñas como los morfemas como unidad básica,
-pero el punto se mantiene.}, son entidades discretas y de gran cardinalidad, es necesario realizar
-un mapeo entre estos dos espacios. Por esta razón es que existe un gran interés en buscar y
-caracterizar mecanismos que permitan construir representaciones vectoriales para las palabras del
-lenguaje.
+Los métodos de aprendizaje automático son técnicas principalmente estadísticas que suelen tomar
+vectores como entrada, por lo general reales. Dado que la unidad semántica básica del lenguaje
+natural, las palabras\footnote{Se podrían considerar entidades aún más pequeñas como los morfemas
+como unidad básica, pero el punto se mantiene.}, son entidades discretas y de gran cardinalidad, es
+necesario realizar un mapeo entre estos dos espacios. Por esta razón es que existe un gran interés
+en buscar y caracterizar mecanismos que permitan construir representaciones vectoriales para las
+palabras del lenguaje.
 
 Formalmente, si $V$ es el vocabulario con el que se está tratando en un contexto dado (por ejemplo,
 $V = \{ \text{a}, \text{ábaco}, \text{abajo}, \ldots \}$), decimos que una función $F: V \to
@@ -54,11 +54,11 @@ los vocabularios con los que se trata. Por esta razón, otro requerimiento inter
 representaciones vectoriales es que asocien a las palabras vectores de $\mathbb{R}^N$ donde $N \ll
 |V|$, logrando así hacer tratables las dimensiones de las entradas.
 
-\item Otra alternativa al punto anterior que también hace tratables entradas de dimensiones altas es
-utilizar representaciones vectoriales dispersas: esto es, que los vectores asociados a las palabras
-tengan casi todas sus entradas en cero. Esto permite el empleo de técnicas de tratamiento de
-matrices dispersas, mejorando así la eficiencia desde el punto de vista computacional y de
-almacenamiento.
+\item Otra alternativa al punto anterior es generar representaciones de alta dimensionalidad pero
+buscando que éstas sean dispersas: esto es, que los vectores asociados a las palabras tengan casi
+todas sus entradas en cero. Esto hace más tratables a los vectores, puesto que permite el empleo de
+técnicas de tratamiento de matrices dispersas, mejorando así la eficiencia desde el punto de vista
+computacional y de almacenamiento.
 
 \item Dado que se está embebiendo un espacio muy rico en estructura, tanto desde el punto de vista
 semántico como sintáctico, es de particular interés lograr mantener dicha estructura en el espacio
@@ -91,9 +91,9 @@ LundBurgess1996}.
 El otro gran enfoque en la construcción de representaciones vectoriales es el proveniente de la
 comunidad de modelado de lenguaje mediante redes neuronales. Estos son métodos predictivos que
 utilizan información local para construir modelos de lenguaje a partir de redes
-neuronales~\cite{Bengio2003} y redes neuronales recurrentes~\cite{Mikolov2010}. Una de las salidas
-de estos algoritmos son vectores para las palabras del lenguaje, las cuales suelen denominarse
-\textit{vectores o modelos neuronales}, o \textit{embeddings} de palabras.
+neuronales~\cite{Bengio2003} y redes neuronales recurrentes~\cite{Mikolov2010}. Como efecto
+secundario de estos algoritmos se obtienen también vectores para las palabras del lenguaje, las
+cuales suelen denominarse \textit{vectores o modelos neuronales}, o \textit{embeddings} de palabras.
 
 Otros nombres utilizados incluyen \textit{representaciones vectoriales continuas}, \textit{espacios
 de palabras semánticos}, o simplemente \textit{vectores de palabras}.
@@ -188,9 +188,9 @@ asociación que generen representaciones dispersas que hagan al resultado tratab
 
 Por último, cómo utilizar la representación final obtenida y cómo medir la similitud entre dos
 palabras es un tema no menor a resolver, que dependerá de la aplicación final de los vectores. Por
-ejemplo, cuando se trata con representaciones dispersas, medir la similitud con una distancia
-euclídea tendrá resultados inferiores que la distancia coseno, pues esta última estará menos sesgada
-a la cantidad de componentes nulas que hay en el vector.
+ejemplo, cuando se trata con representaciones dispersas, utilizar la distancia coseno en lugar de la
+euclídea puede ser más eficiente (en especial cuando se normalizan los vectores) porque permite
+descartar las componentes nulas en los cálculos.
 
 Resumiendo, a la hora de construir un modelo estadístico para la representación vectorial de
 palabras, es necesario tomar las siguientes decisiones:
@@ -257,10 +257,9 @@ vectoriales semánticas.
 Uno de los primeros trabajos en el área fue el modelo de análisis latente semántico (LSA) propuesto
 en~\cite{Dumais1988}, también llamado indizado latente semántico (o LSI, en especial en el área de
 IR). Siguiendo un modelo basado en resultados de la psicología, los autores proponen utilizar
-documentos enteros como contextos, y contar la cantidad de veces que dos palabras dadas coocurren
-como métrica de asociación: esto es, la matriz de asociación contará la cantidad de veces que dos
-palabras aparecen en un mismo documento. Una vez construida esta matriz, los autores proponen
-utilizar una descomposición en valores singulares (SVD, por sus siglas en inglés) de dicha matriz,
+documentos enteros como contextos, y contar la cantidad de veces que una palabra dada ocurre en un
+documento como métrica de asociación. Una vez construida esta matriz, los autores proponen utilizar
+una descomposición en valores singulares (SVD, por sus siglas en inglés) de dicha matriz,
 truncándola a los $d$ valores singulares más grande, donde $d$ varía dependiendo del caso (los
 autores utilizan $100$ en algunos casos, $200$ en otro).
 
@@ -291,10 +290,10 @@ donde la distribución de fondo para los tópicos se asume que sigue una distrib
 
 Los anteriores modelos emplearon contextos basados en documentos. Otra corriente paralela fue
 propuesta en~\cite{Lund1995, LundBurgess1996}, denominada análogo en el hiperespacio para el
-lenguaje (o HAL). En esta propuesta, los contextos se forman en base a las coocurrencias de las
-palabras del vocabulario en una ventana de largo fijo dado. Esto es, se construye una matriz de
-tamaño $|V| \times |V|$, y en la entrada $(v_i, v_j)$ se acumula el resultado la métrica de
-asociación $f(v_i, v_j)$ para cada coocurrencia de las palabras $v_i$ y $v_j$ en el corpus.
+lenguaje (o HAL). En esta propuesta, los contextos son ventanas de largo fijo alrededor de cada
+palabra. Esto es, se construye una matriz de tamaño $|V| \times |V|$, y en la entrada $(v_i, v_j)$
+se acumula el resultado la métrica de asociación $f(v_i, v_j)$ por cada vez que $v_j$ aparece en una
+ventana alrededor de un $v_i$.
 
 En el planteo original, los autores proponen formar una matriz de $|V| \times 2|V|$, y consideran
 una ventana de largo 10 a la izquierda y otra a la derecha de la palabra central ($v_i$, en el caso
@@ -320,12 +319,21 @@ un esquema HAL\@.
 
 
 En cuanto a métricas de asociación, mucho trabajo se ha centrado alrededor de la información mutua
-puntual entre dos palabras (PMI). Esta medida fue propuesta inicialmente en~\cite{ChurchHanks1990} y
-busca modelar correctamente nociones de asociatividad entre palabras del lenguaje: el hecho de que
-frases como \textit{cuesta arriba} son más comunes que \textit{cuesta derecha}. El trabajo inicial
-de los autores no estuvo relacionado a representaciones vectoriales, pero fue tomado más adelante
-por~\cite{Turney2001} con ese fin. En dicho trabajo se presenta un algoritmo que usa PMI como medida
-de asociatividad, y compara los resultados con LSA\@.
+puntual entre dos palabras (o PMI, ecuación detallada en~\ref{eqn:pmi}). Esta medida fue propuesta
+inicialmente en~\cite{ChurchHanks1990} y busca modelar correctamente nociones de asociatividad entre
+palabras del lenguaje: el hecho de que frases como \textit{cuesta arriba} son más comunes que
+\textit{cuesta derecha}. El trabajo inicial de los autores no estuvo relacionado a representaciones
+vectoriales, pero fue tomado más adelante por~\cite{Turney2001} con ese fin. En dicho trabajo se
+presenta un algoritmo que usa PMI como medida de asociatividad, y compara los resultados con LSA\@.
+
+\begin{figure}[h]
+  \[
+    pmi(w_1, w_2) = \log \frac{P(w_1, w_2)}{P(w_1) P(w_2)}
+  \]
+  \caption{PMI entre las palabras $w_1$ y $w_2$. $P(w_1, w_2)$ es la probabilidad de que coocurran
+en un contexto (definido a priori). Las probabilidades se pueden estimar a partir de un corpus.}
+  \label{eqn:pmi}
+\end{figure}
 
 De todos modos, no es hasta~\cite{BullinariaLevy2007} que se utiliza dicha métrica para la
 construcción explícita de modelos vectoriales del lenguaje. En este trabajo los autores hacen una
@@ -378,7 +386,9 @@ networks}, utilizadas para realizar modelado a través del tiempo) a la tarea de
 oraciones y utiliza los pesos internos aprendidos por la red como representación de las palabras. En
 las pruebas que llega a realizar el autor (rudimentarias, debido al poder de cómputo disponible en
 la época), consigue resultados prometedores, donde la representación de palabras como \textit{girl}
-y \textit{woman} quedan más próximas que palabras como \textit{cat} y \textit{mouse}.
+y \textit{woman} quedan más próximas que palabras como \textit{cat} y \textit{mouse}. Estos
+resultados comparten ideas de la hipótesis distribucional, aunque su autor no hace mención explícita
+a la misma.
 
 De todos modos, debido a la dificultad de entrenar dichas redes neuronales, la técnica quedó en
 desuso por varios años más.
@@ -389,13 +399,14 @@ caracterizar al lenguaje en base a la probabilidad de secuencias cortas de palab
 ngramas, y fueron el estado del arte hasta la década pasada.} mediante la utilización de redes
 neuronales. El autor plantea la idea de utilizar el espacio real para modelar el lenguaje, con el
 fin de explotar la continuidad local para obtener una mejor generalización, cualidad que carecen los
-modelos estadísticos basados en espacios discretos. Por ejemplo, en un modelo de ngramas, la
-ocurrencia de la frase ``el gato corre'' es completamente independiente (y no elevará la
-probabilidad) de la frase ``el perro corre''. Esto implica además que es necesaria una mayor
-cantidad de parámetros para la estimación: una probabilidad de ocurrencia por ngrama. Otro punto
-positivo es que, al requerir menos parámetros, es posible utilizar contextos más grandes: mientras
-que el estado del arte en modelos estadísticos utilizan 3 ó 4 palabras, los modelos continuos llegan
-a utilizar hasta 10 ó 15.
+modelos estadísticos basados en espacios discretos. Por ejemplo, en un modelo de lenguaje basado en
+unigramas o bigramas, la verosimilitud de la frase ``el gato corre'' es completamente independiente
+de la de la frase ``el perro corre'', y la aparición de la primera en el corpus no elevará la
+probabilidad de la segunda. Esto implica además que es necesaria una mayor cantidad de parámetros
+para la estimación: una probabilidad de ocurrencia por ngrama. Otro punto positivo es que, al
+requerir menos parámetros, es posible utilizar contextos más grandes: mientras que el estado del
+arte en modelos estadísticos utilizan 3 ó 4 palabras, los modelos continuos llegan a utilizar hasta
+10 ó 15.
 
 La idea principal detrás del modelado continuo de lenguaje es distribuir la densidad de probabilidad de
 la siguiente palabra (dada una secuencia de palabras inicial) de forma más inteligente: mientras que
@@ -452,8 +463,8 @@ con el objetivo de que el conocimiento que adquiere en una tarea pueda ser de ut
 
 Con este fin, entrenan primero un modelo de lenguaje siguiendo la arquitectura de Bengio y luego,
 con los vectores resultantes, entrenan en simultáneo cuatro redes neuronales para distintas tareas
-(POS tagging, etiquetado de roles semánticos, etiquetado de entidades con nombre, detección de
-sinónimos), propagando los errores hasta los vectores. Logran así mejorar el estado del arte en
+(\textit{POS tagging}, \textit{chunking}, etiquetado de roles semánticos, etiquetado de entidades
+con nombre), propagando los errores hasta los vectores. Logran así mejorar el estado del arte en
 todas las tareas que prueban, donde destacan particularmente los resultados de SRL por considerarla
 la tarea más compleja. El resultado de este trabajo es de gran importancia, porque plantea la
 utilización de representaciones vectoriales como una nueva alternativa para la resolución de
@@ -566,7 +577,7 @@ los problemas de similitud entre palabras, analogías, y otros. Someten a estas 
 estadísticos (modelos basados en contar, como los llama el autor) y a modelos neuronales (modelos
 basados en predecir). Para los primeros utiliza vectores construidos con la herramienta
 \texttt{DISSECT}~\cite{Dinu2013}, basados principalmente en esquemas PMI con reducción de
-dimensionalidad con SVD\@. Para los segunndos utiliza la herramienta provista por Mikolov
+dimensionalidad con SVD\@. Para los segundos utiliza la herramienta provista por Mikolov
 en~\cite{Mikolov2013c}, \texttt{word2vec}.
 
 Los resultados que obtienen los autores presentan a los modelos neuronales como grandes ganadores,
@@ -607,12 +618,12 @@ busca hacer explícita la tarea de aprendizaje que se realiza, basándose en las
 de los enfoques ya presentados. Uno de estos métodos es GloVe, presentado en~\cite{Pennington2014},
 donde los autores construyen una matriz $A$, similar a la matriz de asociación de los modelos
 estadísticos, donde la función de asociación busca explícitamente quitar peso a las palabras más
-frecuentes y no sobrerrepresentar a las muy poco frecuentes. Luego plantea una reducción de
-dimensionalidad basada en factorizar dicha matriz a través de un método iterativo en lugar de usar
-SVD, lo que lo hace computacionalmente más eficiente. Los resultados que obtienen los autores son
-superiores a los obtenidos por SGNS en el conjunto de pruebas provisto por Mikolov\footnote{Cabe
-notar que en~\cite{Levy2015} no se logra reproducir este resultado, aunque aun así es un método muy
-competitivo.}.
+frecuentes y no sobrerrepresentar a las muy poco frecuentes. Luego obtiene representaciones
+vectoriales de baja dimensionalidad minimizando una función de costo asociada los vectores de
+palabras y la matriz de coocurrencia, siguiendo un método iterativo que lo hace computacionalmente
+más eficiente que SVD\@. Los resultados que obtienen los autores son superiores a los obtenidos por
+SGNS en el conjunto de pruebas provisto por Mikolov\footnote{Cabe notar que en~\cite{Levy2015} no se
+logra reproducir este resultado, aunque aun así es un método muy competitivo.}.
 
 
 Los modelos estadísticos, neuronales e híbridos han resultado bastante similares en cuanto a los
@@ -684,8 +695,9 @@ para recuperar la cuarta palabra, definida como:
   {\arg \max}_{b' \in V} \cos(b', b - a + a')
 \]
 
-Donde los pares de analogías son $(a, a')$ y $(b, b')$. Sin embargo, en~\cite{Levy2014b}, Levy
-prueba que una mejor función para la recuperación de analogías es \textsc{3CosMul}, definida como:
+Donde los pares de analogías son $(a, a')$ y $(b, b')$ y $\cos$ la similitud coseno. Sin embargo,
+en~\cite{Levy2014b}, Levy prueba que una mejor función para la recuperación de analogías es
+\textsc{3CosMul}, definida como:
 
 \[
   {\arg \max}_{b' \in V} \frac{\cos(b', b) \cos(b', a')}{\cos(b', a) + \epsilon}

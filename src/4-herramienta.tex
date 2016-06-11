@@ -296,7 +296,7 @@ módulo.
 
 Dada la cantidad de requerimientos que se plantearon para la herramienta, fue necesario diagramar de
 antemano una arquitectura que logre escalar y brindar todas las funcionalidades
-satisfactoriamente. Ésta cuenta de cinco componentes, o nodos, cada uno especializado en una función
+satisfactoriamente. Ésta cuenta de seis componentes, o nodos, cada uno especializado en una función
 distinta:
 
 \begin{itemize}
@@ -321,6 +321,9 @@ y la actualización del modelo de datos, entre otros.
 
 \item Un nodo que sirve una aplicación web encargada de ofrecer una interfaz web sobre el servidor
 de aplicaciones que pueda ser utilizada por un usuario no especializado.
+
+\item Un nodo donde corre el proceso de scraping automático mencionado en el capítulo
+anterior. Aunque no es técnicamente parte de la herramienta, se menciona por completitud.
 
 \end{itemize}
 

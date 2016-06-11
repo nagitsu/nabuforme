@@ -35,21 +35,23 @@ métodos, donde entran técnicas como el análisis semántico latente (LSA), log
 relativamente satisfactorios.
 
 Sin embargo, recientemente ha surgido una nueva generación de métodos para representar palabras
-que, mediante el uso de técnicas inspiradas en el modelado de lenguaje mediante redes neuronales,
-han logrado resultados sorprendentes para la comunidad del PLN\@. Estos algoritmos se basan en métodos
-de aprendizaje automático no supervisado que, a partir de grandes volúmenes de texto, consiguen
-representaciones vectoriales con una fuerte capacidad de almacenar información sintáctica y
-semántica. Entre los modelos más conocidos de este grupo se encuentran los propuestos por Mikolov et
-al.~\cite{Mikolov2013a, Mikolov2013b, Mikolov2013c}, \textit{Skipgram} y \textit{CBOW}, comúnmente
-referidos bajo el nombre \texttt{word2vec}.
+que, mediante el uso de técnicas inspiradas en el modelado de lenguaje mediante redes neuronales, y
+también inspiradas en la hipótesis distribucional, han logrado resultados sorprendentes para la
+comunidad del PLN\@. Estos algoritmos se basan en métodos de aprendizaje automático no supervisado
+que, a partir de grandes volúmenes de texto, consiguen representaciones vectoriales con una fuerte
+capacidad de almacenar información sintáctica y semántica. Entre los modelos más conocidos de este
+grupo se encuentran los propuestos por Mikolov et al.~\cite{Mikolov2013a, Mikolov2013b,
+Mikolov2013c}, \textit{Skipgram} y \textit{CBOW}, comúnmente referidos bajo el nombre
+\texttt{word2vec}.
 
-Una de las grandes atracciones de \texttt{word2vec} es la capacidad de los modelos generados de
-expresar relaciones sintácticas y semánticas mediante operaciones algebraicas. Quizás el ejemplo más
-conocido de este fenómeno es la relación que cumplen los vectores de las palabras \textit{reina},
-\textit{rey}, \textit{mujer}, y \textit{hombre}, donde el primer vector puede ser aproximadamente
-recuperado de los siguientes mediante la relación $reina \approx rey - hombre + mujer$. A partir del
-surgimiento de \texttt{word2vec}, se ha reinvigorizado la investigación en el área, y se han
-publicado numerosos artículos estudiando los modelos y proponiendo variantes de los mismos.
+Una de las cualidades más llamativas de los vectores generados con \texttt{word2vec} es la capacidad
+de estos modelos de expresar relaciones sintácticas y semánticas mediante operaciones
+algebraicas. Quizás el ejemplo más conocido de este fenómeno es la relación que cumplen los vectores
+de las palabras \textit{reina}, \textit{rey}, \textit{mujer}, y \textit{hombre}, donde el primer
+vector puede ser aproximadamente recuperado de los siguientes mediante la relación $reina \approx
+rey - hombre + mujer$. A partir del surgimiento de \texttt{word2vec}, se ha reinvigorizado la
+investigación en el área, y se han publicado numerosos artículos estudiando los modelos y
+proponiendo variantes de los mismos.
 
 
 \section{Objetivos del Proyecto}
