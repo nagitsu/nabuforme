@@ -8,11 +8,11 @@ un modelo vectorial también de gran tamaño. Este modelo debe también poder ev
 su utilidad, corriendo una variada batería de pruebas, explorando así el espacio de hiperparámetros
 para obtener una configuración razonable.
 
-Con el fin de simplificar este proceso, y permitir a cualquier investigador realizar expermientos
+Con el fin de simplificar este proceso, y permitir a cualquier investigador realizar experimentos
 con modelos vectoriales, se plantea la elaboración de una herramienta que sea capaz de abstraerse de
 todas las tareas de bajo nivel, permitiendo construir representaciones vectoriales a través de una
-interfaz web. El objetivo es pues brindar herramienta que, en base a un fragmento del corpus y una
-configuración de hiperparámetros, entrene y deje disponible para utilizar vectores de palabras
+interfaz web. El objetivo es pues brindar una herramienta que, en base a un fragmento del corpus y
+una configuración de hiperparámetros, entrene y deje disponible para utilizar vectores de palabras
 generados a medida para una tarea particular.
 
 
@@ -29,7 +29,7 @@ pretende brindar funcionalidades de búsqueda a través de consultas de texto ba
 de los documentos, o filtrando a partir de los campos estructurados (los metadatos, la fuente de
 palabras, las etiquetas, etc.).
 
-Esto permitirá que un usuario pueda encontrar ejemplos de uso del lenguaje particulares fácilmente
+Esto permitirá que un usuario pueda encontrar ejemplos particulares de uso del lenguaje fácilmente
 pudiendo, por ejemplo, ver todos los documentos donde aparece la palabra \textit{fútbol} en portales
 de noticias Uruguayos (documentos con las etiquetas \textit{uruguay} y \textit{news}). Lograr
 particionar así el corpus permitirá también entrenar vectores con datos especializados.
@@ -69,20 +69,20 @@ posibilidad de descargar partes del mismo para no tener que procesarlo localment
 muy costoso debido a su tamaño.
 
 \item Dado que el proceso de construcción del corpus es continuo, como se detalló en la sección de
-scraping automático, puede ser de utilidad ofrecer estadísticas sobre la composición del corpus,
-incluyendo cómo ha variado su tamaño en recientemente, con el fin de poder controlar que el proceso
-de extracción esté funcionando correctamente. Esto ayuda considerablemente a detectar cuándo una
-fuente de palabras ha dejado de contribuir texto, lo cuál puede ocurrir por, por ejemplo, un cambio
-en el diseño de la misma que rompa las reglas XPath empleadas.
+scraping automático, puede ser de utilidad ofrecer estadísticas sobre la composición del mismo,
+incluyendo cómo ha variado su tamaño recientemente, con el fin de poder controlar que el proceso
+de extracción esté funcionando correctamente. Esto ayuda a detectar cuando una fuente de palabras
+ha dejado de contribuir texto, lo cual puede ocurrir por, por ejemplo, un cambio en el diseño de la
+misma que rompa las reglas XPath empleadas.
 
-\item Por último, es importante tener en cuenta la usabilidad de la heramienta, manteniendo presente
-que debe facilitar la construcción de modelos vectoriales, y no dificultarlas. Para esto, deberá
-prestarse especial cuidado al diseño final de la misma.
+\item Por último, es importante tener en cuenta la usabilidad de la herramienta, manteniendo presente
+que la misma debe facilitar la construcción de modelos vectoriales, y no dificultar la tarea. Para
+esto, deberá prestarse especial cuidado al diseño final de la misma.
 
 \end{itemize}
 
-En definitiva, uno de los objetivos principales de la herramienta es la coordinación entre las
-distintas componentes de la arquitectura de la aplicación. Se cuenta por un lado con un
+En definitiva, uno de los objetivos principales de la herramienta es la coordinación entre los
+distintos componentes de la arquitectura de la aplicación. Se cuenta por un lado con un nodo
 Elasticsearch donde se almacena de manera organizada todo el corpus recopilado. También se cuenta
 con un servidor de cómputo que entrena y evalúa remotamente los modelos deseados. La herramienta
 servirá como nexo para estos dos nodos, permitiendo al usuario acceder, interactuar y descargar los
@@ -162,20 +162,20 @@ fidelidad de los elementos del corpus.
 
 En la vista principal se ofrecen además dos acciones adicionales. La primera de ellas permite descargar el
 conjunto completo de documentos retornado al ejecutar la consulta, comprimidos en formato ZIP. La segunda
-acción permite utilizar la consulta como entrada para crear un nuevo vector, que se entrenará con el
-subconjunto de documentos obtenido a partir de la consulta. Los detalles de creación de vectores en el
-frontend se detallan más adelante. Pero dado que el corpus se encuentra en constante crecimiento, es
-importante mencionar aquí que es recomendable especificar rangos de fechas de extracción en las consultas
-al momento de crear nuevos vectores, de modo de permitir la posterior reproducción de los resultados
-obtenidos.
+acción permite utilizar la consulta como entrada para crear una nueva representación vectorial, que se
+entrenará con el subconjunto de documentos obtenido a partir de la consulta. Los detalles de creación de
+vectores en el frontend se detallan más adelante. Pero dado que el corpus se encuentra en constante
+crecimiento, es importante mencionar aquí que es recomendable especificar rangos de fechas de extracción en
+las consultas al momento de crear nuevas representaciones vectoriales, de modo de permitir la posterior
+reproducción de los resultados obtenidos.
 
 \subsection{Embeddings}
 
 En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalidades vinculadas a las
-operaciones sobre vectores. En su vista principal se listan todos los vectores creados en el sistema.
-De cada uno se detalla su descripción, el tipo de representación vectorial utilizada (\texttt{word2vec},
-\texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y su estado de
-entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
+operaciones sobre representaciones vectoriales. En su vista principal se listan todas las representaciones
+creadas en el sistema. De cada una se detalla su descripción, el tipo de modelo vectorial utilizado
+(\texttt{word2vec}, \texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y
+su estado de entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
 \textit{en entrenamiento} y \textit{sin entrenar}.
 
 \begin{figure}[h]
@@ -185,19 +185,19 @@ entrenamiento. Para cada vector los estados de entrenamiento posibles son \texti
     \label{fig:ui-nabu-embeddings}
 \end{figure}
 
-Esta vista ofrece un botón para crear y poner a entrenar un nuevo vector. Al momento de crear vectores se
-debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además especificar
-el algoritmo a utilizar, \texttt{Skipgram} ó \texttt{CBOW}), fijar los valores de sus parámetros,
+Esta vista ofrece un botón para crear y poner a entrenar una nueva representación vectorial. Al momento de
+crear vectores se debe seleccionar uno de los tres modelos (en el caso de \texttt{word2vec} es necesario además
+especificar el algoritmo a utilizar, \texttt{Skipgram} ó \texttt{CBOW}), fijar los valores de sus parámetros,
 especificar la consulta en formato JSON que Elasticsearch utilizará para devolver los documentos de
-entrenamiento y finalmente elegir los parámetros de preprocesamiento de texto. Una vez creado el vector,
-este será agregado a la cola de entrenamiento.
+entrenamiento y finalmente elegir los parámetros de preprocesamiento de texto. Una vez creada la representación
+vectorial, esta será agregada a la cola de entrenamiento.
 
-Al hacer click en las tarjetas de información de los vectores se accede a una vista en detalle del vector
-seleccionado. En los detalles, además de la información ya provista en la vista de listado, se incluye el
-tamaño total en palabras del sub-corpus utilizado en el entrenamiento del vector, el detalle completo de
-los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar los documentos de
-entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando el vector se
-encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
+Al hacer click en las tarjetas de información de las representaciones vectoriales se accede a una vista en
+detalle de las mismas. En los detalles, además de la información ya provista en la vista de listado, se incluye
+el tamaño total en palabras del sub-corpus utilizado en el entrenamiento de la representación, el detalle
+completo de los parámetros del modelo elegido, la consulta JSON utilizada para seleccionar los documentos de
+entrenamiento y las opciones de preprocesamiento para el texto de dichos documentos. Cuando la representación
+se encuentra en entrenamiento se incluye además una barra de progreso informando del avance actual en el
 entrenamiento.
 
 \begin{figure}[h]
@@ -209,37 +209,38 @@ entrenamiento.
 
 De forma conveniente, junto al cuadro de la consulta en formato JSON se incluye un botón para ejecutar la
 misma en la sección de \textit{Corpus}. Esto facilita la posibilidad de explorar el conjunto de documentos
-utilizados para entrenar el vector. Eventualmente, un usuario podría descargar dicho conjunto para entrenar
-un nuevo vector de forma local utilizando el mismo algoritmo, de modo de verificar los resultados logrados
-con la herramienta presentada en este proyecto.
+utilizados para entrenar la representación vectorial. Eventualmente, un usuario podría descargar dicho conjunto
+para entrenar una nueva representación de forma local utilizando el mismo algoritmo, de modo de verificar los
+resultados logrados con la herramienta presentada en este proyecto.
 
 Continuando con la descripción de la vista en detalle, se incluye al final de la misma una tabla con
-información acerca de resultados de evaluación del vector. En esta tabla se listan todos los conjuntos de
-prueba con los que este fue evaluado, la fecha de cada evaluación, el porcentaje de precisión alcanzado en
-cada una y una botón para obtener una visión más detallada de los resultados de cada prueba. Además, se
-incluye una columna que indica el desempeño del vector en cada evaluación en comparación con el resto de
-vectores del sistema. Cuando el vector es el de mayor precisión en una determinada prueba, se muestra un
-indicador del hecho junto a su posición.
+información acerca de resultados de evaluación de la representación vectorial. En esta tabla se listan todos
+los conjuntos de prueba con los que esta fue evaluada, la fecha de cada evaluación, el porcentaje de precisión
+alcanzado en cada una y una botón para obtener una visión más detallada de los resultados de cada prueba.
+Además, se incluye una columna que indica el desempeño de la representación en cada evaluación en comparación
+con el resto de representaciones del sistema. Cuando la representación vectorial es la de mayor precisión en
+una determinada prueba, se muestra un indicador del hecho junto a su posición.
 
-La tabla de resultados de evaluación ofrece también una acción para ejecutar nuevas evaluaciones sobre los
-vectores, permitiendo revaluar todas las pruebas, sólo evaluar aquellas aun no ejecutadas, o evaluar un
-caso de prueba particular.
+La tabla de resultados de evaluación ofrece también una acción para ejecutar nuevas evaluaciones sobre las
+representaciones vectoriales, permitiendo revaluar todas las pruebas, sólo evaluar aquellas aun no ejecutadas,
+o evaluar un caso de prueba particular.
 
-Finalmente se ofrecen acciones para eliminar el vector y para descargarlo a la computadora del usuario. La
-opción de descargar los vectores entrenados con la herramienta es una de las funcionalidad más valiosas e
+Finalmente se ofrecen acciones para eliminar la representación y para descargarla a la computadora del usuario.
+La opción de descargar los vectores entrenados con la herramienta es una de las funcionalidad más valiosas e
 importantes del proyecto. Esta funcionalidad permite a cualquier usuario interesado en el campo de las
-representaciones vectoriales de palabras poder entrenar sus propios vectores y luego descargarlos para su
-uso en alguna aplicación de interés, sin la necesidad de poseer detallados conocimientos de los aspectos de
+representaciones vectoriales de palabras poder entrenar sus propias representaciones y luego descargarlas para
+su uso en alguna aplicación de interés, sin la necesidad de poseer conocimientos detallados de los aspectos de
 bajo nivel de las representaciones.
 
 \subsection{Tests}
 
-En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de los vectores
-de palabras creados en el sistema. En su vista principal se presenta la lista de casos de prueba
-disponibles, indicando para cada uno su nombre, descripción y categoría. Las categorías principales son
-\textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De forma
-conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad
-de vectores que están siendo evaluados actualmente, junto con un indicador de progreso de la tarea actual.
+En la sección \textit{Tests} se encuentra toda la información relacionada a la evaluación de las
+representaciones vectoriales de palabras creadas en el sistema. En su vista principal se presenta la lista de
+casos de prueba disponibles, indicando para cada uno su nombre, descripción y categoría. Las categorías
+principales son \textit{Analogías}, \textit{Similaridad} y \textit{Odd-one-out} (palabra que no encaja). De
+forma conveniente, en esta vista se muestra también una pequeña medalla en cada caso de prueba con la cantidad
+de representaciones que están siendo evaluadas actualmente, junto con un indicador de progreso de la tarea
+actual.
 
 \begin{figure}[h]
     \centering
@@ -253,9 +254,9 @@ presenta información adicional. Además de los datos mostrados en la vista prin
 ejemplo puntual del caso de prueba para mayor claridad de lo que se pretende evaluar. De manera adicional,
 se muestran mayores detalles acerca de las tareas de evaluación que se están ejecutando en el momento.
 
-En la vista de detalles se presenta también una tabla con resultados de evaluación. Para cada vector
-evaluado con el caso de prueba se indica la fecha de la evaluación, un enlace a la página de detalles del
-vector, el modelo utilizado por dicho vector, el porcentaje de precisión logrado en el caso de prueba y
+En la vista de detalles se presenta también una tabla con resultados de evaluación. Para cada representación
+evaluada con el caso de prueba se indica la fecha de la evaluación, un enlace a la página de detalles de la
+representación, el modelo utilizado por la misma, el porcentaje de precisión logrado en el caso de prueba y
 un botón para ver los detalles en profundidad de la evaluación. En los detalles en profundidad se
 encuentra, cuando corresponde, el desempeño en las métricas \textsc{3CosAdd} y \textsc{3CosMul}
 (porcentaje de aciertos exactos, y entre las primeras cinco y diez sugerencias), palabras no encontradas,
@@ -269,11 +270,11 @@ entradas faltantes, entradas equivocadas y cantidad total de entradas.
 \end{figure}
 
 Desde la vista de detalles también es posible agendar nuevos trabajos de evaluación. Al momento de
-crearlos se puede optar por elegir todos los vectores que aun no fueron evaluados con el caso de prueba
-ó por elegir uno en particular. También es posible optar por ejecutar el caso de prueba en todos los
-vectores del sistema. En la parte superior de la pantalla se ofrecen además dos acciones adicionales,
-una para eliminar el caso de prueba del sistema y otra para descargarlo en un archivo en formato de
-cuatro columnas.
+crearlos se puede optar por elegir todas las representaciones que aun no fueron evaluadas con el caso de
+prueba o por elegir uno en particular. También es posible optar por ejecutar el caso de prueba en todas las
+representaciones vectoriales del sistema. En la parte superior de la pantalla se ofrecen además dos acciones
+adicionales, una para eliminar el caso de prueba del sistema y otra para descargarlo en un archivo en formato
+de cuatro columnas.
 
 Finalmente, en la vista principal se cuenta con un botón que da acceso a un formulario para crear un
 nuevo caso de pruebas en el sistema. En el formulario es necesario especificar nombre, descripción y
@@ -688,7 +689,7 @@ de palabras por realizar un cambio menor.
 Por último, en el caso de los resultados, sólo es posible ver, listar y eliminarlos. La vista de los
 detalles de un resultado contienen el porcentaje de aciertos logrados y datos adicionales
 dependiendo del tipo de prueba (por ejemplo, el porcentaje de aciertos en el top 10 en las
-analogías). El listado también permite filtrar por vector de palabras o por conjunto de pruebas,
+analogías). El listado también permite filtrar por representación vectorial o por conjunto de pruebas,
 para poder fácilmente visualizar cuáles son los resultados de las pruebas para una representación, o
 vice versa.
 
@@ -863,25 +864,27 @@ descrito en la sección anterior.
 \paragraph{Embeddings}
 
 Para la implementación de esta sección se utilizaron dos vistas principales. En el archivo
-\texttt{embeddings.html} se implementa la lista de vectores del sistema, mientras que en
-\texttt{embedding-detail.html} se encuentra el código de la vista en detalle para un vector en particular.
-Se tienen además vistas adicionales para crear un nuevo vector y para ejecutar evaluaciones en los vectores,
-en los archivos \texttt{embedding-new.html} y \texttt{evaluate-on-testset-dialog.html} respectivamente.
+\texttt{embeddings.html} se implementa la vista con la lista de representaciones vectoriales del sistema,
+mientras que en \texttt{embedding-detail.html} se encuentra el código de la vista en detalle para una
+representación vectorial en particular. Se tienen además vistas adicionales para crear una nueva representación
+y para evaluar las representaciones ya existentes, en los archivos \texttt{embedding-new.html} y
+\texttt{evaluate-on-testset-dialog.html} respectivamente.
 
 Desde el punto de vista lógico, se utiliza el controlador \texttt{embeddings.js} para dibujar la lista de
-vectores  y actualizar el indicador de progreso para aquellos vectores que están siendo entrenados. El
-controlador \texttt{embedding-detail.js} es utilizado en la vista de detalles de un vector y se encarga de
-construir las tablas de datos y mantener actualizado el indicador de progreso de entrenamiento. Además, se
-encarga de realizar algunos procesos de formateo de los datos obtenidos de los servicios
-\texttt{services/embeddings.js} y \texttt{services/jobstesting.js}, utilizados para consumir los endpoints
-de vectores y casos de prueba respectivamente. También se utiliza el servicio
-\texttt{services/jobstraining.js} para la comunicación con los endpoints encargados de manejar el
-entrenamiento de vectores.
+representaciones vectoriales y actualizar el indicador de progreso para aquellas representaciones que están
+siendo entrenadas. El controlador \texttt{embedding-detail.js} es utilizado en la vista de detalles de una
+representación vectorial y se encarga de construir las tablas de datos y mantener actualizado el indicador de
+progreso de entrenamiento. Además, se encarga de realizar algunos procesos de formateo de los datos obtenidos
+de los servicios \texttt{services/embeddings.js} y \texttt{services/jobstesting.js}, utilizados para consumir
+los endpoints de representaciones vectoriales y casos de prueba, respectivamente. También se utiliza el servicio
+\texttt{services/jobstraining.js} para la comunicación con los endpoints encargados de manejar el entrenamiento
+de representaciones vectoriales.
 
 Conviene destacar también el controlador \texttt{embedding-new-dialog.js} que se encarga de presentar los
-datos para la creación de un nuevo vector de forma eficiente y mutando los parámetros presentados en función
-del algoritmo de entrenamiento seleccionado. Este controlador y su vista acompañante pueden ser invocados
-desde la vista de resultados de consultas al corpus, como ya se explico en la sección anterior.
+datos para la creación de una nueva representación vectorial de forma eficiente y mutando los parámetros
+presentados en función del algoritmo de entrenamiento seleccionado. Este controlador y su vista acompañante
+pueden ser invocados desde la vista de resultados de consultas al corpus, como ya se explico en la sección
+anterior.
 
 \begin{figure}[h]
     \centering
@@ -898,8 +901,8 @@ el archivo \texttt{tests.html}. La implementación de la vista de detalles de un
 en el archivo \texttt{test-detail.html}. Para las demás funcionalidades se utilizaron vistas auxiliares. La
 creación de nuevos casos de prueba y nuevos trabajos de evaluación fueron implementadas utilizando sendos
 cuadros de diálogo implementados en \texttt{test-new.html} y \texttt{test-embedding-new.html},
-respectivamente. Finalmente, la vista en detalle de los resultados de una evaluación sobre un vector fue
-implementada con otro cuadro de diálogo en \texttt{test-result-dialog.html}.
+respectivamente. Finalmente, la vista en detalle de los resultados de una evaluación sobre una
+representación vectorial fue implementada con otro cuadro de diálogo en \texttt{test-result-dialog.html}.
 
 Para la lógica de esta sección se utilizaron varios controladores. En la vista de listado de casos de
 prueba se utilizó el controlador \texttt{tests.js}, encargado mayoritariamente de dibujar la lista y
@@ -909,13 +912,13 @@ las barras de progreso de evaluación y llevar la cuenta de la cantidad de traba
 momento. Adicionalmente, el controlador \texttt{test-new-dialog.js} fue utilizado para manejar la creación
 de nuevos casos de prueba. Finalmente los controladores \texttt{test-result-dialog.js} y
 \texttt{new-embedding-test-dialog.js} fueron utilizados para desplegar la información detallada de la
-ejecución de un caso de prueba en un vector y la creación de nuevos trabajos de entrenamiento,
-respectivamente.
+ejecución de un caso de prueba en una representación vectorial y la creación de nuevos trabajos de
+entrenamiento, respectivamente.
 
 Los servicios más importantes para esta sección son \texttt{testsets.js} para realizar operaciones
 CRUD (crear, recuperar, actualizar y destruir) sobre los casos de prueba, \texttt{results.js} para
-consultar los resultados de la evaluación de vectores y \texttt{jobstesting.js}, para la creación de nuevos
-trabajos de evaluación en el sistema.
+consultar los resultados de la evaluación de representaciones vectoriales y \texttt{jobstesting.js}, para
+la creación de nuevos trabajos de evaluación en el sistema.
 
 \begin{figure}[h]
     \centering
@@ -932,13 +935,13 @@ tomados en cuenta al momento de construir la solución.
 
 \begin{itemize}
 
-\item Desde su concepción se buscó que el frontend sea altamente flexible ante cambios en la API expuesta
+\item Desde su concepción, se buscó que el frontend sea altamente flexible ante cambios en la API expuesta
 por el backend. Es decir, se buscó parametrizar la vistas más complejas de modo de soportar cambios en la
 cantidad o formato de ciertos campos con el mínimo impacto en el código del frontend. Como ejemplo se tiene
-la vista de creación de nuevos vectores. La API define un formato específico y flexible para los parámetros
-de entrenamiento de un nuevo vector en función del algoritmo de entrenamiento elegido. De esta forma se
-pueden agregar nuevas clases de algoritmos en el backend y estos estarán disponibles en el frontend sin
-requerir modificaciones adicionales.
+la vista de creación de nuevas representaciones vectoriales. La API define un formato específico y flexible
+para los parámetros de entrenamiento de un nuevo vector en función del algoritmo de entrenamiento elegido.
+De esta forma se pueden agregar nuevas clases de algoritmos en el backend y estos estarán disponibles en el
+frontend sin requerir modificaciones adicionales.
 
 \item Se buscó también lograr una interfaz sencilla e intuitiva. Fue por este motivo que se decidió
 utilizar el Diseño Material de Google al ser una tecnología ampliamente probada y aceptada. Principalmente
