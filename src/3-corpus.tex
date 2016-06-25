@@ -9,7 +9,7 @@ literatura en inglés.
 El capítulo empieza por presentar el relevamiento realizado sobre el tamaño y calidad de los corpus
 en español existentes. Luego se plantean los requerimientos y características que se consideró que
 el corpus debía contener, y se da una visión general del proceso empleado para lograrlo. Finalmente,
-se detalla la implementación de dicho esquema y se resumen las características del coprus
+se detalla la implementación de dicho esquema y se resumen las características del corpus
 construido.
 
 \section{Estado del Arte}
@@ -35,7 +35,7 @@ tarea de construcción de vectores de palabras. A pesar de su considerable valor
 corpus de muy diversos tipos, incluyendo grabaciones de entrevistas orales, y no resultó ser una referencia
 definitiva para nuestra investigación.
 
-Aún así, la investigación del Instituto Virtual Cervantes resultó un buen punto de partida para nuestro
+Aun así, la investigación del Instituto Virtual Cervantes resultó un buen punto de partida para nuestro
 relevamiento. Resulta interesante destacar que los autores obtienen entre sus principales conclusiones
 que la mayoría de los trabajos analizados contaron, en alguna medida, con apoyo económico de entidades
 privadas o gubernamentales para su desarrollo. Consideramos que este hecho pone en perspectiva los logros
@@ -174,8 +174,8 @@ versión actual cuenta con documentos del período comprendido entre 2012 y 2014
 documentos de una gran cantidad de países de habla hispana.
 
 Para la limpieza de documentos obtenidos de la web y posterior extracción de texto útil se utilizó
-texrex, una herramienta creada por Roland Schäfer, integrante del equipo de COW. La herramienta cuenta
-con funcionalidades para filtrar duplicados, remover código HTML, extraer metadatos de los cabezales
+\textit{texrex}, una herramienta creada por Roland Schäfer, integrante del equipo de COW. La herramienta
+cuenta con funcionalidades para filtrar duplicados, remover código HTML, extraer metadatos de los cabezales
 HTTP obtenidos del proceso de crawling, normalización de codificación de caracteres a UTF-8, entre
 otras. Este proceso resulta de mucha importancia pues en su descripción del corpus los autores
 mencionan como una de sus prioridades generar corpus de alta calidad, y no solamente enfocarse en el
@@ -281,7 +281,7 @@ aparecer.
 ordenado. Se espera que cada documento esté etiquetado en base a sus cualidades, identificando
 cuáles son artículos de noticias, cuáles son de determinado país, etc. Etiquetar el texto brinda la
 posibilidad de construir un corpus a medida, para poder eventualmente hacer pruebas específicas que
-incluyan o exculyan cierto tipo de texto.
+incluyan o excluyan cierto tipo de texto.
 
 \end{itemize}
 
@@ -332,8 +332,7 @@ En cuanto al vocabulario utilizado en los artículos de noticias, se puede consi
 con una fuerte presencia de nombres de personas y lugares, que a su vez son dependientes de la fecha
 de publicación del artículo: esto es, distintas personas tendrán más o menos menciones en períodos
 particulares de tiempo. Este punto es importante, y es una de las principales razones para decidir
-guardar esta fecha de como metadato del artículo.
-
+guardar la fecha de publicación como metadato del artículo.
 
 La investigación de portales de noticias comenzó por el diario La Nación de
 Argentina~\cite{LaNacion}, por ser uno de los primeros diarios grandes en tener presencia digital,
@@ -341,18 +340,18 @@ desde el año 2000. Realizando algunos cálculos preliminares en base a un muest
 vio que el diario contaba con al menos un millón de artículos, cada uno con un promedio de 500
 palabras, llegando a un a masa total de palabras muy importante.
 
-Uno de los primeros puntos que se notó es que la URL de todos los artículos del portal estaban
-identificadas por un número, y que cambiando este número por uno distinto, se podía acceder a otra
-noticia. Además, la generación de estos números es secuencia: esto es, el primer artículo publicado
+Uno de los primeros puntos que se notó es que las URLs de todos los artículos del portal están
+identificadas por un número, y que cambiando ese número por uno distinto, se puede acceder a otra
+noticia. Además, la generación de estos números es secuencial: esto es, el primer artículo publicado
 tiene el identificador $1$, mientras que el último el $1871018$. Este hallazgo fue de suma
 importancia, pues permitió realizar \textit{scraping} del portal de forma más directa.
 
 Aprovechando esta característica, se construyó un script en Python~\cite{Python} para recorrer la
 lista de identificadores (desde el $1$ hasta el último presente en la portada) y descargar el
-contenido de los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaronn
+contenido de los artículos. Puesto que el corpus a construir requiere de texto limpio, se generaron
 una serie de reglas XPath~\cite{XPath} para obtener los datos estructurados (título de la noticia,
 contenido, fecha de publicación). Corriendo este script en la totalidad de La Nación, se llegó a la
-cifra de 600 millones de palabras exclusivamente con sus artículos.
+cifra de 600 millones de palabras exclusivamente con los artículos de dicho portal.
 
 Los resultados obtenidos demostraron el alto potencial que tienen los portales de noticias como
 fuentes de palabras, por lo que se procedió a recopilar una lista de los principales diarios de
@@ -364,14 +363,13 @@ Para cada uno de estos portales, se construyeron una serie de reglas XPath para 
 y un mecanismo para recorrer por el identificador numérico. Además se adaptó el script para que
 revise de forma continua por noticias nuevas, con el fin de que el corpus se mantenga siempre
 actualizado\footnote{Para ilustrar la importancia de este punto, sólo por mantener actualizado el
-corpus se consiguieron 300 millones de palabras adicionales en el tiempo de proyecto
-transcurrido.}. Este método lo denominamos \textit{scraping automático}, y más adelante se detallará
-su implementación (por ejemplo, cómo sabe extraer los datos, cómo se define un nuevo sitio, y cómo se
-hace la recorrida por identificador).
+corpus se consiguieron 300 millones de palabras adicionales en el tiempo transcurrido durante el proyecto.}.
+Este método lo denominamos \textit{scraping automático}, y más adelante se detallará su implementación
+(por ejemplo, cómo sabe extraer los datos, cómo se define un nuevo sitio, y cómo se hace la recorrida por
+identificador).
 
 En base a esta técnica se consiguieron más de 3 mil millones de palabras de texto limpio a partir de
 20 portales de noticias.
-
 
 Cabe resaltar que el método anterior depende de que los artículos de noticias tengan asociado un
 identificador secuencial. Lamentablemente, esto no es el caso con muchos sitios de noticias
@@ -389,8 +387,8 @@ de historias, se decidió investigar esta área en mayor profundidad.
 Algunos de estos sitios, como Los Cuentos~\cite{LosCuentos}, son de carácter más bien general, donde
 los usuarios publican narraciones, ensayos, cuentos o poemas. La calidad y el contenido de estos
 textos varía drásticamente entre uno y otro, pudiendo encontrar piezas con una gran cantidad de
-faltas de ortografía y carentes de sentido, o piezas por autores renombrados que fueron republicados
-en el sitio.
+faltas de ortografía y carentes de sentido, o piezas por autores renombrados que fueron publicadas
+de forma no oficial en el sitio.
 
 La otra gran categoría de escritura amateur presente en Internet es el \textit{fanfiction}
 (\textit{ficción de fans}, en inglés). Estos textos suelen ser escritos principalmente por jóvenes,
@@ -450,10 +448,10 @@ Los foros de discusión de Internet son otra gran fuente de palabras, en cuanto 
 datos. Dado que muchos poseen miles de usuarios registrados, llegan a manejar cantidades de texto
 muy elevadas. Como contrapartida, sin embargo, el texto publicado suele ser de muy baja calidad,
 donde algunos mensajes no son más que imágenes o emotíconos y por lo tanto carentes de contenido
-útil para el propósito del proyecto. Esto último depende también de la audiencia que interactúe en
+útil para el propósito del proyecto. Esto último depende también de la audiencia que participe en
 dicho foro, donde sitios con una demografía de edad mayor suelen tener mejor calidad.
 
-De todos modos, se decidió utilizar estas plataformas como fuentes de noticias porque permiten
+De todos modos, se decidió utilizar estas plataformas como fuentes de palabras porque permiten
 experimentar con la calidad de los modelos vectoriales en función a la calidad del corpus. Además,
 puesto que suelen tener un estilo más similar al habla, tienen vocabularios distintos al resto de
 las fuentes y consecuentemente una mayor cantidad de expresiones del argot de los participantes.
@@ -485,7 +483,7 @@ Muchas instituciones públicas publican grandes cantidades de textos con el fin 
 poblaciones sobre distintos temas, o de mantener registro de las actividades de sus
 representantes. Entre este tipo de texto se encuentran las versiones taquigráficas de sesiones de
 parlamentos de países u organizaciones internacionales, como la UE o UNASUR, así como comunicados de
-distintas instituciones como la ONU\@. Estos textos suelen tener una jerga partícular, pues son
+distintas instituciones como la ONU\@. Estos textos suelen tener una jerga particular, pues son
 muchas veces documentos altamente técnicos, pero son no obstante textos de calidad que pueden
 aportar mayor volumen y vocabulario al corpus.
 
@@ -523,7 +521,7 @@ particular a su librería, \textit{EU Bookshop}~\cite{EUBookshop}), provista por
 es posible utilizar únicamente los textos en español para incorporar al corpus.
 
 Está compuesto principalmente por publicaciones escritas por instituciones de la UE, por lo que
-suelen ser de carácter más bien oficial (esto es, tratados, informes, y similares). Aún así, cuenta
+suelen ser de carácter más bien oficial (esto es, tratados, informes, y similares). Aun así, cuenta
 con algunos libros de lectura general.
 
 

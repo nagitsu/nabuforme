@@ -394,23 +394,23 @@ De todos modos, debido a la dificultad de entrenar dichas redes neuronales, la t
 desuso por varios años más.
 
 No fue hasta 2003 donde Bengio presenta en~\cite{Bengio2003} una alternativa competitiva al modelado
-de lenguaje a través de ngramas\footnote{Los modelos de ngramas, o modelos estadísticos, buscan
+de lenguaje a través de n-gramas\footnote{Los modelos de n-gramas, o modelos estadísticos, buscan
 caracterizar al lenguaje en base a la probabilidad de secuencias cortas de palabras denominadas
-ngramas, y fueron el estado del arte hasta la década pasada.} mediante la utilización de redes
+n-gramas, y fueron el estado del arte hasta la década pasada.} mediante la utilización de redes
 neuronales. El autor plantea la idea de utilizar el espacio real para modelar el lenguaje, con el
 fin de explotar la continuidad local para obtener una mejor generalización, cualidad que carecen los
 modelos estadísticos basados en espacios discretos. Por ejemplo, en un modelo de lenguaje basado en
 unigramas o bigramas, la verosimilitud de la frase ``el gato corre'' es completamente independiente
 de la de la frase ``el perro corre'', y la aparición de la primera en el corpus no elevará la
 probabilidad de la segunda. Esto implica además que es necesaria una mayor cantidad de parámetros
-para la estimación: una probabilidad de ocurrencia por ngrama. Otro punto positivo es que, al
+para la estimación: una probabilidad de ocurrencia por n-grama. Otro punto positivo es que, al
 requerir menos parámetros, es posible utilizar contextos más grandes: mientras que el estado del
 arte en modelos estadísticos utilizan 3 ó 4 palabras, los modelos continuos llegan a utilizar hasta
 10 ó 15.
 
 La idea principal detrás del modelado continuo de lenguaje es distribuir la densidad de probabilidad de
 la siguiente palabra (dada una secuencia de palabras inicial) de forma más inteligente: mientras que
-los modelos estadísticos la distribuyen uniformemente alrededor de cada combinación de ngramas
+los modelos estadísticos la distribuyen uniformemente alrededor de cada combinación de n-gramas
 (e.g.\ de igual manera para ``el gato árbol'' que para ``el gato camina'', dada la frase ``el gato
 corre''), los modelos continuos buscan que palabras relacionadas reciban más masa de probabilidad
 que las que no están relacionadas.
@@ -590,12 +590,12 @@ hace que Skipgram con Negative Sampling (SGNS) funcione tanto mejor que un model
 SVD\@. Los resultados a los que llega, sin embargo, son contradictorios con los de Baroni. Plantea
 que la diferencia entre la performance de ambos métodos se debe a que SGNS tiene una ventaja por
 utilizar, además del modelo básico, una serie de heurísticas en el preprocesamiento del corpus y el
-posprocesammiento de los vectores que mejoran drásticamente los resultados.
+posprocesamiento de los vectores que mejoran drásticamente los resultados.
 
 De esta forma, Levy identifica una serie de nueve heurísticas de uno y otro modelo, que los
 considerará hiperparámetros, y los adapta para ambos esquemas. Además de hacer esto, entrena todos
 los vectores utilizando exactamente el mismo corpus de datos (punto que no hizo Baroni, pues utilizó
-vectores pre-entrenados descargados de Internet) y compara contra el mismo conjunto de pruebas. Así,
+vectores preentrenados descargados de Internet) y compara contra el mismo conjunto de pruebas. Así,
 utilizando una metodología más robusta que en el estudio anterior, llega a que los resultados de los
 modelos estadísticos y los modelos neuronales son prácticamente equivalentes, con los primeros con
 una leve ventaja. De todos modos, el autor resalta que SGNS es mucho más eficiente

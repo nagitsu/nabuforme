@@ -64,7 +64,7 @@ entrenados, pudiendo así elegir fácilmente la mejor configuración de hiperpar
 particular.
 
 \item Puesto que tanto el corpus como los modelos y los conjuntos de pruebas están almacenados en
-servidores remotos, es necesario poder descargarlos. Para el corpus es desable también ofrecer la
+servidores remotos, es necesario poder descargarlos. Para el corpus es deseable también ofrecer la
 posibilidad de descargar partes del mismo para no tener que procesarlo localmente, lo cual puede ser
 muy costoso debido a su tamaño.
 
@@ -337,7 +337,7 @@ La comunicación entre las distintas partes puede observarse en la figura~\ref{f
 En el centro de la arquitectura se encuentra el servidor de aplicación, que se encarga de coordinar
 el resto de los nodos. Éste ofrece una API (o \textit{Application Programming Interface}) RESTful
 que permite realizar consultas sobre el corpus, crear nuevos modelos vectoriales, enviarlos a entrenar
-y evaluar, y todo el resto de las funcionaldiades que ofrece la herramienta. Tiene, por lo tanto, que
+y evaluar, y todo el resto de las funcionalidades que ofrece la herramienta. Tiene, por lo tanto, que
 comunicarse con el nodo de Elasticsearch, con el nodo de PostgreSQL, y mantener la cola de tareas
 que los \textit{workers} posteriormente consumirán.
 
@@ -511,7 +511,7 @@ estándar del mismo.
 
 \paragraph{Modelo Estadístico}
 
-Para el cuarto algortimo, el modelo estadístico basado en la matriz PPMI con SVD, fue necesario
+Para el cuarto algoritmo, el modelo estadístico basado en la matriz PPMI con SVD, fue necesario
 realizar una implementación propia, pues no fue posible encontrar ninguna que cumpliera con los
 requerimientos necesarios. Partiendo del artículo de Levy y Goldberg~\cite{Levy2015}, y aprovechando
 parte del código provisto por los autores en ~\cite{LevyHyperwords}, se elaboró un módulo Python para
@@ -548,10 +548,10 @@ evaluación leerá el archivo con los datos (una analogía por línea) y utiliza
 \textsc{3CosAdd} y \textsc{3CosMul} para obtener el resultado, como se especifica en el capítulo
 2.
 
-Se almacena el porcentaje de aciertos exactos, el procentaje de aciertos entre las cinco primeras
+Se almacena el porcentaje de aciertos exactos, el porcentaje de aciertos entre las cinco primeras
 sugerencias, y el porcentaje de aciertos entre las diez primeras sugerencias. De esta forma se puede
 estimar, en caso de que haya fallado la recuperación, qué tan cerca se estuvo. Se registra también
-la cantidad de palabras que no se encontraron en el volcabulario del modelo para tener una idea de
+la cantidad de palabras que no se encontraron en el vocabulario del modelo para tener una idea de
 qué tanto afecta esto al resultado final, pues la ausencia en el vocabulario cuenta como un
 fallo\footnote{Si no contara como un fallo, un modelo vectorial con un vocabulario de diez palabras
 podría tener un porcentaje de aciertos perfecto en todas las pruebas.}.
@@ -583,7 +583,7 @@ de palabras \textit{auto}, \textit{rótula}, \textit{pelvis}, y \textit{metatars
 construir, por ejemplo, pruebas tanto por campo semántico (como el recién ejemplificado) como por
 campo sintáctico (donde se busca, por ejemplo, identificar al verbo con conjugación distinta).
 
-No existe mucho trabajo en la literatura con este esquema de pruebas, pero aún así es útil para
+No existe mucho trabajo en la literatura con este esquema de pruebas, pero aun así es útil para
 comparar los distintos tipos de representaciones entre sí, en una tarea que busca medir también qué
 tanto se capturan las similitudes entre palabras.
 
@@ -651,7 +651,7 @@ ZIP mientras el usuario lo va descargando, agregándole los archivos con el cont
 uno a uno, logrando así que el archivo final nunca se almacene por completo en el servidor.
 
 Por otro lado, cabe notar que permitir al usuario ingresar una consulta genérica a través de la API
-plantea ciertas consideraciones de seguridad. Dado que la entrada del usuairo se restringe a una
+plantea ciertas consideraciones de seguridad. Dado que la entrada del usuario se restringe a una
 consulta sobre el corpus, no podrá modificar el contenido almacenado. Sin embargo, fue necesario
 tomar precauciones adicionales y bloquear la funcionalidad de consultas con scripts de Elasticsearch
 ~\cite{ElasticsearchScripting} para evitar inconvenientes\footnote{De hecho, las nuevas versiones de
@@ -681,7 +681,7 @@ datos del conjunto de pruebas a través del endpoint \texttt{/testsets/<id>/down
 devuelve directamente un archivo de texto plano con las entradas.
 
 Para los dos anteriores casos, sólo es posible modificar el nombre y descripción de los recursos; en
-caso de querar cambiar, por ejemplo, los hiperparámetros, es necesario crear un nuevo modelo, pues
+caso de querer cambiar, por ejemplo, los hiperparámetros, es necesario crear un nuevo modelo, pues
 sino quedaría inconsistente el modelo ya entrenado con los registros en la base de datos. Se toma
 esta decisión para evitar que el usuario inadvertidamente tenga que volver a entrenar los vectores
 de palabras por realizar un cambio menor.
@@ -714,11 +714,11 @@ abortará al algoritmo y borrará el registro de la tarea de la base de datos.
 
 El tratamiento con las tareas de evaluación es análogo, con diferencias únicamente al momento de
 agregar una tarea. Es posible, en este caso, indicar que una representación vectorial debe ser
-evaluado con un conjunto de pruebas particular, con los conjuntos con los que no ha sido evaluado
-aún, o con todos los disponibles. En caso de ya haber sido evaluado, se eliminiará el resultado
+evaluada con un conjunto de pruebas particular, con los conjuntos con los que no ha sido evaluada
+aún, o con todos los disponibles. En caso de ya haber sido evaluada, se eliminará el resultado
 anterior y se correrá de nuevo. Lo opuesto también es posible indicando, para un conjunto de
 pruebas, que sea utilizado para evaluar todos los modelos vectoriales faltantes. Esto ayuda a evitar
-que tenga que enviarse todas las combinaciones de pruebas y vectores a la hora de evaluar.
+que tengan que enviarse todas las combinaciones de pruebas y vectores a la hora de evaluar.
 
 
 \paragraph{Introspección}

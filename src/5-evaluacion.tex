@@ -28,7 +28,7 @@ Cada uno de estos modelos tiene distintos hiperparámetros que pueden afectar si
 performance. En~\cite{Levy2015} los autores buscan unificar los hiperparámetros de estos modelos,
 proponiendo un subconjunto de los mismos que contempla las tres variantes. El enfoque tomado en este
 proyecto no llega a tal profundidad, pues quita parte de la versatilidad de algunos algoritmos, pero
-intenta aún así presentarlos de manera unificada cuando es posible.
+intenta aun así presentarlos de manera unificada cuando es posible.
 
 En el caso de \texttt{word2vec}, los hiperparámetros disponibles para modificar son:
 
@@ -160,7 +160,7 @@ inglés. Además, probando alternativas de los hiperparámetros no necesariament
 literatura, se evita que se escapen variantes particulares o prometedoras.
 
 Los valores por defecto de cada hiperparámetro son los que mejores resultados han obtenido en la
-literatura, buscando que si se deja sin fijar uno de ellos, el modelo resultante sea aún así
+literatura, buscando que si se deja sin fijar uno de ellos, el modelo resultante sea aun así
 razonablemente bueno. En el caso de \texttt{word2vec}, el modelo arquetípico utiliza la variante
 Skipgram con negative sampling (utilizando 7 muestras negativas); establece una dimensión resultante
 de 300, y una ventana de contexto de ancho 5; un subsampling de $1\times10^{-5}$, 5 ocurrencias
@@ -321,7 +321,7 @@ los modelos vectoriales aquí analizados.
 Cada modelo vectorial ocupa entre 300MB y 1000MB (con algunos llegando a 1700MB), dependiendo
 principalmente de la dimensión elegida y los límites que se le establezcan al vocabulario (cantidad
 mínima de ocurrencias, o directamente el tamaño máximo del vocabulario). Esto no genera grandes
-presiones en el almacenamiento, aunque aún así no es un tema menor a la hora de descargar los
+presiones en el almacenamiento, aunque aun así no es un tema menor a la hora de descargar los
 modelos o de cargarlos en memoria, pues se tiene un tiempo de arranque no despreciable.
 
 
@@ -401,7 +401,7 @@ corrió el script para la lista de palabras del conjunto; luego se recorrió la 
 traducidas, comparándolas con las versiones en inglés y se corrigieron o eliminan las traducciones
 incorrectas, ya sea por estar mal la traducción en sí o porque no era el sentido que esperaba en la
 prueba; en tercer lugar, se sustituyen las traducciones por las palabras originales en los conjuntos
-de prueba, eliminando la entrada si no se encuetra la traducción; por último, se recorre la lista
+de prueba, eliminando la entrada si no se encuentra la traducción; por último, se recorre la lista
 pruebas buscando posibles errores y eliminando o corrigiendo entradas adicionales.
 
 El proceso de traducción, sin embargo, es falible, por lo que es de esperar que existan traducciones
@@ -505,7 +505,7 @@ obtiene una exactitud de $0.86$.
 En el cuadro \ref{table:analogies_model_performance} se muestran los valores obtenidos separados
 por sección del conjunto de analogías, junto a los valores obtenidos por~\cite{Levy2014b}. Es
 interesante ver que el comportamiento del mejor modelo es relativamente similar al inglés, incluso
-con las pruebas sintácticas donde ambos idiomas, proveniendo de familias de lenguajes distintos,
+con las pruebas sintácticas donde ambos idiomas, proviniendo de familias de lenguajes distintos,
 varían significativamente.
 
 Por ejemplo, las secciones que peor performance obtienen son las mismas en ambos idiomas: Países y
@@ -705,7 +705,7 @@ español.
 En español se cuenta con los vectores presentados en~\cite{SBWCE}, donde el autor obtiene resultados
 levemente inferiores a los nuestros con el conjunto de pruebas de Google traducido por
 él\footnote{Dicha traducción no fue utilizada en el proyecto porque se publicó una vez que ya se
-había traducido el conjunto de pruebas. Aún así, se realizó una comparación entre ambas traducciones
+había traducido el conjunto de pruebas. Aun así, se realizó una comparación entre ambas traducciones
 y se vio que la misma contenía algunos errores.}. No hay, sin embargo, una publicación adjunta que
 describa el proceso de evaluación, por lo que se desconoce el detalle de las pruebas realizadas.
 
@@ -715,7 +715,7 @@ describa el proceso de evaluación, por lo que se desconoce el detalle de las pr
 Teniendo un punto de comparación de la performance de los modelos vectoriales en ambos idiomas, se
 procedió a realizar un estudio más detallado de su comportamiento en español, con el objetivo siendo
 obtener una mejor visión de qué tanta información son capaces de capturar los vectores en un idioma
-con mayor compejidad gramatical, investigando cuáles son las características que resultan más
+con mayor complejidad gramatical, investigando cuáles son las características que resultan más
 difíciles de representar.
 
 Con este fin, se armaron conjuntos de pruebas que exponen cualidades del español, como conjugaciones
@@ -966,7 +966,7 @@ En la tabla~\ref{table:spanish_results} también se muestran los resultados de l
 el conjunto de conjugaciones verbales específicas del Río de la Plata (\texttt{T03}). Es interesante
 ver cómo los modelos vectoriales que son entrenados exclusivamente con texto de foros argentinos (en
 este caso W05) obtienen mejores resultados que los entrenados con la totalidad del texto. En los
-modelos vectoriales grandes hay también muchas ocurrencias del \textit{voseo} (principlamente
+modelos vectoriales grandes hay también muchas ocurrencias del \textit{voseo} (principalmente
 viniendo de los sitios de literatura amateur), pero proporcionalmente es mayor la cantidad en los
 modelos construidos a partir de foros, por tener un tono más informal y conversacional.
 
