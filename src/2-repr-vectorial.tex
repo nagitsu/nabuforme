@@ -66,7 +66,7 @@ de destino: esto es, obtener una representación que exhiba regularidades lingü
 medida.
 
 Por ejemplo, sería satisfactorio que la relación que existe entre el par de palabras \textit{correr}
-y \textit{corriendo} (esto es, el gerundio) puediera ser capturada matemáticamente, y que fuera el
+y \textit{corriendo} (esto es, el gerundio) pudiera ser capturada matemáticamente, y que fuera el
 mismo que presentan las palabras \textit{jugar} y \textit{jugando}. O, desde un punto de vista
 semántico, que el par de palabras \textit{frío} y \textit{calor} presente las mismas propiedades que
 \textit{alto} y \textit{bajo}.
@@ -264,7 +264,7 @@ truncándola a los $d$ valores singulares más grande, donde $d$ varía dependie
 autores utilizan $100$ en algunos casos, $200$ en otro).
 
 En~\cite{Deerwester1990}, los autores continúan con la técnica anterior, pero variando la métrica de
-asociación: consiguen un mejor resultado utilizando TF-IDF en lugar de las frecuencias absoultas
+asociación: consiguen un mejor resultado utilizando TF-IDF en lugar de las frecuencias absolutas
 para las coocurrencias. El objetivo principal de LSI es la recuperación de documentos basados en una
 consulta, donde una palabra dada se proyecta al espacio de dimensión reducida y se devuelven los
 documentos más cercanos en dicho espacio.
@@ -419,7 +419,7 @@ En su artículo, Bengio presenta un esquema distinto al usual para entrenar el m
 plantea una arquitectura que consta de vectores continuos de palabras y una función paramétrica
 definida sobre dicho espacio de vectores, el cual modela la probabilidad de la siguiente palabra
 dada una ventana de $N$ palabras precedentes. El autor utiliza una red neuronal para modelar la
-probabildad, pero deja abierta la posibilidad de usar otros modelos, como modelos de combinación gaussiana
+probabilidad, pero deja abierta la posibilidad de usar otros modelos, como modelos de combinación gaussiana
 (o \textit{gaussian mixture models}). Bajo esta arquitectura, tanto los vectores de palabras como la
 función de probabilidad son aprendidas en simultáneo, utilizando un corpus de gran tamaño como
 entrada al algoritmo.
@@ -593,7 +593,7 @@ utilizar, además del modelo básico, una serie de heurísticas en el preprocesa
 posprocesammiento de los vectores que mejoran drásticamente los resultados.
 
 De esta forma, Levy identifica una serie de nueve heurísticas de uno y otro modelo, que los
-considerará hiperparámetros, y los adapata para ambos esquemas. Además de hacer esto, entrena todos
+considerará hiperparámetros, y los adapta para ambos esquemas. Además de hacer esto, entrena todos
 los vectores utilizando exactamente el mismo corpus de datos (punto que no hizo Baroni, pues utilizó
 vectores pre-entrenados descargados de Internet) y compara contra el mismo conjunto de pruebas. Así,
 utilizando una metodología más robusta que en el estudio anterior, llega a que los resultados de los
@@ -671,7 +671,7 @@ obtener un buen nivel de correlación entre los puntajes de los pares de palabra
 distancias\footnote{Es usual utilizar la distancia euclídea o la distancia coseno.} en el espacio de
 vectores, medida utilizando la correlación de Spearman. Distinguimos también entre similitud, donde
 se mide relaciones más fuertes, como la sinonimia y la hiponimia, de la relación
-(\textit{relatedness} en la literatura), donde se incluyen relaciónes más amplias, posiblemente
+(\textit{relatedness} en la literatura), donde se incluyen relaciones más amplias, posiblemente
 temáticas.
 
 Existen muchos conjuntos de prueba para esta tarea. Uno de los más utilizados es
