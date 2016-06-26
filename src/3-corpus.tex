@@ -253,7 +253,7 @@ palabras sin formato alguno, es deseable que el texto se procese incluso antes d
 para evitar tener que tratarlo más adelante.
 
 \item Se desea que el corpus esté dividido en documentos individuales que sean coherentes en sí
-mismo, manteniendo un determinado estilo de escritura internamente. Así, artículos de noticias serán
+mismos, manteniendo un determinado estilo de escritura internamente. Así, artículos de noticias serán
 almacenados individualmente, y lo mismo con libros, artículos de Wikipedia, y cualquier otro texto
 que se recopile. El objetivo de este punto es permitir excluir o borrar un documento particular en
 caso de ser necesario.
@@ -335,8 +335,8 @@ particulares de tiempo. Este punto es importante, y es una de las principales ra
 guardar la fecha de publicación como metadato del artículo.
 
 La investigación de portales de noticias comenzó por el diario La Nación de
-Argentina~\cite{LaNacion}, por ser uno de los primeros diarios grandes en tener presencia digital,
-desde el año 2000. Realizando algunos cálculos preliminares en base a un muestreo de artículos, se
+Argentina~\cite{LaNacion}, por ser uno de los primeros diarios de renombre de la región en tener presencia
+digital, desde el año 2000. Realizando algunos cálculos preliminares en base a un muestreo de artículos, se
 vio que el diario contaba con al menos un millón de artículos, cada uno con un promedio de 500
 palabras, llegando a un a masa total de palabras muy importante.
 
@@ -474,7 +474,7 @@ anteriores pues, por ejemplo, hay un mayor uso de la segunda persona.
 La descarga de los subtítulos se realizó con un script manual, bajando todo el contenido disponible
 en Tu Subtítulo~\cite{TuSubtitulo}. Luego fue necesario extraer el texto de los mismos, eliminando
 las indicaciones de tiempo (cuándo debe aparecer cada línea en pantalla) y el markup que pueden
-contener (tags HTML por lo general).
+contener (etiquetas HTML por lo general).
 
 
 \subsubsection{Documentos Oficiales}
@@ -510,14 +510,14 @@ con una gran variedad de vocabulario, pues su contenido va desde de ficciones na
 textos científicos.
 
 La incorporación de libros en el corpus presenta, sin embargo, varias dificultad: en primer lugar,
-no es fácil acceder digitalmente a colecciones importantes de libros, pues no están disponibles de
-manera pública en Internet fácilmente. Segundo, incluso cuando sí es posible obtener libros
+no es fácil acceder digitalmente a colecciones importantes de libros, pues no suelen estár disponibles
+de forma pública en Internet. Segundo, incluso cuando sí es posible obtener libros
 digitalmente, suelen estar en formatos que hacen la extracción de texto muy compleja (por ejemplo,
 PDFs con escaneos del texto).
 
 Se optó por utilizar un corpus ya existente que recopila textos relacionados a la Unión Europea (en
 particular a su librería, \textit{EU Bookshop}~\cite{EUBookshop}), provista por el proyecto
-\textit{LetsMT!}~\cite{LetsMT}.eu. Este es un corpus paralelo para la traducción automática, pero
+\textit{LetsMT!}~\cite{LetsMT}. Este es un corpus paralelo para la traducción automática, pero
 es posible utilizar únicamente los textos en español para incorporar al corpus.
 
 Está compuesto principalmente por publicaciones escritas por instituciones de la UE, por lo que
@@ -569,7 +569,7 @@ Uno de los principales desafíos del proyecto consiste en almacenar grandes cant
 de manera eficiente e indexar dicha información de tal forma que puedan realizarse búsquedas sobre
 la misma en tiempos razonables. Por lo tanto, se realizó una investigación de cuáles son las
 alternativas para almacenar grandes volúmenes de texto, evaluando tanto soluciones SQL como
-NoSQL.\@Finalmente, se optó por utilizar Elasticsearch~\cite{Elasitcsearch} por ofrecer excelentes
+NoSQL. \@Finalmente, se optó por utilizar Elasticsearch~\cite{Elasitcsearch} por ofrecer excelentes
 cualidades para almacenar información, pero sobre todo por brindar excelentes funcionalidades de
 indexado y búsqueda sobre los datos almacenados.
 
@@ -620,8 +620,8 @@ opción razonable.
 Se decidió por tanto evaluar las distintas alternativas existentes de proveedores para la contratación de
 un servidor virtual en la nube. Desde un principio se decidió que el servidor contratado no sería
 utilizado solamente para recolectar y almacenar documentos para la creación del corpus, sino que también
-se lo utilizaría para el entrenamiento de vectores de palabras y el alojamiento de la herramienta web a
-construir. Por estos motivos, se buscó el proveedor que ofreciera el mejor equilibrio entre poder de
+se lo utilizaría para el entrenamiento de modelos vectoriales de palabras y el alojamiento de la herramienta
+web a construir. Por estos motivos, se buscó el proveedor que ofreciera el mejor equilibrio entre poder de
 cómputo, espacio en disco, ancho de banda disponible y, por supuesto, costo mensual.
 
 Inicialmente se decidió aplicar al programa de becas para la investigación y educación de
@@ -678,14 +678,14 @@ Es importante destacar que el servidor fue contratado en el mes de abril de 2015
 Cabe mencionar también que el servidor contratado corre el proceso de Elasticsearch y toda la
 infraestructura de almacenamiento. Ejecuta además todos los trabajos de scraping periódicos, junto con
 una instancia de PostgreSQL para almacenamiento de datos de sincronización de dichos trabajos. Ahí se
-aloja también la herramienta construida para el manejo de vectores, que se analizará en gran detalle en
-una sección particular. Esto implica que en el servidor se ejecutan todos los trabajos de entrenamiento y
-evaluación de vectores, limpieza de documentos, etcétera.
+aloja también la herramienta construida para el manejo de representaciones vectoriales, que se analizará en
+gran detalle en una sección particular. Esto implica que en el servidor se ejecutan todos los trabajos de
+entrenamiento y evaluación de representaciones vectoriales, limpieza de documentos, etcétera.
 
 Sin lugar a dudas podemos afirmar que la elección de contratar un servidor virtual fue una decisión
 acertada, pues simplificó mucho el manejo de enormes cantidades de información de forma remota. Y, sobre
 todo, permitió que tareas con enormes exigencias desde el punto de vista computacional, como son el
-entrenamiento y evaluación de vectores de palabras, pudieran realizarse en tiempos razonables.
+entrenamiento y evaluación de modelos vectoriales de palabras, pudieran realizarse en tiempos razonables.
 
 Finalmente, es importante remarcar que se hicieron respaldos de todos los datos del sistema. En particular,
 se respaldó el corpus en su totalidad utilizando funcionalidades de Elasticsearch que permiten realizar
@@ -889,8 +889,8 @@ fragmentos de la URL de cada artículo.
 \paragraph{Scripts de limpieza}
 
 Para algunas fuentes, como es el caso de Wikipedia, se puede descargar su contenido directamente
-a través de un dump (o volcado) en algún formato portable y de fácil distribución. Por ejemplo, en
-algunos casos puede descargarse un dump de una base de datos en formato SQL, o también en
+a través de un \textit{dump} (o volcado) en algún formato portable y de fácil distribución. Por ejemplo,
+en algunos casos puede descargarse un dump de una base de datos en formato SQL, o también en
 formato XML, como es el caso de Wikipedia. Otra fuentes utilizan sus propios formatos para la
 distribución de sus datos, pero en todos ellos resulta indispensable realizar una limpieza antes
 de proceder a agregarlos al corpus.
@@ -984,7 +984,7 @@ de acuerdo a su tipo de documento.
     \centering
     \begin{tabular}{llccc}
         \hline
-        Origen & Tipo & Documentos & Palabras & Porcentaje\footnote{Proporción de palabras sobre el total del corpus.}\\
+        Origen & Tipo & Documentos & Palabras & Porcentaje\\
         \hline
         Argentina
          & Noticias & 2.130.965 & 969.052.149\\

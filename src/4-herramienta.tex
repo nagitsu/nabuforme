@@ -178,8 +178,8 @@ En la sección \textit{Embeddings} se encapsulan la mayoría de las funcionalida
 operaciones sobre representaciones vectoriales. En su vista principal se listan todas las representaciones
 creadas en el sistema. De cada una se detalla su descripción, el tipo de modelo vectorial utilizado
 (\texttt{word2vec}, \texttt{glove}, o \texttt{svd}), los parámetros de configuración del algoritmo elegido y
-su estado de entrenamiento. Para cada vector los estados de entrenamiento posibles son \textit{entrenado},
-\textit{en entrenamiento} y \textit{sin entrenar}.
+su estado de entrenamiento. Para cada representación los estados de entrenamiento posibles son
+\textit{entrenado}, \textit{en entrenamiento} y \textit{sin entrenar}.
 
 \begin{figure}[h]
     \centering
@@ -942,9 +942,9 @@ tomados en cuenta al momento de construir la solución.
 por el backend. Es decir, se buscó parametrizar la vistas más complejas de modo de soportar cambios en la
 cantidad o formato de ciertos campos con el mínimo impacto en el código del frontend. Como ejemplo se tiene
 la vista de creación de nuevas representaciones vectoriales. La API define un formato específico y flexible
-para los parámetros de entrenamiento de un nuevo vector en función del algoritmo de entrenamiento elegido.
-De esta forma se pueden agregar nuevas clases de algoritmos en el backend y estos estarán disponibles en el
-frontend sin requerir modificaciones adicionales.
+para los parámetros de entrenamiento de una nueva representación vectorial en función del algoritmo de
+entrenamiento elegido. De esta forma se pueden agregar nuevas clases de algoritmos en el backend y estos
+estarán disponibles en el frontend sin requerir modificaciones adicionales.
 
 \item Se buscó también lograr una interfaz sencilla e intuitiva. Fue por este motivo que se decidió
 utilizar el Diseño Material de Google al ser una tecnología ampliamente probada y aceptada. Principalmente
