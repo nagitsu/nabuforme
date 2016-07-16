@@ -110,8 +110,8 @@ contexto indica la cantidad de iteraciones empleada en la generación de la matr
 ser un número alto para asegurar una correcta factorización. El valor por defecto es 15, aunque los
 autores sugieren utilizar entre 50 y 100 iteraciones.
 
-Por último, el modelo PPMI con SVD tiene también algunos hiperparámetros adicionales (\texttt{dim},
-\texttt{min\_count}, \texttt{max\_count}, \texttt{win}, \texttt{sub}) con la incorporación de dos
+Por último, el modelo PPMI con SVD tiene también algunos hiperparámetros en común (\texttt{dim},
+\texttt{min\_count}, \texttt{max\_count}, \texttt{win}, \texttt{sub}), con la incorporación de dos
 adicionales:
 
 \begin{itemize}
@@ -460,7 +460,7 @@ con algunos conjuntos más afectados que otros.
 
 La tabla \ref{table:testset_model_performance} muestra los resultados obtenidos para los mejores dos
 modelos vectoriales de cada algoritmo. También se presentan, como punto inicial de comparación, los
-resultados obtenidos en la literatura.
+resultados obtenidos en la literatura (reportados en~\cite{Levy2015}).
 
 \begin{table}[!h]
     \setlength\tabcolsep{4pt}
@@ -483,6 +483,9 @@ resultados obtenidos en la literatura.
         S01 & 45\% & 56\% & \textbf{74\%} & \textbf{72\%} & 52\% & 33\%\\
         \midrule
         S02 & 46\% & \textbf{57\%} & 73\% & \textbf{72\%} & 51\% & \textbf{34\%}\\
+        \midrule
+        \midrule
+        Levy & \textit{69\%} & \textit{70\%} & \textit{79\%} & \textit{78\%} & \textit{69\%} & \textit{44\%}\\
         \midrule
         \bottomrule
     \end{tabularx}
@@ -713,7 +716,7 @@ describa el proceso de evaluación, por lo que se desconoce el detalle de las pr
 \section{Comportamiento Específico al Español}
 
 Teniendo un punto de comparación de la performance de los modelos vectoriales en ambos idiomas, se
-procedió a realizar un estudio más detallado de su comportamiento en español, con el objetivo siendo
+procedió a realizar un estudio más detallado de su comportamiento en español, siendo el objetivo
 obtener una mejor visión de qué tanta información son capaces de capturar los vectores en un idioma
 con mayor complejidad gramatical, investigando cuáles son las características que resultan más
 difíciles de representar.
@@ -763,13 +766,12 @@ teniendo así un total de 468 entradas.
 Se construyeron, por último, dos conjuntos de pruebas siguiendo el esquema \textit{odd-one-out}
 descrito en el capítulo anterior. El primero no estudia fenómenos particulares del español, sino que
 tiene un enfoque semántico: busca identificar la palabra que no encaja (desde el punto de vista de
-su significado) con un conjunto de varias palabras. Para ello, se obtuvieron listas de palabras por
-campo semántico\footnote{Obtenidas mediante [cita].}, como colores, frutas, y vehículos, y se
-generaron combinaciones con tres o cuatro palabras de un campo particular y una de otro. Se
-construyó un conjunto con un total de 529 entradas con estas características, obteniendo así una
-forma de probar la capacidad de los vectores de agrupar palabras similares sin tener que recurrir a
-una prueba que asigne puntajes (a veces arbitrarios) a pares de palabras, como en el caso de las
-pruebas de similitud antes mencionadas.
+su significado) con un conjunto de varias palabras. Para ello, se construyeron listas de palabras por
+campo semántico, como colores, frutas, y vehículos, y se generaron combinaciones con tres o cuatro
+palabras de un campo particular y una de otro. Se construyó un conjunto con un total de 529 entradas
+con estas características, obteniendo así una forma de probar la capacidad de los vectores de agrupar
+palabras similares sin tener que recurrir a una prueba que asigne puntajes (a veces arbitrarios) a
+pares de palabras, como en el caso de las pruebas de similitud antes mencionadas.
 
 El segundo conjunto de pruebas de este esquema tiene las mismas características pero propone pruebas
 sintácticas en lugar de semánticas. Para ello, se generaron entradas utilizando la misma lista de
